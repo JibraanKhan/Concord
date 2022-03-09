@@ -207,13 +207,15 @@ class TestingDatabase
 		
 		//It is fine to start a Direct Message conversation with someone you have
 		//blocked, however, it is not good to be started a conversation with
-		//from somoene that you have blocked.
+		//from someone that you have blocked.
 		
 		ashley.blockUser(stacy.getUserID());
 		Room dm_stacy_ashley = stacy.startDirectMessage(roomList, userList, ashley.getUserID());
 		
 		assertTrue(dm_stacy_ashley.getUser(ashley.getUserID()) != null);
 		assertTrue(dm_stacy_ashley.getUser(stacy.getUserID()) != null);
+		//The room with stacy we just made should not exist for ashley since
+		//ashley has blocked stacy and the dm was made afterwards.
 		assertTrue(ashley.getDirectMessages().get(dm_stacy_ashley.getRoomID()) == null);
 		assertTrue(ashley.getRooms().get(dm_stacy_ashley.getRoomID()) == null);
 	}
