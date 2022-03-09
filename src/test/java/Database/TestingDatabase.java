@@ -188,20 +188,34 @@ class TestingDatabase
 		assertTrue(myServer.getUser(ron.getUserID()) == noob);
 		myServer.removeUser(john.getUserID(), ron.getUserID());
 		assertEquals(null, myServer.getUser(ron.getUserID()));
-		myServer.deleteChatLog(john.getUserID(), memes.getChatLogID());
-		assertEquals(null, myServer.getChatLog(memes.getChatLogID()));
 		ChatLog JohnsSecondChatLog = myServer.addChatLog(john.getUserID(), "John's Club");
 		assertTrue(JohnsSecondChatLog == myServer.getChatLog(JohnsSecondChatLog.getChatLogID()));
 		myServer.setRoomType(true); 
 		assertEquals(true, myServer.isPublic());
 		myServer.deleteChat(john.getUserID(), memes.getChatLogID(), 1);
 		assertEquals(null, myServer.getChat(memes.getChatLogID(), 1));
+		myServer.deleteChatLog(john.getUserID(), memes.getChatLogID());
+		assertEquals(null, myServer.getChatLog(memes.getChatLogID()));
 		
 		//Testing blocked users and DMs
 		
 		ashley.blockUser(stacy.getUserID());
 		Room dm_ashley_stacy = ashley.startDirectMessage(roomList, userList, stacy.getUserID());
-		ChatLog only_chatlog = dm_ashley_stacy.getChatLog(1);
+		
+		assertTrue(dm_ashley_stacy.getUser(ashley.getUserID()) != null);
+		assertTrue(dm_ashley_stacy.getUser(stacy.getUserID()) != null);
+		
+		//It is fine to start a Direct Message conversation with someone you have
+		//blocked, however, it is not good to be started a conversation with
+		//from somoene that you have blocked.
+		
+		ashley.blockUser(stacy.getUserID());
+		Room dm_stacy_ashley = stacy.startDirectMessage(roomList, userList, ashley.getUserID());
+		
+		assertTrue(dm_stacy_ashley.getUser(ashley.getUserID()) != null);
+		assertTrue(dm_stacy_ashley.getUser(stacy.getUserID()) != null);
+		assertTrue(ashley.getDirectMessages().get(dm_stacy_ashley.getRoomID()) == null);
+		assertTrue(ashley.getRooms().get(dm_stacy_ashley.getRoomID()) == null);
 	}
 
 }

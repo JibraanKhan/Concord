@@ -136,6 +136,14 @@ public class User
 		}
 	}
 	
+	public Hashtable<Integer, Room> getDirectMessages(){
+		return directMessages;
+	}
+	
+	public Hashtable<Integer, Room> getRooms(){
+		return rooms;
+	}
+	
 	public String getUserName()
 	{
 		return userName;
