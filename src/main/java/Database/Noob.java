@@ -11,6 +11,6 @@ public class Noob extends Role
 		super.setGiveRolePermission(false);
 		super.setInvitePermission(false);
 		super.setRemoveUserPermission(false);
-		super.setRoomTypePermission(true); 
+		super.setRoomTypePermission(false); 
 	}
 }

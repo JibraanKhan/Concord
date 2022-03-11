@@ -10,8 +10,9 @@ public class Room
 	private String logo;
 	private int roomID;
 	private Hashtable<Integer, Role> userTable = new Hashtable<Integer, Role>(); //Object will be a subclass of Role
-	private Boolean roomType; //private or public room
+	private Boolean roomType = true; //private or public room, public as default
 	private int last_chatLogID = 0;
+	private Hashtable<Integer, Boolean> invitedUsers = new Hashtable<Integer, Boolean>();
 	
 	public Room(int roomID, String name, String description, String logo, Boolean roomType) {
 		this.roomID = roomID;
@@ -32,6 +33,7 @@ public class Room
 		this.roomID = roomID;
 		this.name = name;
 		this.description = description;
+		this.roomType = true;
 	}
 	
 	public Room(int roomID, String name) {
@@ -96,17 +98,34 @@ public class Room
 	{
 		return roomType;
 	}
-	public void setRoomType(Boolean roomType)
-	{
-		this.roomType = roomType;
+	
+	public void addUser(int userID, Role role, UserList userList, RoomList roomList) {
+		User user = userList.getUser(userID);
+		if (isPublic()) {
+			userTable.put(userID, role);
+			user.addRoom(roomList, roomID);
+		}else {
+			if (invitedUsers.get(userID) != null && invitedUsers.get(userID)) {
+				//If the user exists in invitedUsers and the user's invited
+				userTable.put(userID, role);
+				user.addRoom(roomList, roomID);
+			}
+		}
 	}
 	
-	public void addUser(int userID, Role role) {
-		userTable.put(userID, role);
-	}
-	
-	public void addUser(int userID) {
-		userTable.put(userID, new Noob());
+	public void addUser(int userID, UserList userList, RoomList roomList) {
+		//Giving new user the default of being a noob.
+		User user = userList.getUser(userID);
+		if (isPublic()) {
+			userTable.put(userID, new Noob());
+			user.addRoom(roomList, roomID);
+		}else {
+			if (invitedUsers.get(userID) != null && invitedUsers.get(userID)) {
+				//If the user exists in invitedUsers and the user's invited
+				userTable.put(userID, new Noob());
+				user.addRoom(roomList, roomID);
+			}
+		}
 	}
 	
 	public Role getUser(int userID) {
@@ -129,6 +148,7 @@ public class Room
 			if (relevantChat != null) {
 				//Okay, now we know that the chat with the ID exists. Now, check permission and delete it if permissions are met.
 				if ((userRole.isDeleteChatPermission()) || (relevantChat.getSenderID() == userID)) {
+	
 					//Okay, user either has permission to delete any chat in the chat log
 					//or the chat is the user's own chat which they are of course allowed to delete
 					relevantChatLog.deleteChat(chatID);
@@ -201,8 +221,10 @@ public class Room
 		//Check if user has permission to give role
 		//Then give target user the role
 		Role settersRole = userTable.get(userID);
-		if (settersRole.isGiveRolePermission()) {
-			//Cool, the user has permission to give role.
+		if (settersRole.isGiveRolePermission() && 
+				(userTable.get(targetUserID) != null)) {
+			//Cool, the user has permission to give role and the user that's 
+			//receiving role exists
 			userTable.put(targetUserID, role); //Give the target the role.
 		}
 	}
@@ -228,5 +250,24 @@ public class Room
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+	
+	public void inviteUser(int invitersUserID, int inviteesUserID) {
+		//Check if the inviter has permission to invite
+		Role invitersRole = userTable.get(invitersUserID);
+		if (invitersRole.isInvitePermission()) {
+			invitedUsers.put(inviteesUserID, true);
+		}
+	}
+	
+	public void uninviteUser(int invitersUserID, int inviteesUserID) {
+		Role invitersRole = userTable.get(invitersUserID);
+		if (invitersRole.isInvitePermission()) {
+			invitedUsers.put(inviteesUserID, false);
+		}
+	}
+	
+	public Boolean isInvited(int userID) {
+		return invitedUsers.get(userID);
 	}
 }

@@ -27,7 +27,7 @@ public class ChatLog
 	public String getChatLogName() {
 		return chatLogName;
 	}
-	
+		
 	public void addChat(String message, int senderID) {
 		last_ChatID++;
 		chatLog.put(last_ChatID, new Chat(last_ChatID, message, senderID));

@@ -9,7 +9,22 @@ public class Chat
 	private int receiverID;
 	private String message;
 	private Time timeStamp;
-	private Boolean pinned;
+	private Boolean pinned = false;
+	
+	public Chat(int chatID, String message, int senderID, int receiverID, Time timeStamp) {
+		this.chatID = chatID;
+		this.message = message;
+		this.senderID = senderID;
+		this.receiverID = receiverID;
+		this.timeStamp = timeStamp;
+	}
+	
+	public Chat(int chatID, String message, int senderID, Time timeStamp) {
+		this.chatID = chatID;
+		this.message = message;
+		this.senderID = senderID;
+		this.timeStamp = timeStamp;
+	}
 	
 	public Chat(int chatID, String message, int senderID, int receiverID) {
 		this.chatID = chatID;
@@ -66,6 +81,10 @@ public class Chat
 	
 	public Boolean isPinned() {
 		return pinned;
+	}
+	
+	public void setTimeStamp(Time timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 	
 	public Time getTimeStamp() {

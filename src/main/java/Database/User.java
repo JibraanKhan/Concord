@@ -18,7 +18,6 @@ public class User
 	 /*If the user's blocked, add true to the Hashtable for that user's ID and it 
 	  * will be easy to see if a user has another user blocked
 	*/
-	private Hashtable<Integer, Boolean> friends = new Hashtable<Integer, Boolean>();
 	//Same reason above, easy to find if someone's in your friends list.
 	
 	public User(int userID) {
@@ -51,34 +50,10 @@ public class User
 		this.profilePic = profilePic;
 	}
 	
-	public Room addRoom(RoomList roomList) {
-		Room newRoom = roomList.addRoom();
-		rooms.put(newRoom.getRoomID(), newRoom);
-		return newRoom;
-	}
-	
-	public Room addRoom(RoomList roomList, String name) {
-		Room newRoom = roomList.addRoom(name);
-		rooms.put(newRoom.getRoomID(), newRoom);
-		return newRoom;
-	}
-	
-	public Room addRoom(RoomList roomList, String name, String description) {
-		Room newRoom = roomList.addRoom(name, description);
-		rooms.put(newRoom.getRoomID(), newRoom);
-		return newRoom;
-	}
-	
-	public Room addRoom(RoomList roomList, String name, String description, String logo) {
-		Room newRoom = roomList.addRoom(name, description, logo);
-		rooms.put(newRoom.getRoomID(), newRoom);
-		return newRoom;
-	}
-	
-	public Room addRoom(RoomList roomList, String name, String description, String logo, Boolean roomType) {
-		Room newRoom = roomList.addRoom(name, description, logo, roomType);
-		rooms.put(newRoom.getRoomID(), newRoom);
-		return newRoom;
+	public Room addRoom(RoomList roomList, int roomID) {
+		Room addingRoom = roomList.getRoom(roomID);
+		rooms.put(roomID, addingRoom);
+		return addingRoom;
 	}
 	
 	public Room startDirectMessage(RoomList roomList, UserList userList, int userID) {
@@ -93,7 +68,7 @@ public class User
 		*/
 		
 		//First, check if there's a room in our direct messages with user already
-		
+		User otherUser = userList.getUser(userID);
 		Enumeration<Integer> e = directMessages.keys();
 		while(e.hasMoreElements()) {
 			int key = e.nextElement();
@@ -101,38 +76,51 @@ public class User
 			Hashtable<Integer, Role> roomUsers = roomInQuestion.getUserTable();
 			if ((roomUsers.get(userID) != null)) {
 				//Okay, we found a DM with the user in it.
+				//If the other user has not blocked us, we want to make sure they also have this room.
+				otherUser.requestedDirectMessage(roomList, userList, this.userID, roomInQuestion);
 				return roomInQuestion;
 			}
 		}
 		//Okay, so the return did not pass meaning that there isn't a DM with the user in it.
 		
-		String thisUsersName = this.userName;
-		User otherUser = userList.getUser(userID);
+		
 		String otherUsersName = otherUser.getUserName();
-		Room newDM = this.addRoom(roomList);
-		newDM.addUser(this.userID, new Admin());
-		newDM.addUser(userID, new Admin());
-		newDM.addChatLog(this.userID, new ChatLog(1, thisUsersName + ", " + otherUsersName)); 
+		Room newDM = roomList.addRoom();
+		String thisUsersName = this.userName;
+		String discussionName = thisUsersName + ", " + otherUsersName;
+		newDM.setName(discussionName);
+		newDM.addUser(this.userID, new Noob(), userList, roomList);
+		newDM.addUser(userID, new Noob(), userList, roomList);
+		newDM.addChatLog(this.userID, new ChatLog(1, discussionName)); 
 		//We can assign the chat log any arbitrary integer as a userID since we know
 		// that the room will and should only have one ChatLog since it is a DM between
 		// two users
 		directMessages.put(newDM.getRoomID(), newDM);
-		otherUser.requestedDirectMessage(roomList, userList, this.userID); //Ask to start DM with yourself
+		otherUser.requestedDirectMessage(roomList, userList, this.userID, newDM); //Ask to start DM with yourself
 		return newDM;
 	}
 
-	public void requestedDirectMessage(RoomList roomList, UserList userList, int userID) {
+	public void endDirectMessage(int userID) {
+		//End DM with another user
+		Enumeration<Integer> e = directMessages.keys();
+		while(e.hasMoreElements()) {
+			int key = e.nextElement();
+			Room roomInQuestion = directMessages.get(key); //Room we're checking
+			Hashtable<Integer, Role> roomUsers = roomInQuestion.getUserTable();
+			if ((roomUsers.get(userID) != null)) {
+				//Okay, we found a DM with the user in it.
+				directMessages.remove(roomInQuestion.getRoomID());
+			}
+		}
+	}
+	
+	public void requestedDirectMessage(RoomList roomList, UserList userList, int userID, Room DM) {
 		//Check if the person requesting is not blocked by us.
-		if ((blockedUsers.get(userID) == null) || (blockedUsers.get(userID) != false)) {
-			//Now, lets make the DM by adding a room to the roomList and placing it inside our own direct messages.
-			String thisUsersName = this.userName;
-			String otherUsersName = userList.getUser(userID).getUserName();
-			Room newDM = this.addRoom(roomList);
-			newDM.addUser(userID, new Admin());
-			newDM.addUser(this.userID, new Admin());
-			newDM.addChatLog(this.userID, new ChatLog(1, thisUsersName + ", " + otherUsersName)); 
-			//Place inside our own DM list.
-			directMessages.put(newDM.getRoomID(), newDM);
+		if (((blockedUsers.get(userID) == null) || (blockedUsers.get(userID) == false)) && (directMessages.get(DM.getRoomID()) == null)) {
+			//Lets make sure we do not already have the room in our DMs
+			
+			//Room has already been made so we simply need to add it to our DMs
+			directMessages.put(DM.getRoomID(), DM);
 		}
 	}
 	
@@ -186,18 +174,13 @@ public class User
 	
 	public void blockUser(int userID) {
 		blockedUsers.put(userID, true);
+		//Lets also close the direct messages with the user we are blocking
+		endDirectMessage(userID);
+		
 	}
 	
 	public void unblockUser(int userID) {
 		blockedUsers.put(userID, false);
-	}
-	
-	public void addFriend(int userID) {
-		friends.put(userID, true);
-	}
-	
-	public void removeFriend(int userID) {
-		friends.put(userID, false);
 	}
 	
 	public int getUserID() {
