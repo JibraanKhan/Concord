@@ -12,5 +12,11 @@ public class Mod extends Role
 		super.setInvitePermission(true); //Mods can add users
 		super.setRemoveUserPermission(true); //Mods can remove users
 		super.setRoomTypePermission(true); 
+		super.setLockChatLogPermission(false); //Mods can't lock chatLogs
+	}
+	
+	public boolean equals(Object obj)
+	{
+		return super.equals(this, obj);
 	}
 }

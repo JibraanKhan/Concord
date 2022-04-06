@@ -12,5 +12,11 @@ public class Noob extends Role
 		super.setInvitePermission(false);
 		super.setRemoveUserPermission(false);
 		super.setRoomTypePermission(false); 
+		super.setLockChatLogPermission(false);
+	}
+	
+	public boolean equals(Object obj)
+	{
+		return super.equals(this, obj);
 	}
 }

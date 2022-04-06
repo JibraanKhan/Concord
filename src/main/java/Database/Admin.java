@@ -13,5 +13,11 @@ public class Admin extends Role
 		super.setInvitePermission(true);
 		super.setRemoveUserPermission(true);
 		super.setRoomTypePermission(true); 
+		super.setLockChatLogPermission(true);
+	}
+	
+	public boolean equals(Object obj)
+	{
+		return super.equals(this, obj);
 	}
 }

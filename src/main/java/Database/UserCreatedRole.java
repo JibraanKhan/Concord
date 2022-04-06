@@ -2,7 +2,11 @@ package Database;
 
 public class UserCreatedRole extends Role
 {
-	public UserCreatedRole(Boolean[] permissions, String name) {
+	public UserCreatedRole() {
+		this(new boolean[9], "<Default RoleName>");
+	}
+	
+	public UserCreatedRole(boolean[] permissions, String name) {
 		/*
 		 *[
 			Can user delete any chat messages besides their own?
@@ -13,6 +17,7 @@ public class UserCreatedRole extends Role
 			Can user create ChatLogs?
 			Can user delete ChatLogs?
 			Can user delete Rooms?
+			Can user lock chatLogs?
 		  ]
 		*/
 		super.setRoleName(name);
@@ -24,9 +29,10 @@ public class UserCreatedRole extends Role
 		super.setCreateChatLogPermission(permissions[5]);
 		super.setDeleteChatLogPermission(permissions[6]);
 		super.setDeleteRoomPermission(permissions[7]);
+		super.setLockChatLogPermission(permissions[8]);
 	}
 	
-	public UserCreatedRole(Boolean[] permissions) {
+	public UserCreatedRole(boolean[] permissions) {
 		/*
 		 *[
 			Can user delete any chat messages besides their own?
@@ -37,6 +43,7 @@ public class UserCreatedRole extends Role
 			Can user create ChatLogs?
 			Can user delete ChatLogs?
 			Can user delete Rooms?
+			Can user lock chatLogs?
 		  ]
 		*/
 		super.setRoleName("<Untitled Role>");
@@ -48,5 +55,11 @@ public class UserCreatedRole extends Role
 		super.setCreateChatLogPermission(permissions[5]);
 		super.setDeleteChatLogPermission(permissions[6]);
 		super.setDeleteRoomPermission(permissions[7]);
+		super.setLockChatLogPermission(permissions[8]);
+	}
+	
+	public boolean equals(Object obj)
+	{
+		return super.equals(this, obj);
 	}
 }

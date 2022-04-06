@@ -1,6 +1,7 @@
 package Database;
 
 import java.util.Hashtable;
+import java.util.Objects;
 
 public class Room
 {
@@ -13,6 +14,35 @@ public class Room
 	private Boolean roomType = true; //private or public room, public as default
 	private int last_chatLogID = 0;
 	private Hashtable<Integer, Boolean> invitedUsers = new Hashtable<Integer, Boolean>();
+	
+	public int getLast_chatLogID()
+	{
+		return last_chatLogID;
+	}
+
+	public void setLast_chatLogID(int last_chatLogID)
+	{
+		this.last_chatLogID = last_chatLogID;
+	}
+
+	public Hashtable<Integer, Boolean> getInvitedUsers()
+	{
+		return invitedUsers;
+	}
+
+	public void setInvitedUsers(Hashtable<Integer, Boolean> invitedUsers)
+	{
+		this.invitedUsers = invitedUsers;
+	}
+
+	public void setRoomType(Boolean roomType)
+	{
+		this.roomType = roomType;
+	}
+
+	public Room() {
+		this(-1, "<Default Room>", "<Default Description>", "<Default Logo>");
+	}
 	
 	public Room(int roomID, String name, String description, String logo, Boolean roomType) {
 		this.roomID = roomID;
@@ -49,6 +79,24 @@ public class Room
 		Role deletersRole = userTable.get(userID);
 		if (deletersRole.isDeleteRoomPermission()) {
 			rooms.deleteRoom(roomID);
+		}
+	}
+	
+	public void lockChatLog(int userID, int roomID, int chatLogID, RoomList rooms) {
+		Role lockersRole = userTable.get(userID);
+		if (lockersRole.isLockChatLogPermission()) {
+			Room room = rooms.getRoom(roomID);
+			ChatLog chatLog = room.getChatLog(chatLogID);
+			chatLog.lockChatLog();
+		}
+	}
+	
+	public void unlockChatLog(int userID, int roomID, int chatLogID, RoomList rooms) {
+		Role lockersRole = userTable.get(userID);
+		if (lockersRole.isLockChatLogPermission()) {
+			Room room = rooms.getRoom(roomID);
+			ChatLog chatLog = room.getChatLog(chatLogID);
+			chatLog.unlockChatLog();
 		}
 	}
 	
@@ -195,17 +243,6 @@ public class Room
 		return null;
 	}
 	
-	public void deleteChatLog(int userID, int chatLogID) {
-		Role addersRole = userTable.get(userID);
-		if (addersRole.isDeleteChatLogPermission()) {
-			chatLogs.remove(chatLogID);
-		}
-	}
-	
-	public ChatLog getChatLog(int chatLogID) {
-		return chatLogs.get(chatLogID);
-	}
-	
 	public ChatLog addChatLog(int userID, String name) {
 		Role addersRole = userTable.get(userID);
 		if (addersRole.isCreateChatLogPermission()) {
@@ -215,6 +252,17 @@ public class Room
 			return newChatLog;
 		}
 		return null;
+	}
+	
+	public void deleteChatLog(int userID, int chatLogID) {
+		Role addersRole = userTable.get(userID);
+		if (addersRole.isDeleteChatLogPermission()) {
+			chatLogs.remove(chatLogID);
+		}
+	}
+	
+	public ChatLog getChatLog(int chatLogID) {
+		return chatLogs.get(chatLogID);
 	}
 	
 	public void giveRole(int userID, int targetUserID, Role role) {
@@ -267,7 +315,26 @@ public class Room
 		}
 	}
 	
-	public Boolean isInvited(int userID) {
+	public Boolean isInvited(int userID) {		
 		return invitedUsers.get(userID);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(roomID);
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Room other = (Room) obj;
+		return roomID == other.getRoomID();
 	}
 }

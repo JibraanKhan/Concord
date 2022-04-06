@@ -1,11 +1,17 @@
 package Database;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Objects;
 
 public class RoomList
 {
 	private Hashtable<Integer, Room> rooms = new Hashtable<Integer, Room>();
 	private int last_RoomID = 0;
+	
+	public RoomList() {
+		
+	}
 	
 	public void addRoom(Room room) {
 		last_RoomID++;
@@ -57,5 +63,55 @@ public class RoomList
 	
 	public void deleteRoom(int roomID) {
 		rooms.remove(roomID);
+	}
+
+	public Hashtable<Integer, Room> getRooms()
+	{
+		return rooms;
+	}
+
+	public void setRooms(Hashtable<Integer, Room> rooms)
+	{
+		this.rooms = rooms;
+	}
+
+	public int getLast_RoomID()
+	{
+		return last_RoomID;
+	}
+
+	public void setLast_RoomID(int last_RoomID)
+	{
+		this.last_RoomID = last_RoomID;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(rooms);
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RoomList other = (RoomList) obj;
+		
+		Enumeration<Integer> e = rooms.keys();
+		
+		while (e.hasMoreElements()) {
+			int key = e.nextElement();
+			Room room = rooms.get(key);
+			Room otherRoom = other.getRoom(key);
+			if (!(otherRoom != null && otherRoom.equals(room))) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

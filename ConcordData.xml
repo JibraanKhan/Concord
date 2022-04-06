@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="17.0.1" class="java.beans.XMLDecoder">
+ <object class="ServerClientModel.Server" id="Server0">
+  <void property="clients">
+   <void method="put">
+    <int>4</int>
+    <object class="ServerClientModel.Client" id="Client0">
+     <void property="password">
+      <string>ghin</string>
+     </void>
+     <void property="profileData">
+      <null/>
+     </void>
+     <void property="profilePic">
+      <null/>
+     </void>
+     <void id="RoomList0" property="rooms">
+      <void property="last_RoomID">
+       <int>1</int>
+      </void>
+      <void property="rooms">
+       <void method="put">
+        <int>1</int>
+        <object class="Database.Room" id="Room0">
+         <void property="chatLogs">
+          <void method="put">
+           <int>3</int>
+           <object class="Database.ChatLog" id="ChatLog0">
+            <void property="chatLog">
+             <void method="put">
+              <int>2</int>
+              <object class="Database.Chat">
+               <void property="chatID">
+                <int>2</int>
+               </void>
+               <void property="message">
+                <string>Hey guys... like, what&apos;s your favorite coffee from Starbucks? I personally like the venti caramel macchiatto with light ice and whipped cream on top sprinkled with some honey glazed almonds.</string>
+               </void>
+               <void property="senderID">
+                <int>4</int>
+               </void>
+               <void property="timeStamp">
+                <null/>
+               </void>
+              </object>
+             </void>
+             <void method="put">
+              <int>1</int>
+              <object class="Database.Chat">
+               <void property="chatID">
+                <int>1</int>
+               </void>
+               <void property="message">
+                <string>Ok, which one of you guys talked to me?</string>
+               </void>
+               <void property="senderID">
+                <int>3</int>
+               </void>
+               <void property="timeStamp">
+                <null/>
+               </void>
+              </object>
+             </void>
+            </void>
+            <void property="chatLogID">
+             <int>3</int>
+            </void>
+            <void property="chatLogName">
+             <string>Chat</string>
+            </void>
+            <void property="last_ChatID">
+             <int>2</int>
+            </void>
+           </object>
+          </void>
+          <void method="put">
+           <int>2</int>
+           <object class="Database.ChatLog" id="ChatLog1">
+            <void property="chatLog">
+             <void method="put">
+              <int>1</int>
+              <object class="Database.Chat">
+               <void property="chatID">
+                <int>1</int>
+               </void>
+               <void property="message">
+                <string>Yo yo guys, there&apos;s a huge skateboarding event going on tomorrow. You guys should definitely drop by!</string>
+               </void>
+               <void property="senderID">
+                <int>2</int>
+               </void>
+               <void property="timeStamp">
+                <null/>
+               </void>
+              </object>
+             </void>
+            </void>
+            <void property="chatLogID">
+             <int>2</int>
+            </void>
+            <void property="chatLogName">
+             <string>Announcements</string>
+            </void>
+            <void property="last_ChatID">
+             <int>1</int>
+            </void>
+           </object>
+          </void>
+          <void method="put">
+           <int>1</int>
+           <object class="Database.ChatLog" id="ChatLog2">
+            <void property="chatLog">
+             <void method="put">
+              <int>3</int>
+              <object class="Database.Chat">
+               <void property="chatID">
+                <int>3</int>
+               </void>
+               <void property="message">
+                <string>Idk... I thought you knew lol.</string>
+               </void>
+               <void property="receiverID">
+                <int>3</int>
+               </void>
+               <void property="senderID">
+                <int>1</int>
+               </void>
+               <void property="timeStamp">
+                <null/>
+               </void>
+              </object>
+             </void>
+             <void method="put">
+              <int>2</int>
+              <object class="Database.Chat">
+               <void property="chatID">
+                <int>2</int>
+               </void>
+               <void property="message">
+                <string>What?</string>
+               </void>
+               <void property="receiverID">
+                <int>1</int>
+               </void>
+               <void property="senderID">
+                <int>3</int>
+               </void>
+               <void property="timeStamp">
+                <null/>
+               </void>
+              </object>
+             </void>
+             <void method="put">
+              <int>1</int>
+              <object class="Database.Chat">
+               <void property="chatID">
+                <int>1</int>
+               </void>
+               <void property="message">
+                <string>What did the cat say to the dog?
+Meow</string>
+               </void>
+               <void property="senderID">
+                <int>1</int>
+               </void>
+               <void property="timeStamp">
+                <null/>
+               </void>
+              </object>
+             </void>
+            </void>
+            <void property="chatLogID">
+             <int>1</int>
+            </void>
+            <void property="chatLogName">
+             <string>Memes</string>
+            </void>
+            <void property="last_ChatID">
+             <int>3</int>
+            </void>
+           </object>
+          </void>
+         </void>
+         <void property="description">
+          <string>This is my own server, please join at your own risk.</string>
+         </void>
+         <void property="last_chatLogID">
+          <int>3</int>
+         </void>
+         <void property="logo">
+          <null/>
+         </void>
+         <void property="name">
+          <string>My Server</string>
+         </void>
+         <void property="roomID">
+          <int>1</int>
+         </void>
+         <void property="userTable">
+          <void method="put">
+           <int>4</int>
+           <object class="Database.UserCreatedRole">
+            <void property="giveRolePermission">
+             <boolean>true</boolean>
+            </void>
+            <void property="roleName">
+             <string>Role Giver</string>
+            </void>
+           </object>
+          </void>
+          <void method="put">
+           <int>3</int>
+           <object class="Database.Noob"/>
+          </void>
+          <void method="put">
+           <int>2</int>
+           <object class="Database.Mod"/>
+          </void>
+          <void method="put">
+           <int>1</int>
+           <object class="Database.Admin"/>
+          </void>
+         </void>
+         <void id="Boolean0" property="roomType"/>
+        </object>
+       </void>
+      </void>
+     </void>
+     <void property="status">
+      <boolean>false</boolean>
+     </void>
+     <void id="User0" property="user">
+      <void property="profileData">
+       <string>Heya there, my name is Stacy but my friends call me Stace.
+I really like meeting new people, so let me know if there are any major events going on!</string>
+      </void>
+      <void property="rooms">
+       <void method="put">
+        <int>1</int>
+        <object idref="Room0"/>
+       </void>
+      </void>
+      <void property="userID">
+       <int>4</int>
+      </void>
+      <void property="userName">
+       <string>Stacy</string>
+      </void>
+     </void>
+    </object>
+   </void>
+   <void method="put">
+    <int>3</int>
+    <object class="ServerClientModel.Client" id="Client1">
+     <void property="connection">
+      <object idref="Server0"/>
+     </void>
+     <void property="password">
+      <string>why123</string>
+     </void>
+     <void property="profileData">
+      <null/>
+     </void>
+     <void property="profilePic">
+      <null/>
+     </void>
+     <void id="User1" property="user">
+      <void property="profileData">
+       <string>Hey man, I really don&apos;t like sunny weather. I just wish I could avoid social contact.
+Please leave me alone.</string>
+      </void>
+      <void property="rooms">
+       <void method="put">
+        <int>1</int>
+        <object idref="Room0"/>
+       </void>
+      </void>
+      <void property="userID">
+       <int>3</int>
+      </void>
+      <void property="userName">
+       <string>Ron</string>
+      </void>
+     </void>
+    </object>
+   </void>
+   <void method="put">
+    <int>2</int>
+    <object class="ServerClientModel.Client" id="Client2">
+     <void property="connection">
+      <object idref="Server0"/>
+     </void>
+     <void property="password">
+      <string>hello123</string>
+     </void>
+     <void property="profileData">
+      <null/>
+     </void>
+     <void property="profilePic">
+      <null/>
+     </void>
+     <void property="status">
+      <boolean>false</boolean>
+     </void>
+     <void id="User2" property="user">
+      <void property="profileData">
+       <string>Yo, I go by John. I like skateboarding and hanging out with others!
+Hit me up if there is a party going on.</string>
+      </void>
+      <void property="rooms">
+       <void method="put">
+        <int>1</int>
+        <object idref="Room0"/>
+       </void>
+      </void>
+      <void property="userID">
+       <int>2</int>
+      </void>
+      <void property="userName">
+       <string>John</string>
+      </void>
+     </void>
+    </object>
+   </void>
+   <void method="put">
+    <int>1</int>
+    <object class="ServerClientModel.Client" id="Client3">
+     <void property="connection">
+      <object idref="Server0"/>
+     </void>
+     <void property="password">
+      <string>uhgraw</string>
+     </void>
+     <void property="profileData">
+      <null/>
+     </void>
+     <void property="profilePic">
+      <null/>
+     </void>
+     <void id="User3" property="user">
+      <void property="profileData">
+       <string>Hello, my name is Ashley and I am a weeb.
+Nice to meet you!</string>
+      </void>
+      <void property="rooms">
+       <void method="put">
+        <int>1</int>
+        <object idref="Room0"/>
+       </void>
+      </void>
+      <void property="userID">
+       <int>1</int>
+      </void>
+      <void property="userName">
+       <string>Ashley</string>
+      </void>
+     </void>
+    </object>
+   </void>
+  </void>
+  <void property="id_passwords">
+   <void method="put">
+    <int>4</int>
+    <string>ghin</string>
+   </void>
+   <void method="put">
+    <int>3</int>
+    <string>why123</string>
+   </void>
+   <void method="put">
+    <int>2</int>
+    <string>hello123</string>
+   </void>
+   <void method="put">
+    <int>1</int>
+    <string>uhgraw</string>
+   </void>
+  </void>
+  <void property="userLogins">
+   <void method="put">
+    <int>4</int>
+    <object idref="Boolean0"/>
+   </void>
+   <void method="put">
+    <int>3</int>
+    <object idref="Boolean0"/>
+   </void>
+   <void method="put">
+    <int>2</int>
+    <object idref="Boolean0"/>
+   </void>
+   <void method="put">
+    <int>1</int>
+    <object idref="Boolean0"/>
+   </void>
+  </void>
+  <void id="UserList0" property="users">
+   <void property="last_userID">
+    <int>4</int>
+   </void>
+   <void property="users">
+    <void method="put">
+     <int>4</int>
+     <object idref="User0"/>
+    </void>
+    <void method="put">
+     <int>3</int>
+     <object idref="User1"/>
+    </void>
+    <void method="put">
+     <int>2</int>
+     <object idref="User2"/>
+    </void>
+    <void method="put">
+     <int>1</int>
+     <object idref="User3"/>
+    </void>
+   </void>
+  </void>
+ </object>
+</java>

@@ -3,6 +3,7 @@ package Database;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Objects;
 
 public class ChatLog
 {
@@ -10,6 +11,17 @@ public class ChatLog
 	private int chatLogID;
 	private String chatLogName;
 	private int last_ChatID = 0;
+	private boolean chatLogLocked = false; //If you want to lock a chatLog so that messages cannot be added.
+	
+	public ChatLog() {
+		this(-1, "<Default ChatLog>");
+	}
+	
+	public ChatLog(int chatLogID, String chatLogName, Boolean chatLogLocked) {
+		this.chatLogID = chatLogID;
+		this.chatLogName = chatLogName;
+		this.chatLogLocked = chatLogLocked;
+	}
 	
 	public ChatLog(int chatLogID, String chatLogName) {
 		this.chatLogID = chatLogID;
@@ -20,22 +32,43 @@ public class ChatLog
 		this.chatLogID = chatLogID;
 	}
 	
+	public void lockChatLog() {
+		chatLogLocked = true;
+	}
+	
+	public void unlockChatLog() {
+		chatLogLocked = false;
+	}
+	
+	public boolean isLocked() {
+		return chatLogLocked;
+	}
+
 	public void setChatLogName(String name) {
 		chatLogName = name;
 	}
+	
 	
 	public String getChatLogName() {
 		return chatLogName;
 	}
 		
 	public void addChat(String message, int senderID) {
-		last_ChatID++;
-		chatLog.put(last_ChatID, new Chat(last_ChatID, message, senderID));
+		if (!chatLogLocked) {
+			last_ChatID++;
+			chatLog.put(last_ChatID, new Chat(last_ChatID, message, senderID));
+		}else {
+			System.out.println("ChatLog is locked");
+		}
 	}
 	
 	public void addChat(String message, int senderID, int receiverID) {
-		last_ChatID++;
-		chatLog.put(last_ChatID, new Chat(last_ChatID, message, senderID, receiverID));
+		if (!chatLogLocked) {
+			last_ChatID++;
+			chatLog.put(last_ChatID, new Chat(last_ChatID, message, senderID, receiverID));
+		}else {
+			System.out.println("ChatLog is locked");
+		}
 	}
 	
 	public void deleteChat(int chatID) {
@@ -89,5 +122,54 @@ public class ChatLog
 		}
 		
 		return pinned;
+	}
+
+	public Hashtable<Integer, Chat> getChatLog()
+	{
+		return chatLog;
+	}
+
+	public void setChatLog(Hashtable<Integer, Chat> chatLog)
+	{
+		this.chatLog = chatLog;
+	}
+
+	public int getLast_ChatID()
+	{
+		return last_ChatID;
+	}
+
+	public void setLast_ChatID(int last_ChatID)
+	{
+		this.last_ChatID = last_ChatID;
+	}
+
+	public boolean isChatLogLocked()
+	{
+		return chatLogLocked;
+	}
+
+	public void setChatLogLocked(boolean chatLogLocked)
+	{
+		this.chatLogLocked = chatLogLocked;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(chatLogID);
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ChatLog other = (ChatLog) obj;
+		return chatLogID == other.getChatLogID();
 	}
 }

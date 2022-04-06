@@ -1,7 +1,6 @@
 package Database;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Hashtable;
 
@@ -20,7 +19,7 @@ class TestingDatabase
 	Role admin;
 	Role moderator;
 	Role roleGiver;
-	Boolean[] userCreatedPermissions;
+	boolean[] userCreatedPermissions;
 	User ashley;
 	User john;
 	User ron;
@@ -42,23 +41,25 @@ class TestingDatabase
 		noob = new Noob();
 		admin = new Admin();
 		moderator = new Mod();
-		userCreatedPermissions = new Boolean[] {false, false, false, true, false, false, false, false};
+		userCreatedPermissions = new boolean[] {false, false, false, true, false, false, false, false};
 		//Someone that can only give roles to others.
 		roleGiver = new UserCreatedRole(userCreatedPermissions, "Role Giver");
 		//Users creation
 		
-		ashley = userList.addUser("Ashley", 
+		ashley = userList.addUser("Ashley", "uhgraw",
 				"Hello, my name is Ashley and I am a weeb.\nNice to meet you!", 
 				true);
 		
-		john = userList.addUser("John", "Yo, I go by John. I like skateboarding and hanging out with others!\nHit me up if there is a party going on.", 
+		john = userList.addUser("John", "hello123", "Yo, I go by John. I like skateboarding and hanging out with others!\nHit me up if there is a party going on.", 
 				false);
 		
 		ron = userList.addUser("Ron", 
+				"why123",
 				"Hey man, I really don't like sunny weather. I just wish I could avoid social contact.\nPlease leave me alone.", 
 				true);
 		
 		stacy = userList.addUser("Stacy", 
+				"ghin",
 				"Heya there, my name is Stacy but my friends call me Stace.\nI really like meeting new people, so let me know if there are any major events going on!"
 				);
 		
@@ -117,7 +118,6 @@ class TestingDatabase
 	void userTest() {
 		Hashtable<Integer, Room> ronsDMs;
 		Hashtable<Integer, Room> stacysDMs;
-		Hashtable<Integer, Room> johnsDMs; 
 		//Variables to be used later in the method to keep track of DMs
 		//addRoom got tested when users were added to the room. 
 		//Lets test doing direct messages with users.

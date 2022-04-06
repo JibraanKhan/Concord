@@ -1,6 +1,7 @@
 package Database;
 
 import java.sql.Time;
+import java.util.Objects;
 
 public class Chat
 {
@@ -10,6 +11,10 @@ public class Chat
 	private String message;
 	private Time timeStamp;
 	private Boolean pinned = false;
+	
+	public Chat() {
+		this(-1, "<Default Message>", -1, new Time(0));
+	}
 	
 	public Chat(int chatID, String message, int senderID, int receiverID, Time timeStamp) {
 		this.chatID = chatID;
@@ -89,5 +94,34 @@ public class Chat
 	
 	public Time getTimeStamp() {
 		return timeStamp;
+	}
+
+	public Boolean getPinned()
+	{
+		return pinned;
+	}
+
+	public void setPinned(Boolean pinned)
+	{
+		this.pinned = pinned;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(chatID);
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Chat other = (Chat) obj;
+		return chatID == other.getChatID();
 	}
 }

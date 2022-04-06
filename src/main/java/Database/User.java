@@ -2,10 +2,12 @@ package Database;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Objects;
 
 public class User
 {
 	private String userName;
+	private String password;
 	private int userID;
 	private Hashtable<Integer, Room> rooms = new Hashtable<Integer, Room>();
 	private Hashtable<Integer, Room> directMessages = new Hashtable<Integer, Room>();
@@ -19,35 +21,73 @@ public class User
 	  * will be easy to see if a user has another user blocked
 	*/
 	//Same reason above, easy to find if someone's in your friends list.
+		
+	public Hashtable<Integer, Boolean> getBlockedUsers()
+	{
+		return blockedUsers;
+	}
+
+	public void setBlockedUsers(Hashtable<Integer, Boolean> blockedUsers)
+	{
+		this.blockedUsers = blockedUsers;
+	}
+
+	public void setUserID(int userID)
+	{
+		this.userID = userID;
+	}
+
+	public void setRooms(Hashtable<Integer, Room> rooms)
+	{
+		this.rooms = rooms;
+	}
+
+	public void setDirectMessages(Hashtable<Integer, Room> directMessages)
+	{
+		this.directMessages = directMessages;
+	}
 	
 	public User(int userID) {
 		this.userID = userID;
 	}
 	
-	public User(int userID, String userName) {
+	public User(int userID, String password) {
 		this.userID = userID;
+		this.password = password;
+	}
+	
+	public User(int userID, String password, String userName) {
+		this.userID = userID;
+		this.password = password;
 		this.userName = userName;
 	}
 	
-	public User(int userID, String userName, String profileData) {
+	public User(int userID, String password, String userName, String profileData) {
 		this.userID = userID;
+		this.password = password;
 		this.userName = userName;
 		this.profileData = profileData;
 	}
 	
-	public User(int userID, String userName, String profileData, boolean status) {
+	public User(int userID, String password, String userName, String profileData, boolean status) {
 		this.userID = userID;
+		this.password = password;
 		this.userName = userName;
 		this.profileData = profileData;
 		this.status = status;
 	}
 	
-	public User(int userID, String userName, String profileData, boolean status, String profilePic) {
+	public User(int userID, String password, String userName, String profileData, boolean status, String profilePic) {
 		this.userID = userID;
+		this.password = password;
 		this.userName = userName;
 		this.profileData = profileData;
 		this.status = status;
 		this.profilePic = profilePic;
+	}
+	
+	public User() {
+		this(-1, "<Default Password>", "<Default UserName>", "<Default ProfileData>", true, "<Default ProfilePic>");
 	}
 	
 	public Room addRoom(RoomList roomList, int roomID) {
@@ -132,6 +172,16 @@ public class User
 		return rooms;
 	}
 	
+	public String getPassword()
+	{
+		return password;
+	}
+
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
+	
 	public String getUserName()
 	{
 		return userName;
@@ -186,4 +236,30 @@ public class User
 	public int getUserID() {
 		return this.userID;
 	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(blockedUsers, directMessages, password, profileData, profilePic, status, userID, userName);
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		
+		//So, we need to check if the DMs are the same and if the blockedUsers are the same
+		return blockedUsers.equals(other.getBlockedUsers()) && directMessages.equals(other.getDirectMessages())
+				&& Objects.equals(password, other.getPassword()) && Objects.equals(profileData, other.getProfileData())
+				&& Objects.equals(profilePic, other.getProfilePic()) && status == other.isStatus() && userID == other.getUserID()
+				&& Objects.equals(userName, other.getUserName());
+	}
+	
+	
 }
