@@ -1,12 +1,17 @@
 package Database;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Objects;
 
-public class ChatLog
+public class ChatLog implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Hashtable<Integer, Chat> chatLog = new Hashtable<Integer,Chat>(); //Instead made it a HashTable to make accessibility easier O(1) because of it
 	private int chatLogID;
 	private String chatLogName;

@@ -1,11 +1,16 @@
 package Database;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Objects;
 
-public class UserList
+public class UserList implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Hashtable<Integer, User> users = new Hashtable<Integer, User>();
 	private int last_userID = 0;
 	

@@ -1,10 +1,15 @@
 package Database;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Objects;
 
-public class Room
+public class Room implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Hashtable<Integer, ChatLog> chatLogs = new Hashtable<Integer, ChatLog>();
 	private String description;
 	private String name;

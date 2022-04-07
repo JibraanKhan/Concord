@@ -1,10 +1,15 @@
 package Database;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Objects;
 
-public class Chat
+public class Chat implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int chatID;
 	private int senderID;
 	private int receiverID;

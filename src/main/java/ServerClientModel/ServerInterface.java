@@ -22,7 +22,7 @@ public interface ServerInterface extends Remote
 	public Room addRoom(String name, String description, String logo, boolean roomType) throws RemoteException;
 	public void addRoom(Room room) throws RemoteException;
 	public void deleteRoom(int userID, int roomID) throws RemoteException;
-	public void addClient(Client c) throws RemoteException;
+	public void addClient(ClientInterface c) throws RemoteException;
 	public void removeClient(int userID) throws RemoteException;
 	public void updateUser(User user) throws RemoteException;
 	public boolean logOn(int userID, String password) throws RemoteException;
@@ -48,11 +48,12 @@ public interface ServerInterface extends Remote
 	public void setRoomLogo(int roomID, String logo) throws RemoteException;
 	public void deleteAllMessagesByUser(int userID, int roomID, int chatLogID) throws RemoteException;
 	public String getRoomLogo(int roomID) throws RemoteException;
-	public Hashtable<Integer, Client> getClients() throws RemoteException;
+	public Hashtable<Integer, ClientInterface> getClients() throws RemoteException;
 	public boolean getRoomType(int roomID) throws RemoteException;
 	public void setRoomType(int roomID, int userID, Boolean type) throws RemoteException;
 	public void deleteChat(int roomID, int userID, int chatLogID, int chatID) throws RemoteException;
 	public void giveRole(int roomID, int giverID, int userID, Role role) throws RemoteException;
+	public void eraseData() throws RemoteException;
 	public ArrayList<User> getRoomOnlineUsers(int roomID) throws RemoteException;
 	public ArrayList<User> getRoomOfflineUsers(int roomID) throws RemoteException;
 	public Hashtable<Integer, Boolean> getUserLogins() throws RemoteException;

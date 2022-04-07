@@ -14,9 +14,13 @@
      <void property="profilePic">
       <null/>
      </void>
-     <void id="RoomList0" property="rooms">
-      <void property="last_RoomID">
-       <int>1</int>
+     <void property="status">
+      <boolean>false</boolean>
+     </void>
+     <void id="User0" property="user">
+      <void property="profileData">
+       <string>Heya there, my name is Stacy but my friends call me Stace.
+I really like meeting new people, so let me know if there are any major events going on!</string>
       </void>
       <void property="rooms">
        <void method="put">
@@ -221,23 +225,7 @@ Meow</string>
            <object class="Database.Admin"/>
           </void>
          </void>
-         <void id="Boolean0" property="roomType"/>
         </object>
-       </void>
-      </void>
-     </void>
-     <void property="status">
-      <boolean>false</boolean>
-     </void>
-     <void id="User0" property="user">
-      <void property="profileData">
-       <string>Heya there, my name is Stacy but my friends call me Stace.
-I really like meeting new people, so let me know if there are any major events going on!</string>
-      </void>
-      <void property="rooms">
-       <void method="put">
-        <int>1</int>
-        <object idref="Room0"/>
        </void>
       </void>
       <void property="userID">
@@ -252,9 +240,6 @@ I really like meeting new people, so let me know if there are any major events g
    <void method="put">
     <int>3</int>
     <object class="ServerClientModel.Client" id="Client1">
-     <void property="connection">
-      <object idref="Server0"/>
-     </void>
      <void property="password">
       <string>why123</string>
      </void>
@@ -287,9 +272,6 @@ Please leave me alone.</string>
    <void method="put">
     <int>2</int>
     <object class="ServerClientModel.Client" id="Client2">
-     <void property="connection">
-      <object idref="Server0"/>
-     </void>
      <void property="password">
       <string>hello123</string>
      </void>
@@ -325,9 +307,6 @@ Hit me up if there is a party going on.</string>
    <void method="put">
     <int>1</int>
     <object class="ServerClientModel.Client" id="Client3">
-     <void property="connection">
-      <object idref="Server0"/>
-     </void>
      <void property="password">
       <string>uhgraw</string>
      </void>
@@ -376,22 +355,15 @@ Nice to meet you!</string>
     <string>uhgraw</string>
    </void>
   </void>
-  <void property="userLogins">
-   <void method="put">
-    <int>4</int>
-    <object idref="Boolean0"/>
-   </void>
-   <void method="put">
-    <int>3</int>
-    <object idref="Boolean0"/>
-   </void>
-   <void method="put">
-    <int>2</int>
-    <object idref="Boolean0"/>
-   </void>
-   <void method="put">
+  <void id="RoomList0" property="rooms">
+   <void property="last_RoomID">
     <int>1</int>
-    <object idref="Boolean0"/>
+   </void>
+   <void property="rooms">
+    <void method="put">
+     <int>1</int>
+     <object idref="Room0"/>
+    </void>
    </void>
   </void>
   <void id="UserList0" property="users">

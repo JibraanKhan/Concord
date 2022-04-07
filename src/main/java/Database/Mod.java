@@ -1,7 +1,14 @@
 package Database;
 
-public class Mod extends Role
+import java.io.Serializable;
+
+public class Mod extends Role implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Mod() {
 		super.setRoleName("Mod");
 		super.setCreateChatLogPermission(false);

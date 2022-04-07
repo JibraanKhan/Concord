@@ -1,7 +1,14 @@
 package Database;
 
-public class Admin extends Role
+import java.io.Serializable;
+
+public class Admin extends Role implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Admin() {
 		super.setRoleName("Admin");
 		//Admins can do everything, they're the owner of the Room.

@@ -7,9 +7,8 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -24,24 +23,23 @@ import Database.RoomList;
 import Database.User;
 import Database.UserList;
 
-public class Server extends UnicastRemoteObject implements ServerInterface
+public class Server extends UnicastRemoteObject implements ServerInterface, Serializable
 {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Hashtable<Integer, Client> clients = new Hashtable<Integer, Client>();
+	private Hashtable<Integer, ClientInterface> clients = new Hashtable<Integer, ClientInterface>();
 	Hashtable<Integer, Boolean> userLogins = new Hashtable<Integer, Boolean>();
 	RoomList rooms = new RoomList();
 	UserList users = new UserList();
 	Hashtable<Integer, String> id_passwords = new Hashtable<Integer, String>();
-	Registry registry = LocateRegistry.createRegistry(1202);
+	
 
 	private static final String SERIALIZED_FILE_NAME = "ConcordData.xml";
 
 	public Server() throws RemoteException {
-		registry.rebind("SomethingElse", this);
 	}
 	
 	public void addRoom(Room room) throws RemoteException
@@ -80,7 +78,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface
 	}
 	
 	@Override
-	public void addClient(Client c) throws RemoteException
+	public void addClient(ClientInterface c) throws RemoteException
 	{
 		//Add client to clients and adds the user's password and userID to the id_passwords hash map 
 		User clientUser = c.getUser();
@@ -109,29 +107,50 @@ public class Server extends UnicastRemoteObject implements ServerInterface
 	public boolean logOn(int userID, String password) throws RemoteException
 	{
 		//Authenticates client
-		userLogins.put(userID, true);
-		if (id_passwords.get(userID) == password) {
+		if (id_passwords.get(userID).equals(password)) {
+
+			userLogins.put(userID, true);
 			return true;
 		}else {
+			if (users.getUser(userID) != null) {
+				//System.out.println("Password, " + password + ", is wrong for " + userID + ": " +users.getUser(userID).getUserName() +"." + id_passwords.get(userID));
+				//System.out.println(id_passwords.get(userID) + ", " + password + ", " + id_passwords.get(userID) == password);
+				if (id_passwords.get(userID) == null) {
+					//System.out.println("\t" + users.getUser(userID).getUserID() + ": " + users.getUser(userID).getUserName() + " does not have a password set.");
+				} else {
+					//System.out.println(userID + ", " + id_passwords.get(userID));
+					//System.out.println(id_passwords.get(userID).equals("uhgraw"));
+				}
+			}
 			return false;
 		}
 	}
 
+	public void eraseData() throws RemoteException{
+		clients.clear();
+		userLogins.clear();
+		rooms = new RoomList();
+		users = new UserList();
+		id_passwords.clear();
+	}
+	
 	@Override
 	public void storeDataDisk() throws RemoteException
 	{
 		XMLEncoder encoder=null;
+		
 		try{
 		encoder=new XMLEncoder(new BufferedOutputStream(new FileOutputStream(SERIALIZED_FILE_NAME)));
 		}catch(FileNotFoundException fileNotFound){
 			System.out.println("ERROR: While Creating or Opening the File " + SERIALIZED_FILE_NAME);
 		}
+		userLogins = new Hashtable<Integer, Boolean>(); //Do not want to store userLogins since all users will be considered logged off when server logs back in.
 		encoder.writeObject(this);
 		encoder.close();
 	}
 
 	@Override
-	public ServerInterface readDataFromDisk() throws RemoteException
+	public Server readDataFromDisk() throws RemoteException
 	{
 		XMLDecoder decoder=null;
 		
@@ -140,7 +159,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR: File " + SERIALIZED_FILE_NAME + " not found");
 		}
-		ServerInterface server=(ServerInterface)decoder.readObject();
+		Server server= (Server) decoder.readObject();
 		return server;
 	}
 
@@ -153,7 +172,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface
 	@Override
 	public void notifyUser(int userID, String notification) throws RemoteException
 	{
-		Client clientToBeNotified = clients.get(userID);
+		ClientInterface clientToBeNotified = clients.get(userID);
 		try
 		{
 			clientToBeNotified.getNotified(notification);
@@ -326,9 +345,16 @@ public class Server extends UnicastRemoteObject implements ServerInterface
 	}
 
 	public boolean isLoggedIn(int userID) throws RemoteException
-	{
+	{	
 		if (userLogins.get(userID) != null) {
 			return true;
+		}else {
+			if (users.getUser(userID) != null) {
+				//System.out.println("User isn't logged in " + users.getUser(userID).getUserName());
+			}else {
+				//System.out.println("User doesn't exist.");
+			}
+			
 		}
 		
 		return false;
@@ -401,13 +427,14 @@ public class Server extends UnicastRemoteObject implements ServerInterface
 		return room.getUser(userID);
 	}
 	
-	public Hashtable<Integer, Client> getClients() throws RemoteException
+	public Hashtable<Integer, ClientInterface> getClients() throws RemoteException
 	{
 		return clients;
 	}
 
-	public void setClients(Hashtable<Integer, Client> clients) throws RemoteException
+	public void setClients(Hashtable<Integer, ClientInterface> clients) throws RemoteException
 	{
+		//Server.clients = clients;
 		this.clients = clients;
 	}
 

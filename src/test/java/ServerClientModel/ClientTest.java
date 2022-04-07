@@ -10,9 +10,15 @@ import static org.junit.Assert.assertTrue;
 //import java.util.Hashtable;
 //import java.util.Objects;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Hashtable;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +55,15 @@ class ClientTest
 	Client john;
 	Client ron;
 	Client stacy;
-	ServerInterface server;
+	static ServerInterface server;
+	
+	@BeforeAll
+	static void makeServer() throws Exception
+	{
+		Registry registry = LocateRegistry.createRegistry(1099);
+		server = new Server();
+		registry.rebind("CONCORD", server);
+	}
 	
 	@BeforeEach
 	void setUp() throws Exception
@@ -58,9 +72,11 @@ class ClientTest
 		 * We need these lists as they will cover all of the users and rooms
 		 * inside of the server.
 		 */
+		
+		//Have before all and erase data each time in setUp for BeforeEach
 		roomList = new RoomList(); 
 		userList = new UserList();
-		server = new Server();
+		server.eraseData();
 		server.setRooms(roomList);
 		server.setUsers(userList);
 		
@@ -457,7 +473,6 @@ class ClientTest
 		//All of the chats and changes in Concord have been done by the 
 		//four users, so we will initialize new users for the room that
 		//are clearly admins, moderators, noobs, and roleGiver.
-		
 		User adminUser = userList.addUser("Admin");
 		User modUser = userList.addUser("Moderator");
 		User noobUser = userList.addUser("Noob");
@@ -476,7 +491,10 @@ class ClientTest
 			server.addClient(modClient);
 			server.addClient(noobClient);
 			server.addClient(roleGiverClient);
-
+			adminClient.logOn(adminUser.getPassword());
+			modClient.logOn(modUser.getPassword());
+			noobClient.logOn(noobUser.getPassword());
+			roleGiverClient.logOn(roleGiverUser.getPassword());
 			adminClient.addUserToRoom(testServer.getRoomID(), admin);
 			modClient.addUserToRoom(testServer.getRoomID(), moderator);
 			noobClient.addUserToRoom(testServer.getRoomID(), noob);
@@ -698,91 +716,29 @@ class ClientTest
 				&& rooms.equals(other.getRooms()) && userLogins.equals(other.getUserLogins())
 				&& users.equals(other.getUsers());
 		 */
+		
 		try
 		{
+			//System.out.println("Storing data");
 			server.storeDataDisk();
 			ServerInterface serverFromData = server.readDataFromDisk();
 			assertTrue(server.getUsers().equals(serverFromData.getUsers()));
 			assertTrue(server.getClients().equals(serverFromData.getClients()));
 			assertTrue(server.getId_passwords().equals(serverFromData.getId_passwords()));
 			assertTrue(server.getUserLogins().equals(serverFromData.getUserLogins()));
-		
+			assertTrue(server.getRooms().equals(serverFromData.getRooms()));
+			assertTrue(server.equals(serverFromData));
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		//For the XML Testing, everything checks out except that the RoomList inside of the server
-		//does not equal to the one I saved. I looked at the .xml file and for some reason the 
-		//rooms are being saved to some weird location that does not follow the beans hierarchy
-		//I will see you in office hours on Wednesday and/or on Thursday to figure this out. 
-		
-		//Sorry for the inconvenience, the rest of the server checks out but the RoomList.
-		
-		
-		
-		//assertTrue(server.getRooms().equals(serverFromData.getRooms()));
-		/*
-		RoomList server1_roomlist = server.getRooms();
-		RoomList server2_roomlist = serverFromData.getRooms();
-		Hashtable<Integer, Room> server1_rooms = server1_roomlist.getRooms();
-		Hashtable<Integer, Room> server2_rooms = server2_roomlist.getRooms();
-		server2_rooms = server2_roomlist.getRooms();
-		Enumeration<Integer> e = server1_rooms.keys();
-		Enumeration<Integer> e2 = server2_rooms.keys();
-		
-		System.out.println("ID:" + server1_roomlist.getLast_RoomID());
-		System.out.println("ID:" + server2_roomlist.getLast_RoomID());
-		
-		Client a = serverFromData.getClients().get(userAshley.getUserID());
-		System.out.println(a.getUser().getUserName());
-		Hashtable<Integer, Room> rooms = a.getUser().getRooms();
-		e2 = rooms.keys();
-		
-		while (e.hasMoreElements()) {
-			int key = e.nextElement();
-			//int key2 = e2.nextElement();
-			
-			System.out.println("My key" + key);
-			//Room room = server1_rooms.get(key);
-			//Room otherRoom = server1_roomlist.getRoom(key);
-			
-			
-			
-//			if (!(otherRoom != null && otherRoom.equals(room))) {
-//				
-//			}
-		}
-		
-		while (e2.hasMoreElements()) {
-			int key = e2.nextElement();
-			
-			System.out.println("Data server's key:" + key);
-		}
-		*/
-		
 	}
 	
 	@Test
 	void RMITesting() {
-/*
-		try
-		{
-			eater1 = new DonutEater();
-			eater2 = new DonutEater();
-			observed = (RMIObserved) Naming.lookup("rmi://127.0.0.1/DONUT");
-			
-			observed.addObserver(eater1);
-			eater1.name = "Tony";
-			ds.makeDonuts();
-		} catch (MalformedURLException | RemoteException | NotBoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			fail("I failed");
-		}*/
-		/*
+		
 		User userBrock = userList.addUser("Brock", 
 				"uhgraw",
 				"Hey bois & girls, my name Brock.", 
@@ -793,22 +749,51 @@ class ClientTest
 				"Heyyyy, my name Natalie", 
 				false);
 		
+		
+
+		User userAsh = userList.addUser("Ash", 
+				"uhgraw",
+				"Hello, my name is Ash and I am a weeb.\nNice to meet you!", 
+				true);
+		
+		User otherUser = userList.addUser("Rob",
+				"coolme312",
+				"Hello, my name's Rob",
+				true);
+				
+		
+		Client ash;
+		Client otherClient;
+		
+		ServerInterface observedServer;
+		
 		try
 		{
-			Client brock = new Client(server, userBrock);
-			Client natalie = new Client(server, userNatalie);
-			Server observedServer = (Server) Naming.lookup("rmi://127.0.0.1/DONUT");
-			brock.logOn("uhgraw");
-			natalie.logOn("hello123");
-			observedServer.addClient(brock);
-			observedServer.addClient(natalie);
-			brock.getUser().setUserName("NotBrock123");
+			observedServer = (ServerInterface) Naming.lookup("rmi://127.0.0.1/CONCORD");
 			
-		} catch (RemoteException | MalformedURLException | NotBoundException e)
+			ash = new Client(observedServer, userAsh);
+			otherClient = new Client(observedServer, otherUser);
+			observedServer.addClient(ash);
+			observedServer.addClient(otherClient);
+			ash.logOn(userAsh.getPassword());
+			otherClient.logOn(otherUser.getPassword());
+			assertTrue(otherClient.getNotifications().size() == 0);
+			ash.notifyUser(otherClient.getUserID(), "Hey, what's up?");
+			assertTrue(otherClient.getNotifications().size() == 1);
+			assertTrue(otherClient.getNotifications().get(0).equals("Hey, what's up?"));
+		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			fail("I failed");
-		}*/
+		} catch (MalformedURLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotBoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

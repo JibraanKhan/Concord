@@ -22,7 +22,7 @@ public interface ClientInterface extends Remote
 	public Room addRoom(String name, String description, String logo, boolean roomType) throws RemoteException;
 	public void addRoom(Room room) throws RemoteException;
 	public void deleteRoom(int roomID) throws RemoteException;
-	public void addClient(Client c) throws RemoteException;
+	public void addClient(ClientInterface c) throws RemoteException;
 	public void storeDataDisk() throws RemoteException;
 	public ServerInterface readDataFromDisk() throws RemoteException;
 	public boolean logOn(String password) throws RemoteException;
@@ -35,7 +35,6 @@ public interface ClientInterface extends Remote
 	public void notifyUser(int userToBeNotifiedID, String notification) throws RemoteException;
 	public void endDirectMessage(int userID) throws RemoteException;
 	public ArrayList<String> getNotifications() throws RemoteException;
-	public void addRoom(int roomID) throws RemoteException;
 	public Room startDirectMessage(int userID) throws RemoteException;
 	public void setProfileData(String profileData) throws RemoteException;
 	public void setStatus(boolean status) throws RemoteException;

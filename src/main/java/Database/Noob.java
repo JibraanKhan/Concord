@@ -1,7 +1,14 @@
 package Database;
 
-public class Noob extends Role
+import java.io.Serializable;
+
+public class Noob extends Role implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Noob() {
 		super.setRoleName("Admin");
 		super.setCreateChatLogPermission(false);

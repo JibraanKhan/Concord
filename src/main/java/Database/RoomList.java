@@ -1,16 +1,29 @@
 package Database;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Objects;
 
-public class RoomList
+public class RoomList implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Hashtable<Integer, Room> rooms = new Hashtable<Integer, Room>();
 	private int last_RoomID = 0;
 	
 	public RoomList() {
 		
+	}
+	
+	public Room getRoom(int roomID) {
+		return rooms.get(roomID);
+	}
+	
+	public void setRoom(int roomID, Room room) {
+		rooms.put(roomID, room);
 	}
 	
 	public void addRoom(Room room) {
@@ -52,18 +65,6 @@ public class RoomList
 		rooms.put(last_RoomID, newRoom);
 		return newRoom;
 	}
-	
-	public Room getRoom(int roomID) {
-		return rooms.get(roomID);
-	}
-	
-	public void deleteRoom(int userID, int roomID) {
-		rooms.get(roomID).deleteRoom(userID, this);
-	}
-	
-	public void deleteRoom(int roomID) {
-		rooms.remove(roomID);
-	}
 
 	public Hashtable<Integer, Room> getRooms()
 	{
@@ -85,6 +86,14 @@ public class RoomList
 		this.last_RoomID = last_RoomID;
 	}
 
+	public void deleteRoom(int userID, int roomID) {
+		rooms.get(roomID).deleteRoom(userID, this);
+	}
+	
+	public void deleteRoom(int roomID) {
+		rooms.remove(roomID);
+	}
+	
 	@Override
 	public int hashCode()
 	{

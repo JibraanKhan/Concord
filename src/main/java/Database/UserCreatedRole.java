@@ -1,7 +1,14 @@
 package Database;
 
-public class UserCreatedRole extends Role
+import java.io.Serializable;
+
+public class UserCreatedRole extends Role implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public UserCreatedRole() {
 		this(new boolean[9], "<Default RoleName>");
 	}

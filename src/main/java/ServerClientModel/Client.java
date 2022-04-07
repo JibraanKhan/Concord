@@ -1,5 +1,6 @@
 package ServerClientModel;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import Database.RoomList;
 import Database.User;
 import Database.UserList;
 
-public class Client extends UnicastRemoteObject implements ClientInterface
+public class Client extends UnicastRemoteObject implements ClientInterface, Serializable
 {
 	/**
 	 * 
@@ -36,15 +37,23 @@ public class Client extends UnicastRemoteObject implements ClientInterface
 	}
 	
 	public UserList getUsers() throws RemoteException{
-		return connection.getUsers();
+		if (isLoggedIn()) {
+			return connection.getUsers();
+		}
+		return null;
 	}
 	
 	public RoomList getRooms() throws RemoteException{
-		return connection.getRooms();
+		if (isLoggedIn()) {
+			return connection.getRooms();
+		}
+		return null;
 	}
 	
 	public void setRooms(RoomList rooms) throws RemoteException{
-		connection.setRooms(rooms);
+		if (isLoggedIn()) {
+			connection.setRooms(rooms);
+		}
 	}
 		
 	public void getNotified(String msg) throws RemoteException{
@@ -52,7 +61,9 @@ public class Client extends UnicastRemoteObject implements ClientInterface
 	}
 	
 	public void notifyUser(int userToBeNotifiedID, String notification) throws RemoteException{
-		connection.notifyUser(userToBeNotifiedID, notification);
+		if (isLoggedIn()) {
+			connection.notifyUser(userToBeNotifiedID, notification);
+		}
 	}
 	
 	public ArrayList<String> getNotifications() throws RemoteException{
@@ -72,13 +83,9 @@ public class Client extends UnicastRemoteObject implements ClientInterface
 	@Override
 	public void logOut() throws RemoteException
 	{
-		connection.logOut(user.getUserID());
-	}
-
-	@Override
-	public void addRoom(int roomID) throws RemoteException
-	{
-		// TODO Auto-generated method stub
+		if (isLoggedIn()) {
+			connection.logOut(user.getUserID());
+		}
 	}
 
 	@Override
@@ -131,12 +138,17 @@ public class Client extends UnicastRemoteObject implements ClientInterface
 
 	public ServerInterface getConnection() throws RemoteException
 	{
-		return connection;
+		if (isLoggedIn()) {
+			return connection;
+		}
+		return null;
 	}
 
 	public void setConnection(ServerInterface connection) throws RemoteException
 	{
-		this.connection = connection;
+		if (isLoggedIn()) {
+			this.connection = connection;
+		}
 	}
 
 	public User getUser() throws RemoteException
@@ -158,7 +170,12 @@ public class Client extends UnicastRemoteObject implements ClientInterface
 	@Override
 	public User getUser(int userID) throws RemoteException
 	{
-		return connection.getUser(userID);
+		if (isLoggedIn()) {
+			return connection.getUser(userID);
+		}else {
+			
+		}
+		return null;
 	}
 
 	public String getPassword() throws RemoteException
@@ -168,7 +185,12 @@ public class Client extends UnicastRemoteObject implements ClientInterface
 	
 	public Chat getChat(int roomID, int chatLogID, int chatID) throws RemoteException
 	{
-		return connection.getChat(roomID, chatLogID, chatID);
+		if (isLoggedIn()) {
+			return connection.getChat(roomID, chatLogID, chatID);
+		}else {
+			
+		}
+		return null;
 	}
 	
 	public void setPassword(String password) throws RemoteException
@@ -179,229 +201,399 @@ public class Client extends UnicastRemoteObject implements ClientInterface
 	@Override
 	public void addChat(int roomID, int chatLogID, String msg) throws RemoteException
 	{
-		connection.addChat(roomID, chatLogID, user.getUserID(), msg);
+		if (isLoggedIn()) {
+			connection.addChat(roomID, chatLogID, user.getUserID(), msg);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public ChatLog addChatLog(int roomID, String chatLogName) throws RemoteException
 	{
-		return connection.addChatLog(roomID, user.getUserID(), chatLogName);
+		if (isLoggedIn()) {
+			return connection.addChatLog(roomID, user.getUserID(), chatLogName);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public void deleteChatLog(int roomID, int chatLogID) throws RemoteException
 	{
-		connection.deleteChatLog(roomID, user.getUserID(), chatLogID);
+		if (isLoggedIn()) {
+			connection.deleteChatLog(roomID, user.getUserID(), chatLogID);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public ChatLog getChatLog(int roomID, int chatLogID) throws RemoteException
 	{
-		return connection.getChatLog(roomID, chatLogID);
+		if (isLoggedIn()) {
+			return connection.getChatLog(roomID, chatLogID);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public Boolean isInvited(int roomID) throws RemoteException
 	{
-		return connection.isInvited(user.getUserID(), roomID);
+		if (isLoggedIn()) {
+			return connection.isInvited(user.getUserID(), roomID);
+		}else {
+			
+		}
+		return false;
 	}
 	
 	@Override
 	public void inviteUser(int roomID, int addUserID) throws RemoteException
 	{
-		connection.inviteUser(roomID, user.getUserID(), addUserID);
+		if (isLoggedIn()) {
+			connection.inviteUser(roomID, user.getUserID(), addUserID);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public void uninviteUser(int roomID, int removeUserID) throws RemoteException
 	{
-		connection.uninviteUser(roomID, user.getUserID(), removeUserID);
+		if (isLoggedIn()) {
+			connection.uninviteUser(roomID, user.getUserID(), removeUserID);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public void addUserToRoom(int roomID, Role role) throws RemoteException
 	{
-		connection.addUserToRoom(roomID, user, role);
+		if (isLoggedIn()) {
+			connection.addUserToRoom(roomID, user, role);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public void removeUserFromRoom(int roomID, int targetUserID) throws RemoteException
 	{
-		connection.removeUserFromRoom(roomID, user.getUserID(), targetUserID);
+		if (isLoggedIn()) {
+			connection.removeUserFromRoom(roomID, user.getUserID(), targetUserID);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public String getRoomDescription(int roomID) throws RemoteException
 	{
-		return connection.getRoomDescription(roomID);
+		if (isLoggedIn()) {
+			return connection.getRoomDescription(roomID);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public void setRoomDescription(int roomID, String desc) throws RemoteException
 	{
-		connection.setRoomDescription(roomID, desc);
+		if (isLoggedIn()) {
+			connection.setRoomDescription(roomID, desc);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public void setRoomLogo(int roomID, String logo) throws RemoteException
 	{
-		connection.setRoomLogo(roomID, logo);
+		if (isLoggedIn()) {
+			connection.setRoomLogo(roomID, logo);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public String getRoomLogo(int roomID) throws RemoteException
 	{
-		return connection.getRoomLogo(roomID);
+		if (isLoggedIn()) {
+			return connection.getRoomLogo(roomID);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public boolean getRoomType(int roomID) throws RemoteException
 	{
-		return connection.getRoomType(roomID);
+		if (isLoggedIn()) {
+			return connection.getRoomType(roomID);
+		}else {
+			
+		}
+		return false;
 	}
 
 	@Override
 	public void setRoomType(int roomID, Boolean type) throws RemoteException
 	{
-		connection.setRoomType(roomID, user.getUserID(), type);
+		if (isLoggedIn()) {
+			connection.setRoomType(roomID, user.getUserID(), type);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public void deleteChat(int roomID, int chatLogID, int chatID) throws RemoteException
 	{
-		connection.deleteChat(roomID, user.getUserID(), chatLogID, chatID);
+		if (isLoggedIn()) {
+			connection.deleteChat(roomID, user.getUserID(), chatLogID, chatID);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public void giveRole(int roomID, int targetUserID, Role role) throws RemoteException
 	{
-		connection.giveRole(roomID, user.getUserID(), targetUserID, role);
+		if (isLoggedIn()) {
+			connection.giveRole(roomID, user.getUserID(), targetUserID, role);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public ArrayList<User> getRoomOnlineUsers(int roomID) throws RemoteException
 	{
-		return connection.getRoomOnlineUsers(roomID);
+		if (isLoggedIn()) {
+			return connection.getRoomOnlineUsers(roomID);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public ArrayList<User> getRoomOfflineUsers(int roomID) throws RemoteException
 	{
-		return connection.getRoomOfflineUsers(roomID);
+		if (isLoggedIn()) {
+			return connection.getRoomOfflineUsers(roomID);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public Hashtable<Integer, Role> getAllRoomMembers(int roomID) throws RemoteException
 	{
-		return connection.getAllRoomMembers(roomID);
+		if (isLoggedIn()) {
+			return connection.getAllRoomMembers(roomID);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public void chatLogReply(String msg, int receiverID, int roomID, int chatLogID) throws RemoteException
 	{
-		connection.chatLogReply(msg, user.getUserID(), receiverID, roomID, chatLogID);
+		if (isLoggedIn()) {
+			connection.chatLogReply(msg, user.getUserID(), receiverID, roomID, chatLogID);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public void pinMsg(int roomID, int chatLogID, int chatID) throws RemoteException
 	{
-		connection.pinMsg(roomID, chatLogID, chatID);
+		if (isLoggedIn()) {
+			connection.pinMsg(roomID, chatLogID, chatID);
+		}else {
+			
+		}
 	}
 	
 	@Override
 	public void unpinMsg(int roomID, int chatLogID, int chatID) throws RemoteException
 	{
-		connection.unpinMsg(roomID, chatLogID, chatID);
+		if (isLoggedIn()) {
+			connection.unpinMsg(roomID, chatLogID, chatID);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public ArrayList<Chat> getPinnedMsgs(int roomID, int chatLogID) throws RemoteException
 	{
-		return connection.getPinnedMsgs(roomID, chatLogID);
+		if (isLoggedIn()) {
+			return connection.getPinnedMsgs(roomID, chatLogID);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public Room getRoom(int roomID) throws RemoteException
 	{
-		return connection.getRoom(roomID);
+		if (isLoggedIn()) {
+			return connection.getRoom(roomID);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public Role getRole(int roomID) throws RemoteException
 	{
-		return connection.getRole(roomID, user.getUserID());
+		if (isLoggedIn()) {
+			return connection.getRole(roomID, user.getUserID());
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
-	public void addClient(Client c) throws RemoteException
+	public void addClient(ClientInterface c) throws RemoteException
 	{
-		connection.addClient(c);
+		if (isLoggedIn()) {
+			connection.addClient(c);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public void storeDataDisk() throws RemoteException
 	{
-		connection.storeDataDisk();
+		if (isLoggedIn()) {
+			connection.storeDataDisk();
+		}else {
+			
+		}
 	}
 
 	@Override
 	public ServerInterface readDataFromDisk() throws RemoteException
 	{
-		return connection.readDataFromDisk();
+		if (isLoggedIn()) {
+			return connection.readDataFromDisk();
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public Room addRoom() throws RemoteException
 	{
-		return connection.addRoom();
+		if (isLoggedIn()) {
+			return connection.addRoom();
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public Room addRoom(String name) throws RemoteException
 	{
-		return connection.addRoom(name);
+		if (isLoggedIn()) {
+			return connection.addRoom(name);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public Room addRoom(String name, String description) throws RemoteException
 	{
-		return connection.addRoom(name, description);
+		if (isLoggedIn()) {
+			return connection.addRoom(name, description);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public Room addRoom(String name, String description, String logo) throws RemoteException
 	{
-		return connection.addRoom(name, description, logo);
+		if (isLoggedIn()) {
+			return connection.addRoom(name, description, logo);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public Room addRoom(String name, String description, String logo, boolean roomType) throws RemoteException
 	{
-		return connection.addRoom(name, description, logo, roomType);
+		if (isLoggedIn()) {
+			return connection.addRoom(name, description, logo, roomType);
+		}else {
+			
+		}
+		return null;
 	}
 
 	@Override
 	public void addRoom(Room room) throws RemoteException
 	{
-		connection.addRoom(room);
+		if (isLoggedIn()) {
+			connection.addRoom(room);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public void deleteRoom(int roomID) throws RemoteException
 	{
-		connection.deleteRoom(user.getUserID(), roomID);
+		if (isLoggedIn()) {
+			connection.deleteRoom(user.getUserID(), roomID);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public void blockUser(int targetUserID) throws RemoteException
 	{
-		connection.blockUser(user.getUserID(), targetUserID);
+		if (isLoggedIn()) {
+			connection.blockUser(user.getUserID(), targetUserID);
+		}else {
+			
+		}
 	}
 
 	@Override
 	public void unblockUser(int targetUserID) throws RemoteException
 	{
-		connection.unblockUser(user.getUserID(), targetUserID);
+		if (isLoggedIn()) {
+			connection.unblockUser(user.getUserID(), targetUserID);
+		}else {
+			
+		}
 	}
 
 	@Override
@@ -412,12 +604,16 @@ public class Client extends UnicastRemoteObject implements ClientInterface
 	
 	public int getUserID() throws RemoteException
 	{
-		return user.getUserID();
+		return user.getUserID();	
 	}
 	
 	public void deleteAllMessagesByUser(int roomID, int chatLogID) throws RemoteException
 	{
-		connection.deleteAllMessagesByUser(user.getUserID(), roomID, chatLogID);
+		if (isLoggedIn()) {
+			connection.deleteAllMessagesByUser(user.getUserID(), roomID, chatLogID);
+		}else {
+			
+		}
 	}
 
 	@Override
