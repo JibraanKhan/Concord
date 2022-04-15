@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="senderName" alignment="CENTER" prefHeight="51.0" prefWidth="133.0" text="Label" />
+      <Label fx:id="text" alignment="CENTER" prefHeight="58.0" prefWidth="165.0" text="Label" />
+   </children>
+</HBox>

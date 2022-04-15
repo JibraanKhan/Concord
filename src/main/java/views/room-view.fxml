@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <MenuButton fx:id="menuButton" mnemonicParsing="false" text="Menu">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Create channel" />
+                <MenuItem mnemonicParsing="false" text="Inviste user" />
+                  <MenuItem mnemonicParsing="false" text="Remove user" />
+              </items>
+            </MenuButton>
+            <ListView fx:id="channelList" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+      </VBox>
+   </left>
+   <right>
+      <ListView fx:id="userList" prefHeight="400.0" prefWidth="117.0" BorderPane.alignment="CENTER" />
+   </right>
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <ScrollPane prefHeight="348.0" prefWidth="383.0" BorderPane.alignment="CENTER">
+               <content>
+                  <ListView fx:id="chatList" prefHeight="348.0" prefWidth="385.0" />
+               </content>
+            </ScrollPane>
+         </center>
+         <bottom>
+            <HBox prefHeight="50.0" prefWidth="383.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField />
+                  <Button mnemonicParsing="false" text="Send" />
+               </children>
+            </HBox>
+         </bottom>
+      </BorderPane>
+   </center>
+</BorderPane>
