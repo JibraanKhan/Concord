@@ -3,6 +3,7 @@ package controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Database.User;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -22,10 +23,11 @@ public class ProfilePopupController extends BaseController implements Initializa
     @FXML
     private Label profile;
     
-	public ProfilePopupController(String fxmlName, ViewTransitionalModel vtm, ConcordClientModel client, String profileName)
+	public ProfilePopupController(String fxmlName, ViewTransitionalModel vtm, ConcordClientModel client, User user)
 	{
 		super(fxmlName, vtm, client);
-		this.profileName.set(profileName);
+		this.profileName.set(user.getUserName());
+		this.profileData.set(user.getProfileData());
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -49,7 +51,8 @@ public class ProfilePopupController extends BaseController implements Initializa
 	public void initialize(URL location, ResourceBundle resources)
 	{
 		name.setText(profileName.get());
-		
+		profile.setText(profileData.get());
 		Bindings.bindBidirectional(name.textProperty(), profileName);
+		Bindings.bindBidirectional(profile.textProperty(), profileData);
 	}
 }

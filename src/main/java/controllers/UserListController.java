@@ -3,6 +3,7 @@ package controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Database.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -13,7 +14,7 @@ public class UserListController extends BaseController implements Initializable
 {
 
 	@FXML
-    private ListView<String> usersList;
+    private ListView<User> usersList;
 	
 	public UserListController(String fxmlName, ViewTransitionalModel vtm, ConcordClientModel client)
 	{
@@ -24,7 +25,9 @@ public class UserListController extends BaseController implements Initializable
 	@Override
 	public void initialize(URL location, ResourceBundle resources)
 	{
+		/*
 		usersList.setItems(client.getUsers());
+		*/
 	}
 
 }

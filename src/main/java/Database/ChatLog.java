@@ -61,7 +61,9 @@ public class ChatLog implements Serializable
 	public void addChat(String message, int senderID) {
 		if (!chatLogLocked) {
 			last_ChatID++;
+			System.out.println("Ok, adding chat:\t" + message);
 			chatLog.put(last_ChatID, new Chat(last_ChatID, message, senderID));
+			
 		}else {
 			System.out.println("ChatLog is locked");
 		}
@@ -176,5 +178,9 @@ public class ChatLog implements Serializable
 			return false;
 		ChatLog other = (ChatLog) obj;
 		return chatLogID == other.getChatLogID();
+	}
+	
+	public String toString() {
+		return chatLogName;
 	}
 }

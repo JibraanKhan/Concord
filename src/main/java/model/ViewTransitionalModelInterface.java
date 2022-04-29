@@ -9,7 +9,7 @@ public interface ViewTransitionalModelInterface
 {
 	public Parent loadView(BaseController controller);
 	
-	public Parent showStage(BaseController controller);
+	public Parent showStage(BaseController controller, boolean bind_close);
 	
 	public void closeStageFromNode(Node node);
 }

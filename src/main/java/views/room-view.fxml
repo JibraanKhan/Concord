@@ -14,14 +14,16 @@
    <left>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <MenuButton fx:id="menuButton" mnemonicParsing="false" text="Menu">
+            <MenuButton id="menuButton" fx:id="menuButton" mnemonicParsing="false" text="Menu">
               <items>
-                <MenuItem mnemonicParsing="false" text="Create channel" />
-                <MenuItem mnemonicParsing="false" text="Inviste user" />
-                  <MenuItem mnemonicParsing="false" text="Remove user" />
+                <MenuItem id="createChannelButton" mnemonicParsing="false" onAction="#createChannelButtonClicked" text="Create channel" />
+                <MenuItem id="inviteUserButton" mnemonicParsing="false" onAction="#inviteUserButtonClicked" text="Invite user" />
+                  <MenuItem id="removeUserButton" mnemonicParsing="false" onAction="#removeUserButtonClicked" text="Remove user" />
+                  <MenuItem id="deleteChatLogButton" mnemonicParsing="false" onAction="#deleteChatLogButtonClicked" text="Delete channel" />
+                  <MenuItem id="deleteRoomButton" mnemonicParsing="false" onAction="#deleteRoomButtonClicked" text="Delete server" />
               </items>
             </MenuButton>
-            <ListView fx:id="channelList" prefHeight="200.0" prefWidth="200.0" />
+            <ListView id="chatLogList" fx:id="chatLogList" prefHeight="200.0" prefWidth="200.0" />
          </children>
       </VBox>
    </left>
@@ -40,8 +42,8 @@
          <bottom>
             <HBox prefHeight="50.0" prefWidth="383.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextField />
-                  <Button mnemonicParsing="false" text="Send" />
+                  <TextField id="chatTextField" fx:id="chatTextField" />
+                  <Button id="sendChatButton" mnemonicParsing="false" onAction="#onSendChatButtonClicked" text="Send" />
                </children>
             </HBox>
          </bottom>

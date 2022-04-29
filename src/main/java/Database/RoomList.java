@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Objects;
+import java.util.Set;
 
 public class RoomList implements Serializable
 {
@@ -86,11 +87,30 @@ public class RoomList implements Serializable
 		this.last_RoomID = last_RoomID;
 	}
 
-	public void deleteRoom(int userID, int roomID) {
-		rooms.get(roomID).deleteRoom(userID, this);
+	public void deleteRoom(int userID, int roomID, UserList users) {
+		Room room = rooms.get(roomID);
+		if (room == null) {
+			return;
+		}
+		
+		room.deleteRoom(userID, this, users);
 	}
 	
-	public void deleteRoom(int roomID) {
+	public void deleteRoom(int roomID, UserList users) {
+		//We need to first remove everyone from the room and then delete the room
+		Room room = rooms.get(roomID); //Need to get all users in the room
+		
+		if (room.getUserTable() == null) {
+			return;
+		}
+		
+		Set<Integer> userIds = room.getUserTable().keySet(); //Gets the set of all userIDs
+		
+		for (int userID: userIds) {
+			User user = users.getUser(userID);
+			user.removeRoom(roomID);
+		}
+		
 		rooms.remove(roomID);
 	}
 	

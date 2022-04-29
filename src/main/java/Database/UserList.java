@@ -22,6 +22,23 @@ public class UserList implements Serializable
 		return users.get(userID);
 	}
 	
+	public User getUser(String username, String password) {
+		Enumeration<Integer> e = users.keys();
+		System.out.println("Starting Loop ----");
+		while (e.hasMoreElements()) {
+			int key = e.nextElement();
+			User user = users.get(key);
+			System.out.println(user.getUserName() + ":" + user.getPassword());
+			if ((user.getUserName().equals(username)) && (user.getPassword().equals(password))) {
+				System.out.println("---- Ending Loop");
+				return user;
+			}
+		}
+		System.out.println("---- Ending Loop");
+		
+		return null;
+	}
+	
 	public User addUser() { // Maybe add parameters for user information?  
 		last_userID++; //Since there will only be one userList, we can just keep incrementing the ID to give each one a unique ID.
 		User user = new User(last_userID);

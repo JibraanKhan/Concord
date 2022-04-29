@@ -41,7 +41,7 @@ class TestingDatabase
 		noob = new Noob();
 		admin = new Admin();
 		moderator = new Mod();
-		userCreatedPermissions = new boolean[] {false, false, false, true, false, false, false, false};
+		userCreatedPermissions = new boolean[]  {false, false, false, true, false, false, false, false, false};
 		//Someone that can only give roles to others.
 		roleGiver = new UserCreatedRole(userCreatedPermissions, "Role Giver");
 		//Users creation
@@ -103,7 +103,7 @@ class TestingDatabase
 				stacy.getUserID());
 		//DMs between stacy and john
 	}
-
+	
 	@Test
 	void userListTest()
 	{
@@ -207,7 +207,7 @@ class TestingDatabase
 	@Test
 	void roomListTest() {
 		assertTrue(roomList.getRoom(testServer.getRoomID()) == testServer);
-		roomList.deleteRoom(testServer.getRoomID());
+		roomList.deleteRoom(testServer.getRoomID(), userList);
 		assertTrue(roomList.getRoom(testServer.getRoomID()) == null);
 	}
 	
@@ -479,12 +479,12 @@ class TestingDatabase
 		assertTrue(testServer.getChatLog(codeDiscussion.getChatLogID()) == null);
 		//deleteRoom permission
 		//Expect only admin to be able to delete room
-		roomList.deleteRoom(noobUser.getUserID(), testServer.getRoomID());
-		roomList.deleteRoom(modUser.getUserID(), testServer.getRoomID());
-		roomList.deleteRoom(roleGiverUser.getUserID(), testServer.getRoomID());
+		roomList.deleteRoom(noobUser.getUserID(), testServer.getRoomID(), userList);
+		roomList.deleteRoom(modUser.getUserID(), testServer.getRoomID(), userList);
+		roomList.deleteRoom(roleGiverUser.getUserID(), testServer.getRoomID(), userList);
 		assertTrue(roomList.getRoom(testServer.getRoomID()) != null); 
 		//The Test Server is not deleted by noobs, mods, nor roleGivers.
-		roomList.deleteRoom(adminUser.getUserID(), testServer.getRoomID());
+		roomList.deleteRoom(adminUser.getUserID(), testServer.getRoomID(), userList);
 		assertTrue(roomList.getRoom(testServer.getRoomID()) == null); 
 		//The Test server is now deleted.
 	}

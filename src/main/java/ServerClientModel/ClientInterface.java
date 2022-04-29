@@ -78,4 +78,7 @@ public interface ClientInterface extends Remote
 	public Role getRole(int roomID) throws RemoteException;
 	public void pinMsg(int roomID, int chatLogID, int chatID) throws RemoteException;
 	public void unpinMsg(int roomID, int chatLogID, int chatID) throws RemoteException;
+	public void changeUsersPassword(String new_password) throws RemoteException;
+	public void changeUsersUsername(String new_username) throws RemoteException;
+	public void removeClient() throws RemoteException;
 }

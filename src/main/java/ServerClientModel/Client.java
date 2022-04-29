@@ -46,6 +46,8 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 	public RoomList getRooms() throws RemoteException{
 		if (isLoggedIn()) {
 			return connection.getRooms();
+		} else {
+			System.out.println("My dude ain't logged in");
 		}
 		return null;
 	}
@@ -61,7 +63,9 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 	}
 	
 	public void notifyUser(int userToBeNotifiedID, String notification) throws RemoteException{
+		//System.out.println("Notification attempted:" + notification);
 		if (isLoggedIn()) {
+			//System.out.println(userToBeNotifiedID + "\n" + notification);
 			connection.notifyUser(userToBeNotifiedID, notification);
 		}
 	}
@@ -77,7 +81,9 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 	@Override
 	public boolean logOn(String password) throws RemoteException
 	{
-		return connection.logOn(user.getUserID(), password);
+		//System.out.println(user + "\n" + user.getUserID() + "\n" + password);
+		//System.out.println("Connection:" + connection);
+		return connection.logOn(user.getUserName(), password);
 	}
 
 	@Override
@@ -97,13 +103,13 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 	@Override
 	public void setProfileData(String profileData) throws RemoteException
 	{
-		user.setProfileData(profileData);
+		connection.setProfileData(getUserID(), profileData);
 	}
 
 	@Override
 	public void setStatus(boolean status) throws RemoteException
 	{
-		user.setStatus(status);
+		connection.setStatus(getUserID(), status);
 	}
 
 	@Override
@@ -240,6 +246,15 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 		return null;
 	}
 
+	public ArrayList<ChatLog> getAllChatLogs(int roomID) throws RemoteException
+	{
+		if (isLoggedIn()) {
+			return connection.getAllChatLogs(roomID);
+		}
+		
+		return null;
+	}
+	
 	@Override
 	public Boolean isInvited(int roomID) throws RemoteException
 	{
@@ -643,5 +658,24 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	@Override
+	public void changeUsersPassword(String new_password) throws RemoteException
+	{
+		connection.changeUsersPassword(user.getUserName(), user.getPassword(), new_password);
+	}
+
+	@Override
+	public void changeUsersUsername(String new_username) throws RemoteException
+	{
+		// TODO Auto-generated method stub
+		connection.changeUsersUsername(user.getUserName(), new_username, user.getPassword());
+	}
+
+	@Override
+	public void removeClient() throws RemoteException
+	{
+		connection.removeClient(getUserID());
 	}
 }

@@ -7,10 +7,10 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox id="DMFrame" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#onUsersButtonClicked" prefHeight="26.0" prefWidth="102.0" text="Users" />
-            <ListView fx:id="dmLists" prefHeight="376.0" prefWidth="100.0" />
+            <Button id="usersButton" mnemonicParsing="false" onAction="#onUsersButtonClicked" prefHeight="26.0" prefWidth="102.0" text="Users" />
+            <ListView id="DMList" fx:id="dmLists" prefHeight="376.0" prefWidth="100.0" />
          </children>
       </VBox>
    </left>

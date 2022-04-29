@@ -129,4 +129,8 @@ public class Chat implements Serializable
 		Chat other = (Chat) obj;
 		return chatID == other.getChatID();
 	}
+	
+	public String toString() {
+		return message;
+	}
 }

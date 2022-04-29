@@ -80,10 +80,13 @@ public class Room implements Serializable
 		this.roomID = roomID;
 	}
 	
-	public void deleteRoom(int userID, RoomList rooms) {
+	public void deleteRoom(int userID, RoomList rooms, UserList users) {
 		Role deletersRole = userTable.get(userID);
+		if (deletersRole == null) {
+			return;
+		}
 		if (deletersRole.isDeleteRoomPermission()) {
-			rooms.deleteRoom(roomID);
+			rooms.deleteRoom(roomID, users);
 		}
 	}
 	
@@ -154,14 +157,19 @@ public class Room implements Serializable
 	
 	public void addUser(int userID, Role role, UserList userList, RoomList roomList) {
 		User user = userList.getUser(userID);
+		if (user == null) {
+			return;
+		}
 		if (isPublic()) {
 			userTable.put(userID, role);
 			user.addRoom(roomList, roomID);
+			System.out.println("Adding user to room");
 		}else {
 			if (invitedUsers.get(userID) != null && invitedUsers.get(userID)) {
 				//If the user exists in invitedUsers and the user's invited
 				userTable.put(userID, role);
 				user.addRoom(roomList, roomID);
+				System.out.println("Adding user to room");
 			}
 		}
 	}
@@ -169,6 +177,9 @@ public class Room implements Serializable
 	public void addUser(int userID, UserList userList, RoomList roomList) {
 		//Giving new user the default of being a noob.
 		User user = userList.getUser(userID);
+		if (user == null) {
+			return;
+		}
 		if (isPublic()) {
 			userTable.put(userID, new Noob());
 			user.addRoom(roomList, roomID);
@@ -187,6 +198,9 @@ public class Room implements Serializable
 	
 	public void removeUser(int userID, int targetUserID) {
 		Role removersRole = userTable.get(userID);
+		if (removersRole == null) {
+			return;
+		}
 		if ((removersRole.isRemoveUserPermission()) || (userID == targetUserID)) {
 			userTable.remove(targetUserID);
 		}
@@ -198,7 +212,7 @@ public class Room implements Serializable
 			//Found the chatLog but now need to check if the user has permission to delete it.
 			Role userRole = userTable.get(userID);
 			Chat relevantChat = relevantChatLog.getChat(chatID);
-			if (relevantChat != null) {
+			if (relevantChat != null && (userRole != null)) {
 				//Okay, now we know that the chat with the ID exists. Now, check permission and delete it if permissions are met.
 				if ((userRole.isDeleteChatPermission()) || (relevantChat.getSenderID() == userID)) {
 	
@@ -212,26 +226,31 @@ public class Room implements Serializable
 	
 	public void addChat(String message, int chatLogID, int senderID) {
 		ChatLog chatLog = chatLogs.get(chatLogID);
-		if (userTable.get(senderID) != null) { //If we know that the user is inside the room then we can add the chat to the chat log
+		if (userTable.get(senderID) != null && chatLog != null) { //If we know that the user is inside the room then we can add the chat to the chat log
 			chatLog.addChat(message, senderID);
 		}
 	}
 	
 	public void addChat(String message, int chatLogID, int senderID, int receiverID) {
 		ChatLog chatLog = chatLogs.get(chatLogID);
-		if ((userTable.get(senderID) != null) && (userTable.get(receiverID) != null)){ 
+		if ((userTable.get(senderID) != null) && (chatLog != null) && (userTable.get(receiverID) != null)){ 
 			//If we know that the sender and receiver are both  inside the room then we can add the chat to the chat log
 			chatLog.addChat(message, senderID, receiverID);
 		}
 	}
 	
 	public Chat getChat(int chatLogID, int chatID) {
-		return chatLogs.get(chatLogID).getChat(chatID);
+		ChatLog chatlog = chatLogs.get(chatLogID);
+		if (chatlog != null) {
+			return chatlog.getChat(chatID);
+		}
+		
+		return null;
 	}
 	
 	public void addChatLog(int userID, ChatLog chatLog) {
 		Role addersRole = userTable.get(userID);
-		if (addersRole.isCreateChatLogPermission()) {
+		if (addersRole != null && addersRole.isCreateChatLogPermission()) {
 			last_chatLogID++;
 			chatLogs.put(last_chatLogID, chatLog);
 		}
@@ -239,7 +258,7 @@ public class Room implements Serializable
 	
 	public ChatLog addChatLog(int userID) {
 		Role addersRole = userTable.get(userID);
-		if (addersRole.isCreateChatLogPermission()) {
+		if (addersRole != null && addersRole.isCreateChatLogPermission()) {
 			last_chatLogID++;
 			ChatLog newChatLog = new ChatLog(last_chatLogID, "<Untitled ChatLog>");
 			chatLogs.put(last_chatLogID, newChatLog);
@@ -250,7 +269,7 @@ public class Room implements Serializable
 	
 	public ChatLog addChatLog(int userID, String name) {
 		Role addersRole = userTable.get(userID);
-		if (addersRole.isCreateChatLogPermission()) {
+		if (addersRole != null && addersRole.isCreateChatLogPermission()) {
 			last_chatLogID++;
 			ChatLog newChatLog = new ChatLog(last_chatLogID, name);
 			chatLogs.put(last_chatLogID, newChatLog);
@@ -261,6 +280,7 @@ public class Room implements Serializable
 	
 	public void deleteChatLog(int userID, int chatLogID) {
 		Role addersRole = userTable.get(userID);
+		System.out.println("Deleting chat log");
 		if (addersRole.isDeleteChatLogPermission()) {
 			chatLogs.remove(chatLogID);
 		}
@@ -324,6 +344,10 @@ public class Room implements Serializable
 		return invitedUsers.get(userID);
 	}
 
+	public String toString() {
+		return name;
+	}
+	
 	@Override
 	public int hashCode()
 	{

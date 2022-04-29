@@ -34,7 +34,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 	Hashtable<Integer, Boolean> userLogins = new Hashtable<Integer, Boolean>();
 	RoomList rooms = new RoomList();
 	UserList users = new UserList();
-	Hashtable<Integer, String> id_passwords = new Hashtable<Integer, String>();
+	Hashtable<String, String> id_passwords = new Hashtable<String, String>();
 	
 
 	private static final String SERIALIZED_FILE_NAME = "ConcordData.xml";
@@ -74,7 +74,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 	
 	public void deleteRoom(int userID, int roomID) throws RemoteException
 	{
-		rooms.deleteRoom(userID, roomID);
+		rooms.deleteRoom(userID, roomID, users);
 	}
 	
 	@Override
@@ -82,11 +82,36 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 	{
 		//Add client to clients and adds the user's password and userID to the id_passwords hash map 
 		User clientUser = c.getUser();
+		//System.out.println(clientUser + ":" + clientUser.getUserID() + ":" + clientUser.getUserName() + ":" + clientUser.getPassword());
 		int userID = clientUser.getUserID();
 		clients.put(userID, c);
-		id_passwords.put(clientUser.getUserID(), clientUser.getPassword());
+		id_passwords.put(clientUser.getUserName(), clientUser.getPassword());
+		if (getUser(clientUser.getUserName(), clientUser.getPassword()) == null) {
+			addUser(clientUser);
+		}
+		//System.out.println(clientUser.getUserName() + "\n\t" + clientUser.getPassword());
 	}
 
+	@Override
+	public void setProfileData(int userID, String profileData) {
+		User user = users.getUser(userID);
+		if (user == null) { 
+			return;
+		}
+		
+		user.setProfileData(profileData);
+	}
+	
+	@Override
+	public void setStatus(int userID, boolean status) {
+		User user = users.getUser(userID);
+		if (user == null) { 
+			return;
+		}
+		
+		user.setStatus(status);
+	}
+	
 	public void removeClient(int userID) throws RemoteException
 	{
 		clients.remove(userID);
@@ -103,25 +128,63 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 		}
 	}
 
+	public void changeUsersPassword(String username, String old_password, String new_password) throws RemoteException
+	{
+		if (id_passwords.get(username) != null) {
+			
+			id_passwords.put(username, new_password);
+			User user = users.getUser(username, old_password);
+			if (user != null) {
+				System.out.println("Changing password");
+				user.setPassword(new_password);
+			}
+		}
+	}
+	
+	public void changeUsersUsername(String old_username, String new_username, String password) throws RemoteException
+	{
+		System.out.println("The old username is:" + old_username);
+		if (id_passwords.get(old_username) != null) {
+			System.out.println("Ok, the username exists!");
+			id_passwords.put(new_username, password);
+			id_passwords.remove(old_username); //Remove because we are using different key above
+			System.out.println(old_username + ":" + password);
+			User user = users.getUser(old_username, password);
+			if (user != null) {
+				System.out.println("Changing username");
+				user.setUserName(new_username);
+			}
+		}
+	}
+	
 	@Override
-	public boolean logOn(int userID, String password) throws RemoteException
+	public boolean logOn(String username, String password) throws RemoteException
 	{
 		//Authenticates client
-		if (id_passwords.get(userID).equals(password)) {
-
-			userLogins.put(userID, true);
-			return true;
-		}else {
-			if (users.getUser(userID) != null) {
-				//System.out.println("Password, " + password + ", is wrong for " + userID + ": " +users.getUser(userID).getUserName() +"." + id_passwords.get(userID));
-				//System.out.println(id_passwords.get(userID) + ", " + password + ", " + id_passwords.get(userID) == password);
-				if (id_passwords.get(userID) == null) {
-					//System.out.println("\t" + users.getUser(userID).getUserID() + ": " + users.getUser(userID).getUserName() + " does not have a password set.");
-				} else {
-					//System.out.println(userID + ", " + id_passwords.get(userID));
-					//System.out.println(id_passwords.get(userID).equals("uhgraw"));
-				}
+		//System.out.println("Password is:" + password);
+		System.out.println("Logging in id_password is:" + id_passwords.get(username));
+		if ((id_passwords.get(username) != null) && (id_passwords.get(username).equals(password))) {
+			System.out.println("Inside if statement");
+			User user = users.getUser(username, password);
+			//System.out.println("Special: " + username + "\n\t" + password);
+			//System.out.println(username + "'s user: " + user);
+			if (user != null) {
+				System.out.println(username + " just logged in.");
+				userLogins.put(user.getUserID(), true);
+				return true;
 			}
+			return false;
+		}else {
+//			if (users.getUser(username) != null) {
+//				//System.out.println("Password, " + password + ", is wrong for " + userID + ": " +users.getUser(userID).getUserName() +"." + id_passwords.get(userID));
+//				//System.out.println(id_passwords.get(userID) + ", " + password + ", " + id_passwords.get(userID) == password);
+//				if (id_passwords.get(username) == null) {
+//					//System.out.println("\t" + users.getUser(userID).getUserID() + ": " + users.getUser(userID).getUserName() + " does not have a password set.");
+//				} else {
+//					//System.out.println(userID + ", " + id_passwords.get(userID));
+//					//System.out.println(id_passwords.get(userID).equals("uhgraw"));
+//				}
+//			}
 			return false;
 		}
 	}
@@ -199,14 +262,24 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 	@Override
 	public ChatLog addChatLog(int roomID, int userID, String chatLogName) throws RemoteException
 	{
+		System.out.println("Adding chatlog.");
+		System.out.println(roomID + ":" + userID + ":" + chatLogName);
 		Room room = rooms.getRoom(roomID);
-		return room.addChatLog(userID, chatLogName);
+		if (room == null) {
+			return null;
+		}
+		ChatLog addedChatLog = room.addChatLog(userID, chatLogName);
+		System.out.println(addedChatLog);
+		return addedChatLog;
 	}
 
 	@Override
 	public void deleteChatLog(int roomID, int userID, int chatLogID) throws RemoteException
 	{
 		Room room = rooms.getRoom(roomID);
+		if (room == null) {
+			return;
+		}
 		room.deleteChatLog(userID, chatLogID);
 	}
 
@@ -217,10 +290,69 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 		return room.getChatLog(chatLogID);
 	}
 
+	public ArrayList<ChatLog> getAllChatLogs(int roomID) throws RemoteException
+	{
+		Room room = rooms.getRoom(roomID);
+		System.out.println("Room is:" + room);
+		if (room == null) {
+			return null;
+		}
+		Hashtable<Integer, ChatLog> chatlogsHash = room.getChatLogs();
+		ArrayList<ChatLog> chatlogs = new ArrayList<ChatLog>();
+		
+		Enumeration<Integer> e = chatlogsHash.keys();
+		
+		while (e.hasMoreElements()) {
+			int key = e.nextElement();
+			ChatLog currentChatLog = chatlogsHash.get(key);
+			chatlogs.add(currentChatLog);
+		}
+		
+		return chatlogs;
+	}
+	
+	public void addUser(User user) {
+		users.addUser(user.getUserName(), user.getPassword(), user.getProfileData(), user.isStatus(), user.getProfilePic());
+	}
+	
+	public User addUser() { // Maybe add parameters for user information? 
+		User user = users.addUser();
+		return user;
+	}
+	
+	public User addUser(String password) { // Maybe add parameters for user information?  
+		User user = users.addUser(password);
+		return user;
+	}
+	
+	public User addUser(String userName, String password) { // Maybe add parameters for user information?  
+		User user = users.addUser(userName, password);
+		return user;
+	}
+	
+	public User addUser(String userName, String password, String profileData) { // Maybe add parameters for user information?  
+		User user = users.addUser(userName, password, profileData);
+		return user;
+	}
+	
+	public User addUser(String userName, String password, String profileData, boolean status) { // Maybe add parameters for user information?  
+		User user = users.addUser(userName, password, profileData, status);
+		//System.out.println("Added user for " + userName + ":" + user);
+		//System.out.println("User exists for " + userName + ":" + users.getUser(userName, password));
+		return user;
+	}
+	
+	public User addUser(String userName, String password, String profileData, boolean status, String profilePic) { // Maybe add parameters for user information?  
+		User user = users.addUser(userName, password, profileData, status, profilePic);
+		return user;
+	}
 	@Override
 	public void addUserToRoom(int roomID, User user, Role role) throws RemoteException
 	{
 		Room room = rooms.getRoom(roomID);
+		if (room == null) {
+			return;
+		}
 		room.addUser(user.getUserID(), role, users, rooms);
 	}
 
@@ -228,7 +360,19 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 	public void removeUserFromRoom(int roomID, int removerUserID, int userID) throws RemoteException
 	{
 		Room room = rooms.getRoom(roomID);
+		if (room == null) {
+			//Its ok, we just didn't find a room with the user in it.
+			return;
+		}
+		
 		room.removeUser(removerUserID, userID);
+		User user = users.getUser(userID);
+		if (user == null) {
+			//Its ok, we just couldn't find a user with the userID 
+			return;
+		}
+		System.out.println("User that's being removed from room: " + user);
+		user.removeRoom(roomID);
 	}
 	
 	@Override
@@ -468,12 +612,12 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 		this.users = users;
 	}
 
-	public Hashtable<Integer, String> getId_passwords() throws RemoteException
+	public Hashtable<String, String> getId_passwords() throws RemoteException
 	{
 		return id_passwords;
 	}
 
-	public void setId_passwords(Hashtable<Integer, String> id_passwords) throws RemoteException
+	public void setId_passwords(Hashtable<String, String> id_passwords) throws RemoteException
 	{
 		this.id_passwords = id_passwords;
 	}
@@ -546,5 +690,12 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	@Override
+	public User getUser(String username, String password) throws RemoteException
+	{
+		// TODO Auto-generated method stub
+		return users.getUser(username, password);
 	}
 }

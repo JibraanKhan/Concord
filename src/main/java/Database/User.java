@@ -98,9 +98,17 @@ public class User implements Serializable
 	public Room addRoom(RoomList roomList, int roomID) {
 		Room addingRoom = roomList.getRoom(roomID);
 		rooms.put(roomID, addingRoom);
+		System.out.println("Adding " + roomID + " to " + userName + ".");
 		return addingRoom;
 	}
 	
+	public void removeRoom(int roomID) {
+		System.out.println("Removing " + roomID + " from " + userName + ".");
+		if (rooms.get(roomID) != null) {
+			rooms.remove(roomID);
+		}
+	}
+	 
 	public Room startDirectMessage(RoomList roomList, UserList userList, int userID) {
 		/*Okay, we ourselves can start a DM with whoever but others starting a DM with us 
 		 * when we blocked them is bad, so we don't care who we're starting DMs with.
@@ -266,5 +274,7 @@ public class User implements Serializable
 				&& Objects.equals(userName, other.getUserName());
 	}
 	
-	
+	public String toString() {
+		return userName;
+	}
 }

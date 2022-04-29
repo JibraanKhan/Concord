@@ -91,22 +91,22 @@ class ClientTest
 		roleGiver = new UserCreatedRole(userCreatedPermissions, "Role Giver");
 		//Users creation
 		
-		userAshley = userList.addUser("Ashley", 
+		userAshley = server.addUser("Ashley", 
 				"uhgraw",
 				"Hello, my name is Ashley and I am a weeb.\nNice to meet you!", 
 				true);
 		
-		userJohn = userList.addUser("John", 
+		userJohn = server.addUser("John", 
 				"hello123", 
 				"Yo, I go by John. I like skateboarding and hanging out with others!\nHit me up if there is a party going on.", 
 				false);
 		
-		userRon = userList.addUser("Ron", 
+		userRon = server.addUser("Ron", 
 				"why123",
 				"Hey man, I really don't like sunny weather. I just wish I could avoid social contact.\nPlease leave me alone.", 
 				true);
 		
-		userStacy = userList.addUser("Stacy", 
+		userStacy = server.addUser("Stacy", 
 				"ghin",
 				"Heya there, my name is Stacy but my friends call me Stace.\nI really like meeting new people, so let me know if there are any major events going on!"
 				);
@@ -473,10 +473,10 @@ class ClientTest
 		//All of the chats and changes in Concord have been done by the 
 		//four users, so we will initialize new users for the room that
 		//are clearly admins, moderators, noobs, and roleGiver.
-		User adminUser = userList.addUser("Admin");
-		User modUser = userList.addUser("Moderator");
-		User noobUser = userList.addUser("Noob");
-		User roleGiverUser = userList.addUser("Role Giver");
+		User adminUser = userList.addUser("Admin", "I am admin");
+		User modUser = userList.addUser("Moderator", "I am mod");
+		User noobUser = userList.addUser("Noob", "hello123");
+		User roleGiverUser = userList.addUser("Role Giver", "I give roles");
 		Client adminClient;
 		Client modClient;
 		Client noobClient;
@@ -487,7 +487,9 @@ class ClientTest
 			modClient = new Client(server, modUser);
 			noobClient = new Client(server, noobUser);
 			roleGiverClient = new Client(server, roleGiverUser);
+			//System.out.println("Admin user:" + adminUser + "\nUserID:" + adminUser.getUserID() + "\nUsername:" + adminUser.getUserName());
 			server.addClient(adminClient);
+			
 			server.addClient(modClient);
 			server.addClient(noobClient);
 			server.addClient(roleGiverClient);
@@ -724,7 +726,6 @@ class ClientTest
 			ServerInterface serverFromData = server.readDataFromDisk();
 			assertTrue(server.getUsers().equals(serverFromData.getUsers()));
 			assertTrue(server.getClients().equals(serverFromData.getClients()));
-			assertTrue(server.getId_passwords().equals(serverFromData.getId_passwords()));
 			assertTrue(server.getUserLogins().equals(serverFromData.getUserLogins()));
 			assertTrue(server.getRooms().equals(serverFromData.getRooms()));
 			assertTrue(server.equals(serverFromData));
@@ -738,29 +739,9 @@ class ClientTest
 	
 	@Test
 	void RMITesting() {
-		
-		User userBrock = userList.addUser("Brock", 
-				"uhgraw",
-				"Hey bois & girls, my name Brock.", 
-				true);
-		
-		User userNatalie = userList.addUser("Natalie", 
-				"hello123", 
-				"Heyyyy, my name Natalie", 
-				false);
-		
-		
-
-		User userAsh = userList.addUser("Ash", 
-				"uhgraw",
-				"Hello, my name is Ash and I am a weeb.\nNice to meet you!", 
-				true);
-		
-		User otherUser = userList.addUser("Rob",
-				"coolme312",
-				"Hello, my name's Rob",
-				true);
-				
+			
+		User userAsh;
+		User otherUser;
 		
 		Client ash;
 		Client otherClient;
@@ -771,6 +752,15 @@ class ClientTest
 		{
 			observedServer = (ServerInterface) Naming.lookup("rmi://127.0.0.1/CONCORD");
 			
+			userAsh = observedServer.addUser("Ash", 
+					"uhgraw",
+					"Hello, my name is Ash and I am a weeb.\nNice to meet you!", 
+					true);
+			
+			otherUser = observedServer.addUser("Rob",
+					"coolme312",
+					"Hello, my name's Rob",
+					true);
 			ash = new Client(observedServer, userAsh);
 			otherClient = new Client(observedServer, otherUser);
 			observedServer.addClient(ash);

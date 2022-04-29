@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import model.ConcordClientModel;
 import model.ViewTransitionalModel;
@@ -9,22 +10,39 @@ import model.ViewTransitionalModel;
 public class RoomNamePopupController extends BaseController
 {
 	@FXML
-    private TextField nameField;
+    private TextField descriptionTextField;
+
+    @FXML
+    private TextField logoTextField;
+
+    @FXML
+    private TextField nameTextField;
+
+    @FXML
+    private CheckBox privateCheckbox;
 
     @FXML
     void onCancelButtonClicked(ActionEvent event) {
-    	vtm.closeStageFromNode(nameField);
+    	vtm.closeStageFromNode(nameTextField);
     	vtm.showMainFrame();
     }
 
     @FXML
     void onCreateButtonClicked(ActionEvent event) {
-    	if ((nameField.getText() != null) && (nameField.getText().strip() != "")) {
-    		client.addRoom(nameField.getText());
-    		//vtm.showRoomView();
+    	if ((nameTextField.getText() != null) && (nameTextField.getText().strip() != "")) {
+    		if (nameTextField.getText().equals("")) {
+    			return;
+    		}
+    		String name = nameTextField.getText();
+    		String description = descriptionTextField.getText();
+    		String logo = logoTextField.getText();
+    		Boolean priv = !privateCheckbox.isSelected(); //If it is checked then it is private. But, true means public in our database
+    		client.createRoom(name, description, logo, priv);
+    		//client.addRoom(nameTextField.getText(), descriptionTextField.getText(), logoTextField.getText(), !privateCheckbox.isSelected());	
+    		vtm.showRoomView();
     	}
     	
-    	vtm.closeStageFromNode(nameField);
+    	vtm.closeStageFromNode(nameTextField);
     	vtm.showMainFrame();
     }
 

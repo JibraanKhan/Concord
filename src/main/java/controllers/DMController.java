@@ -3,6 +3,7 @@ package controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Database.Room;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,7 +14,7 @@ import model.ViewTransitionalModel;
 public class DMController extends BaseController implements Initializable
 {
 	@FXML
-    private ListView<String> dmLists;
+    private ListView<Room> dmLists;
 
     @FXML
     void onUsersButtonClicked(ActionEvent event) {
@@ -29,7 +30,7 @@ public class DMController extends BaseController implements Initializable
 	@Override
 	public void initialize(URL location, ResourceBundle resources)
 	{
-		dmLists.setItems(client.getDMs());
+		//dmLists.setItems(client.getDMs());
 		
 		dmLists.getSelectionModel().selectedItemProperty().addListener((observer, oldValue, newValue) -> {
 			vtm.showChatList();

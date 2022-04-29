@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <center>
@@ -13,17 +15,30 @@
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label text=" User name" />
-                  <TextField fx:id="userNameField" />
+                  <Label text=" Username" />
+                  <TextField id="usernameTextField" fx:id="userNameField" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Label text="Password" />
-                  <TextField fx:id="passwordField" />
+                  <TextField id="passwordTextField" fx:id="passwordField" />
                </children>
             </HBox>
-            <Button mnemonicParsing="false" onAction="#loginButtonClicked" text="Login" />
+            <Button id="loginButton" mnemonicParsing="false" onAction="#loginButtonClicked" text="Login" />
+            <Button id="signupButton" fx:id="signupButton" mnemonicParsing="false" onAction="#signupButtonClicked" text="Sign Up">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Button>
+            <Label id="errorMsg" fx:id="errorMsg" alignment="BOTTOM_CENTER" contentDisplay="CENTER" textAlignment="CENTER" textFill="#c90909" textOverrun="CLIP" wrapText="true">
+               <font>
+                  <Font name="System Font" size="26.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </Label>
+            <Button id="refreshDataButton" mnemonicParsing="false" onAction="#onRefreshDataButtonClicked" text="Refresh All Data" />
          </children>
       </VBox>
    </center>
