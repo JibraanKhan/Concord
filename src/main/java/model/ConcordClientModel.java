@@ -798,9 +798,9 @@ public class ConcordClientModel
 		//Populate the server with some dummy data.
 		
 		server.addRoom("Test Room", "For testing purposes");
-		//User john = server.addUser("John", "john123", "My name is John!");
-		//Client johnsClient = new Client(server, john);
-		/*
+		User john = server.addUser("John", "john123", "My name is John!");
+		Client johnsClient = new Client(server, john);
+		
 		User rob = server.addUser("Rob", "rob123", "My name is Rob!");
 		Client robsClient = new Client(server, rob);
 		
@@ -808,7 +808,7 @@ public class ConcordClientModel
 		server.addClient(robsClient);
 		
 		johnsClient.logOn("john123");
-		robsClient.logOn("rob123");*/
+		robsClient.logOn("rob123");
 	}
 	
 	public String toString() {
