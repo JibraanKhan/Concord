@@ -35,7 +35,7 @@
          <center>
             <ScrollPane prefHeight="348.0" prefWidth="383.0" BorderPane.alignment="CENTER">
                <content>
-                  <ListView fx:id="chatList" prefHeight="348.0" prefWidth="385.0" />
+                  <ListView id="chatsListView" fx:id="chatList" prefHeight="348.0" prefWidth="385.0" />
                </content>
             </ScrollPane>
          </center>

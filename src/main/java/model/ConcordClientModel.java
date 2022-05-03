@@ -797,7 +797,7 @@ public class ConcordClientModel
 		}
 		//Populate the server with some dummy data.
 		
-		server.addRoom("Test Room", "For testing purposes");
+		Room testRoom = server.addRoom("Test Room", "For testing purposes");
 		User john = server.addUser("John", "john123", "My name is John!");
 		Client johnsClient = new Client(server, john);
 		
@@ -809,6 +809,13 @@ public class ConcordClientModel
 		
 		johnsClient.logOn("john123");
 		robsClient.logOn("rob123");
+		
+		server.addUserToRoom(testRoom.getRoomID(), rob, new Noob());
+		server.addUserToRoom(testRoom.getRoomID(), john, new Admin());
+		
+		ChatLog chats = server.addChatLog(testRoom.getRoomID(), john.getUserID(), "Chats");
+		server.addChat(testRoom.getRoomID(), chats.getChatLogID(), john.getUserID(), "Hey rob, how are you?");
+		server.addChat(testRoom.getRoomID(), chats.getChatLogID(), rob.getUserID(), "Good, how about you?");
 	}
 	
 	public String toString() {

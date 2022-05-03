@@ -1,13 +1,18 @@
 package Application;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.ConcordClientModel;
 import model.ViewTransitionalModel;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.rmi.ConnectException;
 import java.rmi.Naming;
@@ -23,6 +28,8 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.util.WaitForAsyncUtils;
 
+import Database.Chat;
+import Database.Room;
 import ServerClientModel.Server;
 import ServerClientModel.ServerInterface;
 
@@ -117,15 +124,34 @@ public class ApplicationTest
 		Assertions.assertThat(robot.lookup("#cancelCreationButton") != null);
 		enterValue("#roomNameTextField", "Jibraans Server", robot);
 		robot.clickOn("#createRoomButton");
+		selectListItem("#roomsList", 0, robot);
+		checkRoomName("Jibraans Server", robot);
 		robot.clickOn("#exploreButton");
-		wait(5);
+		selectListItem("#exploreListView", 1, robot);
+		robot.clickOn("#addRoomExploreButton");
+		selectListItem("#roomsList", 1, robot);
+		selectListItem("#roomsList", 0, robot);
+		wait(0.5);
+		checkRoomName("Jibraans Server", robot);
+		selectListItem("#roomsList", 1, robot);
+		wait(0.5);
+		checkRoomName("Test Room", robot);
+		selectListItem("#chatLogList", 0, robot);
+		wait(0.5);
+		ListView<Chat> chats = getChats(robot); 
+		ObservableList<Chat> chatsList = chats.getItems();
+		//System.out.println(chatsList.get(0));
+		assertTrue(chatsList.get(0).getMessage().equals("Hey rob, how are you?"));
+		assertTrue(chatsList.get(1).getMessage().equals("Good, how about you?"));
+		wait(5.5);
 	}
 	
 	private void selectListItem(String listID, int index, FxRobot robot) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				ListView listview = (ListView) robot.lookup(listID).query();
+				@SuppressWarnings("unchecked")
+				ListView<Room> listview = (ListView<Room>) robot.lookup(listID).query();
 				listview.getSelectionModel().clearSelection();
 				listview.scrollTo(index);
 				listview.getSelectionModel().select(index);
@@ -149,14 +175,38 @@ public class ApplicationTest
 		});
 	}
 	
-	private void wait(int secs) {
+	private void checkRoomName(String roomName, FxRobot robot) {
+		Assertions.assertThat(robot.lookup("#menuButton")
+				.queryAs(MenuButton.class)).hasText(roomName);
+	}
+	
+	private void checkLabelText(String labelIdentifier, String text, FxRobot robot) {
+		Assertions.assertThat(robot.lookup(labelIdentifier)
+				.queryAs(Label.class)).hasText(text);
+	}
+	
+	private void wait(double secs) {
 		try
 		{
-			Thread.sleep(secs * 1000);
+			Thread.sleep((int) Math.round(secs * 1000));
 		} catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	ListView<Room> getRooms(FxRobot robot)
+	{
+	   return (ListView<Room>) robot.lookup("#roomsList")
+	       .queryAll().iterator().next();
+	}
+	
+	@SuppressWarnings("unchecked")
+	ListView<Chat> getChats(FxRobot robot)
+	{
+	   return (ListView<Chat>) robot.lookup("#chatsListView")
+	       .queryAll().iterator().next();
 	}
 }
