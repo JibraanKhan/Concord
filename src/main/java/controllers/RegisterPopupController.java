@@ -47,8 +47,7 @@ public class RegisterPopupController extends BaseController
 	@FXML
     void onSignUpButtonClicked(ActionEvent event) {
 		if ((usernameTextField.getText().strip().equals("")) || 
-			(passwordTextField.getText().strip().equals("")) || 
-			(profileDataTextField.getText().strip().equals(""))) {
+			(passwordTextField.getText().strip().equals(""))) {
 			errorMsg.setText("Error; please enter data into all text fields");
 			
 			return;

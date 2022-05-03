@@ -174,6 +174,23 @@ public class Room implements Serializable
 		}
 	}
 	
+	public void addUser(int userID, Role role, UserList userList, RoomList roomList, String DM) { //Only used for DM rooms
+		User user = userList.getUser(userID);
+		if (user == null) {
+			return;
+		}
+		if (isPublic()) {
+			userTable.put(userID, role);
+			System.out.println("Adding user to room");
+		}else {
+			if (invitedUsers.get(userID) != null && invitedUsers.get(userID)) {
+				//If the user exists in invitedUsers and the user's invited
+				userTable.put(userID, role);
+				System.out.println("Adding user to room");
+			}
+		}
+	}
+	
 	public void addUser(int userID, UserList userList, RoomList roomList) {
 		//Giving new user the default of being a noob.
 		User user = userList.getUser(userID);

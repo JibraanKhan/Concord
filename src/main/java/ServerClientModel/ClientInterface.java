@@ -12,6 +12,8 @@ import Database.Room;
 import Database.RoomList;
 import Database.User;
 import Database.UserList;
+import model.ConcordClientModel;
+import model.ViewTransitionalModel;
 
 public interface ClientInterface extends Remote
 {
@@ -81,4 +83,5 @@ public interface ClientInterface extends Remote
 	public void changeUsersPassword(String new_password) throws RemoteException;
 	public void changeUsersUsername(String new_username) throws RemoteException;
 	public void removeClient() throws RemoteException;
+	void addClientModel(ConcordClientModel client) throws RemoteException;
 }

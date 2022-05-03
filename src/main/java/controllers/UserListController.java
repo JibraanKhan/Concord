@@ -28,6 +28,14 @@ public class UserListController extends BaseController implements Initializable
 		/*
 		usersList.setItems(client.getUsers());
 		*/
+		usersList.setItems(client.getAllUsers());
+		usersList.getSelectionModel().selectedItemProperty().addListener((observer, oldvalue, newvalue) -> {
+			if (newvalue == null) {
+				return;
+			}
+			
+			client.startDM(newvalue.getUserID());
+		});
 	}
 
 }

@@ -22,6 +22,7 @@ public interface ServerInterface extends Remote
 	public Room addRoom(String name, String description, String logo, boolean roomType) throws RemoteException;
 	public void addRoom(Room room) throws RemoteException;
 	public void deleteRoom(int userID, int roomID) throws RemoteException;
+	public Room startDirectMessage(int user1ID, int user2ID) throws RemoteException;
 	public void setProfileData(int userID, String profileData) throws RemoteException;
 	public void setStatus(int userID, boolean status) throws RemoteException;
 	public void addClient(ClientInterface c) throws RemoteException;

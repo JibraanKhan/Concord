@@ -14,6 +14,8 @@ import Database.Room;
 import Database.RoomList;
 import Database.User;
 import Database.UserList;
+import model.ConcordClientModel;
+import model.ViewTransitionalModel;
 
 public class Client extends UnicastRemoteObject implements ClientInterface, Serializable
 {
@@ -24,7 +26,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 	User user;
 	ServerInterface connection;
 	ArrayList<String> notifications = new ArrayList<String>();
-
+	ConcordClientModel client;
 	public Client() throws RemoteException
 	{
 		this(new Server(), new User());
@@ -60,6 +62,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 		
 	public void getNotified(String msg) throws RemoteException{
 		notifications.add(msg);
+		client.getNotified(msg); //Notify the observer of the message.
 	}
 	
 	public void notifyUser(int userToBeNotifiedID, String notification) throws RemoteException{
@@ -97,7 +100,11 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 	@Override
 	public Room startDirectMessage(int userID) throws RemoteException
 	{
-		return user.startDirectMessage(getRooms(), getUsers(), userID);
+		User thisuser = connection.getUser(user.getUserID());
+		if (thisuser == null) {
+			return null;
+		}
+		return thisuser.startDirectMessage(getRooms(), getUsers(), userID);
 	}
 
 	@Override
@@ -139,7 +146,12 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 	@Override
 	public Hashtable<Integer, Room> getDirectMessages() throws RemoteException
 	{
-		return user.getDirectMessages();
+		User thisuser = connection.getUser(getUserID());
+		if (thisuser == null) {
+			return null;
+		}
+		
+		return thisuser.getDirectMessages();
 	}
 
 	public ServerInterface getConnection() throws RemoteException
@@ -678,4 +690,12 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 	{
 		connection.removeClient(getUserID());
 	}
+
+	@Override
+	public void addClientModel(ConcordClientModel client) throws RemoteException
+	{
+		this.client = client;
+	}
+
+	
 }

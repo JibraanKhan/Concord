@@ -203,4 +203,5 @@ public class ViewTransitionalModel implements ViewTransitionalModelInterface
 	private Stage getStageFromNode(Node node) { 
 		return (Stage) node.getScene().getWindow(); 
 	}
+	
 }

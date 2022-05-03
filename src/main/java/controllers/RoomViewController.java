@@ -98,10 +98,17 @@ public class RoomViewController extends BaseController implements Initializable
 		userList.setItems(client.getUsers());
 		*/
 		userList.getSelectionModel().selectedItemProperty().addListener((observer, oldValue, newValue) -> {
+			if (newValue == null) {
+				return;
+			}
 			vtm.showUserProfilePopup(newValue);
 		});
 		
 		chatLogList.getSelectionModel().selectedItemProperty().addListener((observer, oldValue, newValue) -> {
+			if (newValue == null) {
+				return;
+			}
+			
 			selectedChatLog = newValue;
 			if (selectedChatLog == null) {
 				return;

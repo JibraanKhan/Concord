@@ -67,7 +67,7 @@
       </StackPane>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
          <children>
-            <TextField id="usernameTextField" fx:id="usernameTextField">
+            <TextField id="usernameTextFieldSignup" fx:id="usernameTextField">
                <font>
                   <Font size="20.0" />
                </font>
@@ -88,7 +88,7 @@
       </StackPane>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <TextField id="passwordTextField" fx:id="passwordTextField">
+            <TextField id="passwordTextFieldSignup" fx:id="passwordTextField">
                <font>
                   <Font size="20.0" />
                </font>
@@ -142,7 +142,7 @@
       </StackPane>
       <StackPane alignment="BOTTOM_RIGHT" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <children>
-            <Button id="signupButton" fx:id="signupButton" mnemonicParsing="false" onAction="#onSignUpButtonClicked" text="Sign Up">
+            <Button id="signupFinishedButton" fx:id="signupButton" mnemonicParsing="false" onAction="#onSignUpButtonClicked" text="Sign Up">
                <font>
                   <Font name="System Italic" size="24.0" />
                </font>

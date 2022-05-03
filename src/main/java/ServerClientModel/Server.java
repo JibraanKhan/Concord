@@ -236,6 +236,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 	public void notifyUser(int userID, String notification) throws RemoteException
 	{
 		ClientInterface clientToBeNotified = clients.get(userID);
+		if (clientToBeNotified == null) {
+			return;
+		}
 		try
 		{
 			clientToBeNotified.getNotified(notification);
@@ -252,10 +255,21 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 		return users.getUser(userID);
 	}
 
+	public Room startDirectMessage(int user1ID, int user2ID) throws RemoteException {
+		User user1 = users.getUser(user1ID);
+		if (user1 == null) {
+			return null;
+		}
+		return user1.startDirectMessage(rooms, users, user2ID);
+	}
+	
 	@Override
 	public void addChat(int roomID, int chatLogID, int userID, String msg) throws RemoteException
 	{
 		Room room = rooms.getRoom(roomID);
+		if (room == null) {
+			return;
+		}
 		room.addChat(msg, chatLogID, userID);
 	}
 

@@ -65,6 +65,9 @@ public class ExploreController extends BaseController implements Initializable
 		client.loadAllRooms();
 		roomList.setItems(client.getAllRooms());
 		roomList.getSelectionModel().selectedItemProperty().addListener((observer, old_value, new_value) -> {
+			if (new_value == null) {
+				return;
+			}
 			selectedRoom = new_value;
 		});
 	}

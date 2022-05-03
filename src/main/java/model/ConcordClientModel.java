@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
@@ -62,11 +63,14 @@ public class ConcordClientModel
 	IntegerProperty selectedRoomID = new SimpleIntegerProperty();
 	IntegerProperty selectedChatLogID = new SimpleIntegerProperty();
 	StringProperty usernameTextProperty = new SimpleStringProperty();
+	IntegerProperty selectedDMID = new SimpleIntegerProperty();
 	ObservableList<Room> allRooms = FXCollections.observableArrayList();
 	ObservableList<Room> myRooms = FXCollections.observableArrayList();
+	ObservableList<Room> myDMs = FXCollections.observableArrayList();
 	ObservableList<User> allUsers = FXCollections.observableArrayList();
 	ObservableList<ChatLog> roomsChatLogs = FXCollections.observableArrayList();
 	ObservableList<Chat> chatLogsChats = FXCollections.observableArrayList();
+	ObservableList<Chat> DMsChats = FXCollections.observableArrayList();
 	ObservableList<User> roomsUsers = FXCollections.observableArrayList();
 	/*ObservableList<Room> allRooms = FXCollections.observableArrayList();
 	ObservableList<Room> rooms = FXCollections.observableArrayList();
@@ -75,6 +79,22 @@ public class ConcordClientModel
 	ObservableList<User> allUsers = FXCollections.observableArrayList();
 	ObservableList<Chat> chats = FXCollections.observableArrayList();
 	ObservableList<Room> DMs = FXCollections.observableArrayList();*/
+	
+	private void notifyOthers(String msg, Collection<User> users) {
+		for (User user: users) {
+			try
+			{
+				if (user.getUserID() != client.getUserID()) { //Don't want loop notifications so, we don't wanna notify ourselves.
+					client.notifyUser(user.getUserID(), msg);
+				}
+			} catch (RemoteException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
 	
 	public ObservableList<Room> getAllRooms(){
 		return allRooms;
@@ -100,6 +120,14 @@ public class ConcordClientModel
 		return roomsUsers;
 	}
 	
+	public ObservableList<Room> getMyDMs(){
+		return myDMs;
+	}
+	
+	public ObservableList<Chat> getDMsChats(){
+		return DMsChats;
+	}
+	
 	public void loadAllRooms() {
 		//This will load in all of the rooms from the server into the allRooms ArrayList
 		
@@ -112,6 +140,7 @@ public class ConcordClientModel
 			allRooms.clear();
 			Hashtable<Integer, Room> allRoomsHash = server.getRooms().getRooms();
 			allRooms.addAll(allRoomsHash.values());
+			//notifyOthers("<load all rooms>", allUsers);
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
@@ -139,6 +168,7 @@ public class ConcordClientModel
 			}
 			
 			myRooms.addAll(usersRooms.values());
+			//notifyOthers("<load all rooms>", allUsers);
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
@@ -155,10 +185,14 @@ public class ConcordClientModel
 		
 		try
 		{
+			for (User user: allUsers) {
+				client.notifyUser(user.getUserID(), "<load all users>");
+			}
 			allUsers.clear();
 			
 			Hashtable<Integer, User> allUsersHash = server.getUsers().getUsers();
 			allUsers.addAll(allUsersHash.values());
+			//notifyOthers("<load all users>", allUsers);
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
@@ -187,6 +221,7 @@ public class ConcordClientModel
 					roomsUsers.add(user);
 				}
 			}
+			//notifyOthers("<load rooms users>", roomsUsers);
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
@@ -211,6 +246,7 @@ public class ConcordClientModel
 			}
 			System.out.println(getSelectedRoomID());
 			roomsChatLogs.addAll(chatLogsForRoom);
+			//notifyOthers("<load all chatlogs>" + getSelectedRoomID(), roomsUsers);
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
@@ -232,17 +268,54 @@ public class ConcordClientModel
 			if (chatLog == null) {
 				return;
 			}
-			System.out.println("Is chat log locked?: " + chatLog.isLocked());
+			//System.out.println("Is chat log locked?: " + chatLog.isLocked());
 			Hashtable<Integer, Chat> chats = chatLog.getChatLog();
 			
 			if (chats == null) {
 				return;
 			}
-			System.out.println("Loaded chats.");
-			chatLogsChats.addAll(chats.values());
+			Object[] chatsArray = chats.values().toArray();
 			
-			for (Chat chat: chatLogsChats) {
-				System.out.println(chat);
+			for (int i = chatsArray.length - 1; i >= 0; i--) {
+				Chat chat = (Chat) chatsArray[i];
+				chatLogsChats.add(chat);
+			}
+			
+			System.out.println("Loaded chats.");
+			//chatLogsChats.addAll(chats.values());
+			
+			//notifyOthers("<load all chats>|" + getSelectedChatLogID(), roomsUsers);
+		} catch (RemoteException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadMyDMs() {
+		if (client == null) {
+			return;
+		}
+		
+		try
+		{
+			myDMs.clear();
+			User myself = server.getUser(client.getUserID());
+			Hashtable<Integer, Room> dms = myself.getDirectMessages();
+			if (dms == null) {
+				return;
+			}
+			
+			myDMs.addAll(dms.values());
+			Room selectedDM = dms.get(getSelectedDMID());
+			if (selectedDM == null) {
+				return;
+			}
+			Collection<Integer> usersInDM = selectedDM.getUserTable().keySet();
+			for (int userID: usersInDM) {
+				if (userID != client.getUserID()) {
+					//client.notifyUser(userID, "<load all dms>"); //Notify the other user in the DM
+				}
 			}
 		} catch (RemoteException e)
 		{
@@ -251,12 +324,90 @@ public class ConcordClientModel
 		}
 	}
 	
+	public void loadDMsChats() {
+		if (client == null || getSelectedDMID() == -1 || selectedDMID == null) {
+			return;
+		}
+		
+		
+		try
+		{
+			DMsChats.clear();
+			Hashtable<Integer, Room> dms = client.getDirectMessages();
+			if (dms == null) {
+				return;
+			}
+			
+			Room selectedDM = dms.get(getSelectedDMID());
+			if (selectedDM == null) {
+				return;
+			}
+			
+			for (ChatLog chatlog:selectedDM.getChatLogs().values()) {
+				System.out.println("ChatLog in DM:" + chatlog + "\nID:" + chatlog.getChatLogID());
+			}
+			
+			ChatLog DM = selectedDM.getChatLog(1);
+			
+			if (DM == null) {
+				return;
+			}
+			Hashtable<Integer, Chat> chats = DM.getChatLog();
+			
+			if (chats == null) {
+				return;
+			}
+			
+			Object[] chatsArray = chats.values().toArray();
+			
+			for (int i = chatsArray.length - 1; i >= 0; i--) {
+				Chat chat = (Chat) chatsArray[i];
+				DMsChats.add(chat);
+			}
+			
+		} catch (RemoteException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	
+	public void startDM(int userID) {
+		try
+		{
+			server.startDirectMessage(client.getUserID(), userID);
+			loadMyDMs();
+		} catch (RemoteException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public void createChat(int roomID, int chatLogID, String message) {
 		try
 		{
 			client.addChat(roomID, chatLogID, message);
 			loadChatLogsChats();
+		} catch (RemoteException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendDM(String msg) {
+		if (selectedDMID == null || getSelectedDMID() == -1) {
+			return;
+		}
+		
+		try
+		{
+			client.addChat(getSelectedDMID(), 1, msg);
+			loadDMsChats();
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
@@ -378,6 +529,36 @@ public class ConcordClientModel
 		//initializeDemo();
 	}
 	
+	public void getNotified(String msg) {
+		if (msg.indexOf("<load all users>") != -1) {
+			loadAllUsers();
+		} else if (msg.indexOf("<load all chats>|") != -1) {
+			//Need to check if the chat logs match
+			String strOccuring = "<load all chats>|";
+			int strIndex = msg.indexOf(strOccuring);
+			String chatlogID = msg.substring(strIndex + strOccuring.length(), msg.length());
+			int chatLogID = Integer.parseInt(chatlogID);
+			if (getSelectedChatLogID() == chatLogID) {
+				loadChatLogsChats(); //Only load chats if we have selected the chat log.
+			}
+		} else if (msg.indexOf("<load all chatlogs>|") != -1) {
+			//Need to check if rooms match
+			String strOccuring = "<load all chatlogs>|";
+			int strIndex = msg.indexOf(strOccuring);
+			String roomIDStr = msg.substring(strIndex + strOccuring.length(), msg.length());
+			int roomID = Integer.parseInt(roomIDStr);
+			if (getSelectedRoomID() == roomID) {
+				loadRoomsChatLogs();
+			}
+		} else if (msg.indexOf("<load all rooms>") != -1) {
+			loadAllRooms();
+		} else if (msg.indexOf("<load rooms users>") != -1) {
+			loadRoomsUsers();
+		} else if (msg.indexOf("<load all dms>") != -1) {
+			loadMyDMs();
+		}
+	}
+	
 	public boolean logOn() {
 		try
 		{
@@ -413,6 +594,7 @@ public class ConcordClientModel
 					//Don't want to load anything if the person hasn't logged in.
 					return false;
 				}
+				client.addClientModel(this);
 				loadAllUsers();
 				loadAllRooms();
 				loadMyRooms();
@@ -508,8 +690,16 @@ public class ConcordClientModel
 		this.selectedRoomID.set(selectedRoomID);
 	}
 	
+	public void setSelectedDMID(int selectedDMID) {
+		this.selectedDMID.set(selectedDMID);
+	}
+	
 	public int getSelectedRoomID() {
 		return selectedRoomID.get();
+	}
+	
+	public int getSelectedDMID() {
+		return selectedDMID.get();
 	}
 	
 	public void setSelectedChatLogID(int selectedChatLogID) {
@@ -598,64 +788,28 @@ public class ConcordClientModel
 	public Client getClient() {
 		return client;
 	}
-	/*
+	
 	public void initializeDemo() throws RemoteException {
 		System.out.println("Initializing demo");
-		try
-		{
-			ServerInterface server = (ServerInterface) Naming.lookup("rmi://127.0.0.1/CONCORD");
-			User user = server.addUser("Jibraan", "password123");
-			Client jibraansClient = new Client(server, user);
-			server.addClient(jibraansClient);
-			System.out.println("Adding user");
-			RoomList rooms_List = server.getRooms();
-			UserList users_List = server.getUsers();
-			ArrayList<Room> roomsArrayList = new ArrayList<Room>();
-			Room room1 = rooms_List.addRoom("John's Server", "My own personal server!", "http://my_logo.png", true);
-			roomsArrayList.add(room1);
-			rooms.addAll(roomsArrayList);
-			ArrayList<User> usersArrayList = new ArrayList<User>();
-			User tom = users_List.addUser("Tom", "luvmymom", "My name is Tom.", false);
-			User john = users_List.addUser("John", "hello123", "My name is John.", false);
-			server.addUserToRoom(room1.getRoomID(), tom, new Noob());
-			server.addUserToRoom(room1.getRoomID(), john, new Admin());
-			room1.addUser(tom.getUserID(), new Noob(), users_List, rooms_List);
-			room1.addUser(john.getUserID(), new Admin(), users_List, rooms_List);
-			usersArrayList.add(tom);
-			usersArrayList.add(john);
-			users.addAll(usersArrayList);
-			
-			ArrayList<ChatLog> channelsArrayList = new ArrayList<ChatLog>();
-			ChatLog chatsChatLog = server.addChatLog(room1.getRoomID(), john.getUserID(), "Chats");
-			channelsArrayList.add(chatsChatLog);
-			
-			channels.addAll(channelsArrayList);
-			
-			ArrayList<Chat> chatsArrayList = new ArrayList<Chat>();
-			chatsChatLog.addChat("Hey!", tom.getUserID());
-			chatsChatLog.addChat("Whats up?", john.getUserID());
-			chatsArrayList.add(chatsChatLog.getChat(1));
-			chatsArrayList.add(chatsChatLog.getChat(2));
-			chats.addAll(chatsArrayList);
-			ArrayList<Room> DMsArrayList = new ArrayList<Room>();
-			tom.startDirectMessage(rooms_List, users_List, john.getUserID());
-			
-			Hashtable<Integer, Room> tomsDms = tom.getDirectMessages();
-			
-			Enumeration<Integer> e = tomsDms.keys();
-			
-			while (e.hasMoreElements()) {
-				int key = e.nextElement();
-				Room dm = tomsDms.get(key);
-				DMsArrayList.add(dm);
-			}
-			DMs.addAll(DMsArrayList);
-		} catch (MalformedURLException | RemoteException | NotBoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		if (server == null) {
+			return;
 		}
-	}*/
+		//Populate the server with some dummy data.
+		
+		server.addRoom("Test Room", "For testing purposes");
+		//User john = server.addUser("John", "john123", "My name is John!");
+		//Client johnsClient = new Client(server, john);
+		/*
+		User rob = server.addUser("Rob", "rob123", "My name is Rob!");
+		Client robsClient = new Client(server, rob);
+		
+		server.addClient(johnsClient);
+		server.addClient(robsClient);
+		
+		johnsClient.logOn("john123");
+		robsClient.logOn("rob123");*/
+	}
 	
 	public String toString() {
 		return user.getUserName();

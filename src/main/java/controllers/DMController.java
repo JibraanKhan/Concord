@@ -31,9 +31,14 @@ public class DMController extends BaseController implements Initializable
 	public void initialize(URL location, ResourceBundle resources)
 	{
 		//dmLists.setItems(client.getDMs());
-		
+		client.loadMyDMs();
+		dmLists.setItems(client.getMyDMs());
 		dmLists.getSelectionModel().selectedItemProperty().addListener((observer, oldValue, newValue) -> {
+			if (newValue == null) {
+				return;
+			}
 			vtm.showChatList();
+			client.setSelectedDMID(newValue.getRoomID());
 		});
 	}
 	

@@ -142,12 +142,12 @@ public class User implements Serializable
 		String thisUsersName = this.userName;
 		String discussionName = thisUsersName + ", " + otherUsersName;
 		newDM.setName(discussionName);
-		newDM.addUser(this.userID, new Noob(), userList, roomList);
-		newDM.addUser(userID, new Noob(), userList, roomList);
+		newDM.addUser(this.userID, new Admin(), userList, roomList, "DM");
+		newDM.addUser(userID, new Noob(), userList, roomList, "DM");
 		newDM.addChatLog(this.userID, new ChatLog(1, discussionName)); 
 		//We can assign the chat log any arbitrary integer as a userID since we know
 		// that the room will and should only have one ChatLog since it is a DM between
-		// two users
+		// two users 
 		directMessages.put(newDM.getRoomID(), newDM);
 		otherUser.requestedDirectMessage(roomList, userList, this.userID, newDM); //Ask to start DM with yourself
 		return newDM;

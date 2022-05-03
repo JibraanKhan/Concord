@@ -82,6 +82,9 @@ public class MainFrameController extends BaseController implements Initializable
 		//Bindings.bindBidirectional(client.getAllRooms(), roomList.);
 		
 		roomList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+			if (newValue == null) {
+				return;
+			}
 			vtm.showRoomView();
 			client.setSelectedRoom(newValue.getName());
 			//System.out.println("Setting selected Room and selectedRoomID: " + newValue.getRoomID());
