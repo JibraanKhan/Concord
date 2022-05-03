@@ -134,7 +134,7 @@ public class ViewTransitionalModel implements ViewTransitionalModelInterface
 		
 		Stage stage = new Stage();
 		stages.add(stage);
-		stage.setScene(new Scene(parent, 600, 600));
+		stage.setScene(new Scene(parent, 800, 500));
 		stage.show();
 		if (bind_close) {
 			stage.setOnCloseRequest(event -> closeApplication()); //To shut down entire app.

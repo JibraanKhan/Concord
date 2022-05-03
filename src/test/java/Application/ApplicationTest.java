@@ -2,6 +2,7 @@ package Application;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
@@ -30,6 +31,7 @@ import org.testfx.util.WaitForAsyncUtils;
 
 import Database.Chat;
 import Database.Room;
+import Database.User;
 import ServerClientModel.Server;
 import ServerClientModel.ServerInterface;
 
@@ -37,6 +39,7 @@ import ServerClientModel.ServerInterface;
 public class ApplicationTest
 {
 	ConcordClientModel client;
+	ViewTransitionalModel vtm;
 	@Start  //Before
 	public void start(Stage stage) throws Exception
 	{
@@ -49,7 +52,7 @@ public class ApplicationTest
 			registry.rebind("CONCORD", server);
 		}
 		client = new ConcordClientModel();
-		ViewTransitionalModel vtm = new ViewTransitionalModel(client);
+		vtm = new ViewTransitionalModel(client);
 		vtm.showLogin();
 	}
 	
@@ -143,6 +146,48 @@ public class ApplicationTest
 		//System.out.println(chatsList.get(0));
 		assertTrue(chatsList.get(0).getMessage().equals("Hey rob, how are you?"));
 		assertTrue(chatsList.get(1).getMessage().equals("Good, how about you?"));
+		enterValue("#chatTextField", "Whats up guys?", robot);
+		robot.clickOn("#sendChatButton");
+		wait(0.5);
+		chats = getChats(robot); 
+		chatsList = chats.getItems();
+		assertTrue(chatsList.get(2).getMessage().equals("Whats up guys?"));
+		selectListItem("#usersInRoomList", 0, robot);
+		wait(0.5);
+		checkLabelText("#profilePopupName", "Rob", robot);
+		checkLabelText("#profilePopupAboutMe", "My name is Rob!", robot);
+		wait(0.5);
+		Node label = robot.lookup("#profilePopupName").query();
+		closeStageFromNode(label);
+		wait(0.5);
+		selectListItem("#roomsList", 0, robot);
+		wait(0.5);
+		checkRoomName("Jibraans Server", robot);
+		wait(0.5);
+		robot.clickOn("#menuButton");
+		robot.clickOn("#createChannelButton");
+		Assertions.assertThat(robot.lookup("#channelNameTextField").query() != null);
+		enterValue("#channelNameTextField", "Server Rules", robot);
+		robot.clickOn("#createButton");
+		selectListItem("#chatLogList", 0, robot);
+		enterValue("#chatTextField", "Please do not spam!", robot);
+		robot.clickOn("#sendChatButton");
+		wait(0.5);
+		chats = getChats(robot); 
+		chatsList = chats.getItems();
+		wait(0.5);
+		assertTrue(chatsList.get(0).getMessage().equals("Please do not spam!"));
+		robot.clickOn("#DMButton");
+		wait(0.5);
+		assertTrue(robot.lookup("#usersButton").query() != null);
+		robot.clickOn("#usersButton");
+		
+		ListView<User> users = getUsers(robot);
+		ObservableList<User> usersList = users.getItems();
+		
+		for (User user: usersList) {
+			System.out.println(user);
+		}
 		wait(5.5);
 	}
 	
@@ -208,5 +253,27 @@ public class ApplicationTest
 	{
 	   return (ListView<Chat>) robot.lookup("#chatsListView")
 	       .queryAll().iterator().next();
+	}
+	
+	@SuppressWarnings("unchecked")
+	ListView<User> getUsers(FxRobot robot)
+	{
+	   return (ListView<User>) robot.lookup("#usersListForDM")
+	       .queryAll().iterator().next();
+	}
+	
+	private void closeStageFromNode(Node node) {
+		if (getStageFromNode(node) != null) {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					getStageFromNode(node).close();
+				}
+			});
+		}
+	}
+	
+	private Stage getStageFromNode(Node node) { 
+		return (Stage) node.getScene().getWindow(); 
 	}
 }

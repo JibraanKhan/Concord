@@ -28,7 +28,7 @@
       </VBox>
    </left>
    <right>
-      <ListView fx:id="userList" prefHeight="400.0" prefWidth="117.0" BorderPane.alignment="CENTER" />
+      <ListView id="usersInRoomList" fx:id="userList" prefHeight="400.0" prefWidth="117.0" BorderPane.alignment="CENTER" />
    </right>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
