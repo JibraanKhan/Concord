@@ -51,7 +51,7 @@ public interface ClientInterface extends Remote
 	public User getUser(int userID) throws RemoteException;
 	public String getPassword() throws RemoteException;
 	public void setPassword(String pasword) throws RemoteException;
-	public void addChat(int roomID, int chatLogID, String msg) throws RemoteException;
+	public Chat addChat(int roomID, int chatLogID, String msg) throws RemoteException;
 	public ChatLog addChatLog(int roomID, String chatLogName) throws RemoteException;
 	public void deleteChatLog(int roomID, int chatLogID) throws RemoteException;
 	public ChatLog getChatLog(int roomID, int chatLogID) throws RemoteException;

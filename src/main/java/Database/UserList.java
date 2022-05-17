@@ -24,17 +24,17 @@ public class UserList implements Serializable
 	
 	public User getUser(String username, String password) {
 		Enumeration<Integer> e = users.keys();
-		System.out.println("Starting Loop ----");
+		//System.out.println("Starting Loop ----");
 		while (e.hasMoreElements()) {
 			int key = e.nextElement();
 			User user = users.get(key);
-			System.out.println(user.getUserName() + ":" + user.getPassword());
+			//System.out.println(user.getUserName() + ":" + user.getPassword());
 			if ((user.getUserName().equals(username)) && (user.getPassword().equals(password))) {
-				System.out.println("---- Ending Loop");
+				//System.out.println("---- Ending Loop");
 				return user;
 			}
 		}
-		System.out.println("---- Ending Loop");
+		//System.out.println("---- Ending Loop");
 		
 		return null;
 	}

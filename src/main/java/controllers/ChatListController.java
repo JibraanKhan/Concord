@@ -45,4 +45,10 @@ public class ChatListController extends BaseController implements Initializable
 		// TODO Auto-generated method stub
 		chatListView.setItems(client.getDMsChats());
 	}
+
+	@Override
+	public void clearSelections()
+	{
+		chatListView.getSelectionModel().clearSelection();
+	}
 }

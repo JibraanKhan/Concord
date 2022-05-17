@@ -10,30 +10,30 @@
 <?import javafx.scene.text.Font?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../src/main/resources/basic.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" >
          <image>
-            <Image url="@../../../../../../../Downloads/ProfilePicture.jpeg" />
+            <Image url="@../../../src/main/resources/ProfilePicture.jpeg" />
          </image>
       </ImageView>
    </left>
    <center>
-      <Label textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+      <Label textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER" stylesheets="@../../../src/main/resources/basic.css">
          <font>
             <Font size="96.0" />
          </font>
       </Label>
    </center>
    <bottom>
-      <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="30.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="30.0" BorderPane.alignment="CENTER" stylesheets="@../../../src/main/resources/basic.css">
          <children>
-            <Button alignment="CENTER" mnemonicParsing="false" text="Edit Profile" textAlignment="CENTER">
+            <Button alignment="CENTER" mnemonicParsing="false" text="Edit Profile" textAlignment="CENTER" stylesheets="@../../../src/main/resources/basic.css">
                <font>
                   <Font size="26.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" mnemonicParsing="false" text="Log Out" textAlignment="CENTER">
+            <Button alignment="CENTER" mnemonicParsing="false" text="Log Out" textAlignment="CENTER" stylesheets="@../../../src/main/resources/basic.css">
                <font>
                   <Font size="26.0" />
                </font>

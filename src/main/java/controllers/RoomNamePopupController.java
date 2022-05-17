@@ -52,4 +52,11 @@ public class RoomNamePopupController extends BaseController
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public void clearSelections()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

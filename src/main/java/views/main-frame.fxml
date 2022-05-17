@@ -4,66 +4,123 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" stylesheets="@../../../src/main/resources/basic.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <VBox id="mainFrame" prefHeight="400.0" prefWidth="130.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox id="mainFrame" prefHeight="400.0" prefWidth="130.0" spacing="10.0" stylesheets="@../../../src/main/resources/basic.css" BorderPane.alignment="CENTER">
          <children>
-            <Button id="DMButton" mnemonicParsing="false" onAction="#onDMButtonClicked" prefHeight="26.0" prefWidth="130.0" text="DM" />
-            <ListView id="roomsList" fx:id="roomList" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="322.0" prefWidth="130.0" />
-            <Button id="addButton" mnemonicParsing="false" onAction="#onAddButtonClicked" prefHeight="26.0" prefWidth="130.0" text="Add" />
-            <Button id="exploreButton" mnemonicParsing="false" onAction="#onExploreButtonClicked" prefHeight="26.0" prefWidth="130.0" text="Explore" />
-            <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="170.0">
+            <Button id="DMButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onDMButtonClicked" prefHeight="26.0" prefWidth="130.0" stylesheets="@../../../src/main/resources/basic.css" text="DM">
+               <VBox.margin>
+                  <Insets left="25.0" top="5.0" />
+               </VBox.margin></Button>
+            <ListView id="roomsList" fx:id="roomList" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="322.0" prefWidth="200.0" stylesheets="@../../../src/main/resources/basic.css" />
+            <Button id="addButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onAddButtonClicked" prefHeight="26.0" prefWidth="130.0" stylesheets="@../../../src/main/resources/basic.css" text="Add">
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin></Button>
+            <Button id="exploreButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onExploreButtonClicked" prefHeight="26.0" prefWidth="130.0" stylesheets="@../../../src/main/resources/basic.css" text="Explore">
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin></Button>
+            <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="300.0" stylesheets="@../../../src/main/resources/basic.css">
                <left>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                      <image>
-                        <Image url="@../../../../../../../Downloads/ProfilePicture.jpeg" />
+                        <Image url="@../../../src/main/resources/ProfilePicture.jpeg" />
                      </image>
                   </ImageView>
                </left>
                <center>
-                  <Label fx:id="profileUsernameLabel" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER" />
+                  <Label id="usernameLabel" fx:id="profileUsernameLabel" stylesheets="@../../../src/main/resources/basic.css" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER" />
                </center>
                <bottom>
-                  <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="90.0" spacing="10.0" BorderPane.alignment="CENTER">
+                  <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="90.0" spacing="10.0" BorderPane.alignment="BOTTOM_CENTER">
                      <children>
-                        <Button id="editProfileButton" alignment="CENTER" mnemonicParsing="false" onAction="#onEditProfileButtonClicked" prefHeight="90.0" prefWidth="90.0" text="Edit Profile" textAlignment="CENTER" wrapText="true">
+                        <Button id="editProfileButton" alignment="CENTER" mnemonicParsing="false" onAction="#onEditProfileButtonClicked" prefHeight="90.0" prefWidth="150.0" stylesheets="@../../../src/main/resources/basic.css" text="Edit Profile" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="12.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" />
+                           </HBox.margin>
                         </Button>
-                        <Button id="logOutButton" alignment="CENTER" mnemonicParsing="false" onAction="#onLogOutButtonClicked" prefHeight="90.0" prefWidth="90.0" text="Log Out" textAlignment="CENTER" wrapText="true">
+                        <Button id="logOutButton" alignment="CENTER" mnemonicParsing="false" onAction="#onLogOutButtonClicked" prefHeight="90.0" prefWidth="150.0" stylesheets="@../../../src/main/resources/basic.css" text="Log Out" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="12.0" />
                            </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" />
+                           </HBox.margin>
                         </Button>
                      </children>
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
                      <BorderPane.margin>
-                        <Insets left="20.0" />
+                        <Insets />
                      </BorderPane.margin>
                   </HBox>
                </bottom>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
             </BorderPane>
          </children>
       </VBox>
    </left>
    <center>
-      <Label fx:id="tempRoomName" BorderPane.alignment="CENTER">
+      <Label fx:id="tempRoomName" stylesheets="@../../../src/main/resources/basic.css" BorderPane.alignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
    </center>
+   <top>
+      <HBox prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <StackPane alignment="TOP_LEFT" prefHeight="50.0" prefWidth="300.0">
+               <children>
+                  <ImageView blendMode="LIGHTEN" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <effect>
+                        <Glow level="0.08">
+                           <input>
+                              <DropShadow height="14.95" radius="5.4625" width="8.9">
+                                 <color>
+                                    <Color red="0.6184210777282715" green="0.5754751563072205" blue="0.5754751563072205" />
+                                 </color>
+                              </DropShadow>
+                           </input>
+                        </Glow>
+                     </effect>
+                     <image>
+                        <Image url="@../../../src/main/resources/Webp.net-resizeimage.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </StackPane>
+            <StackPane alignment="TOP_RIGHT" prefHeight="50.0" prefWidth="300.0">
+               <children>
+                  <ImageView fitHeight="54.0" fitWidth="88.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../src/main/resources/Webp.net-resizeimage%20(1).png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </StackPane>
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

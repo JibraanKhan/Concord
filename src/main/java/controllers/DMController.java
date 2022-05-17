@@ -39,7 +39,14 @@ public class DMController extends BaseController implements Initializable
 			}
 			vtm.showChatList();
 			client.setSelectedDMID(newValue.getRoomID());
+			client.loadDMsChats();
 		});
+	}
+
+	@Override
+	public void clearSelections()
+	{
+		dmLists.getSelectionModel().clearSelection();
 	}
 	
 	

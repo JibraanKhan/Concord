@@ -1,6 +1,7 @@
 package controllers;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import Database.Chat;
@@ -12,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import model.ConcordClientModel;
 import model.ViewTransitionalModel;
@@ -21,7 +23,7 @@ public class RoomViewController extends BaseController implements Initializable
 
 	@FXML
     private ListView<ChatLog> chatLogList;
-
+	
     @FXML
     private ListView<Chat> chatList;
 
@@ -44,7 +46,7 @@ public class RoomViewController extends BaseController implements Initializable
 
     @FXML
     void createChannelButtonClicked(ActionEvent event) {
-    	System.out.println("Create channel button clicked");
+    	//System.out.println("Create channel button clicked");
     	vtm.showCreateChannelPopup();
     }
 
@@ -53,6 +55,11 @@ public class RoomViewController extends BaseController implements Initializable
 
     }
 
+    @FXML
+    void addBotButtonClicked(ActionEvent event) {
+    	vtm.showAddBotPopup();
+    }
+    
     @FXML
     void removeUserButtonClicked(ActionEvent event) {
 
@@ -79,10 +86,9 @@ public class RoomViewController extends BaseController implements Initializable
     	if (chatText == "" || client.getSelectedRoomID() == -1 || selectedChatLog == null) {
     		return;
     	}
-    	
-    	client.createChat(client.getSelectedRoomID(), selectedChatLog.getChatLogID(), chatText);
-    	
+    	//System.out.println("Passed if statement");
     	chatTextField.setText("");
+    	client.createChat(client.getSelectedRoomID(), selectedChatLog.getChatLogID(), chatText, chatList);
     }
     
 	@Override
@@ -116,8 +122,38 @@ public class RoomViewController extends BaseController implements Initializable
 			client.setSelectedChatLogID(selectedChatLog.getChatLogID());
 			
 			client.loadChatLogsChats();
+			scrollToBottomOfChats();
 		});
 		
 		Bindings.bindBidirectional(client.getSelectedRoom(), menuButton.textProperty());
+	}
+	
+	public void scrollToBottomOfChats() {
+		int index = client.getChatLogsChats().size();
+    	chatList.scrollTo(index);
+	}
+	
+	public void scrollToBottomOfChats(Chat chat) {
+		int index = client.getChatLogsChats().size();
+    	chatList.scrollTo(index);
+	}
+	
+	private void wait(double secs) {
+		try
+		{
+			Thread.sleep((int) Math.round(secs * 1000));
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void clearSelections()
+	{
+		chatLogList.getSelectionModel().clearSelection();
+		chatList.getSelectionModel().clearSelection();
+		userList.getSelectionModel().clearSelection();
 	}
 }

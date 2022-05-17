@@ -25,9 +25,7 @@ public class UserListController extends BaseController implements Initializable
 	@Override
 	public void initialize(URL location, ResourceBundle resources)
 	{
-		/*
-		usersList.setItems(client.getUsers());
-		*/
+		client.loadAllUsers();
 		usersList.setItems(client.getAllUsers());
 		usersList.getSelectionModel().selectedItemProperty().addListener((observer, oldvalue, newvalue) -> {
 			if (newvalue == null) {
@@ -36,6 +34,12 @@ public class UserListController extends BaseController implements Initializable
 			
 			client.startDM(newvalue.getUserID());
 		});
+	}
+
+	@Override
+	public void clearSelections()
+	{
+		usersList.getSelectionModel().clearSelection();
 	}
 
 }

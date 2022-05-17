@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../src/main/resources/basic.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <ListView id="botsListView" fx:id="botsListView" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../../src/main/resources/basic.css" BorderPane.alignment="CENTER" />
+   </center>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="200.0" stylesheets="@../../../src/main/resources/basic.css" BorderPane.alignment="CENTER">
+         <children>
+            <Button id="registerBotButton" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onRegisterButtonClicked" stylesheets="@../../../src/main/resources/basic.css" text="Register Bot" textAlignment="CENTER" />
+            <Button id="cancelRegistrationBotButton" mnemonicParsing="false" onAction="#onCancelButtonClicked" stylesheets="@../../../src/main/resources/basic.css" text="Cancel" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>

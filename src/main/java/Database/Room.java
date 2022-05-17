@@ -1,6 +1,7 @@
 package Database;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Objects;
 
@@ -19,7 +20,18 @@ public class Room implements Serializable
 	private Boolean roomType = true; //private or public room, public as default
 	private int last_chatLogID = 0;
 	private Hashtable<Integer, Boolean> invitedUsers = new Hashtable<Integer, Boolean>();
+	private ArrayList<Bot> bots = new ArrayList<Bot>();
 	
+	public ArrayList<Bot> getBots()
+	{
+		return bots;
+	}
+
+	public void setBots(ArrayList<Bot> bots)
+	{
+		this.bots = bots;
+	}
+
 	public int getLast_chatLogID()
 	{
 		return last_chatLogID;
@@ -155,6 +167,19 @@ public class Room implements Serializable
 		return roomType;
 	}
 	
+	public void registerBot(Bot bot) {
+		bots.add(bot);
+		for (Bot nbot: bots) {
+			System.out.println("Bot: " + nbot.getName());
+		}
+	}
+	
+	public void notifyAllBots(String event, Object change) {
+		for (Bot bot: bots) {
+			bot.update(event, change);
+		}
+	}
+	
 	public void addUser(int userID, Role role, UserList userList, RoomList roomList) {
 		User user = userList.getUser(userID);
 		if (user == null) {
@@ -241,19 +266,38 @@ public class Room implements Serializable
 		}
 	}
 	
-	public void addChat(String message, int chatLogID, int senderID) {
+	public Chat addChat(String message, int chatLogID, int senderID, String senderName) {
 		ChatLog chatLog = chatLogs.get(chatLogID);
 		if (userTable.get(senderID) != null && chatLog != null) { //If we know that the user is inside the room then we can add the chat to the chat log
-			chatLog.addChat(message, senderID);
+			Chat chat = chatLog.addChat(message, senderID, senderName);
+			if (chat == null) {
+				return null;
+			}
+			notifyAllBots("<chatAdded> " + Integer.toString(chat.getChatID()), chatLog);
+			return chat;
+
+		} else {
+			System.out.println(senderID + " was null");
+			if (chatLog == null) {
+				System.out.println(chatLogID + " was null");
+				return null;
+			}
+			return null;
 		}
 	}
 	
-	public void addChat(String message, int chatLogID, int senderID, int receiverID) {
+	public Chat addChat(String message, int chatLogID, int senderID, int receiverID) {
 		ChatLog chatLog = chatLogs.get(chatLogID);
 		if ((userTable.get(senderID) != null) && (chatLog != null) && (userTable.get(receiverID) != null)){ 
 			//If we know that the sender and receiver are both  inside the room then we can add the chat to the chat log
-			chatLog.addChat(message, senderID, receiverID);
+			Chat chat = chatLog.addChat(message, senderID, receiverID);
+			if (chat == null) {
+				return null;
+			}
+			notifyAllBots("<chat added>", chat);
+			return chat;
 		}
+		return null;
 	}
 	
 	public Chat getChat(int chatLogID, int chatID) {

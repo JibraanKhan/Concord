@@ -49,7 +49,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 		if (isLoggedIn()) {
 			return connection.getRooms();
 		} else {
-			System.out.println("My dude ain't logged in");
+			//System.out.println("My dude ain't logged in");
 		}
 		return null;
 	}
@@ -62,6 +62,10 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 		
 	public void getNotified(String msg) throws RemoteException{
 		notifications.add(msg);
+		//System.out.println("Getting notified at clients end:\n" + user.getUserName() + "\n" + msg);
+		if (client == null) {
+			return;
+		}
 		client.getNotified(msg); //Notify the observer of the message.
 	}
 	
@@ -116,6 +120,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 	@Override
 	public void setStatus(boolean status) throws RemoteException
 	{
+		System.out.println("Setting status:" + status);
 		connection.setStatus(getUserID(), status);
 	}
 
@@ -217,12 +222,12 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 	}
 	
 	@Override
-	public void addChat(int roomID, int chatLogID, String msg) throws RemoteException
+	public Chat addChat(int roomID, int chatLogID, String msg) throws RemoteException
 	{
 		if (isLoggedIn()) {
-			connection.addChat(roomID, chatLogID, user.getUserID(), msg);
+			return connection.addChat(roomID, chatLogID, user.getUserID(), msg);
 		}else {
-			
+			return null;
 		}
 	}
 

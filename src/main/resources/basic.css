@@ -1,0 +1,79 @@
+* {
+	dark-primary-color:		#323232; 
+	default-primary-color:	#9E9E9E; 
+	text-primary-color:		#F5F5F5; 
+	accent-color:			#757575;
+	secondary-text-color:	#FFFFFF; 
+	divider-color: 			#BDBDBD; 
+	complete-black: 		#000000;
+	darker-primary-color:	#1E1E1E;
+	arial: 					"Arial";
+	tnr: 					"Times New Roman";
+	error-color:			#f54b4b;
+	selection-color:		#802DA4;
+}
+
+.root {
+	-fx-background-color: dark-primary-color !important; 
+	-fx-text-fill:		   text-primary-color !important;
+	-fx-font:			   18px tnr !important;
+}
+
+.text-field, .choice-box {
+	-fx-background-color: accent-color !important;
+	-fx-background-radius: 10px !important;
+	-fx-text-fill:		   secondary-text-color !important;
+	-fx-font:			   18px tnr !important;
+	
+}
+
+.button {
+	-fx-background-color: darker-primary-color;
+	-fx-border-color:	  complete-black !important;
+	-fx-text-fill:		   text-primary-color !important;
+	-fx-font:			   16px tnr !important;
+}
+
+.label {
+	-fx-text-fill:		   text-primary-color !important;
+	-fx-font:			   21px arial !important;
+}
+
+.list-view, .scroll-pane, .scroll-pane, .list-cell, .menu-button, .menu-item, .scroll-pane > .corner, .list-view > .corner, list-cell > .corner {
+	-fx-background-color:  darker-primary-color;
+	-fx-text-fill:		   text-primary-color !important;
+	-fx-font:			   21px tnr !important;
+	scrollbar-color:	   darker-primary-color;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color:transparent;
+}
+
+
+.list-cell:hover, .menu-button:hover, .menu-item:hover, .button:hover {
+	-fx-background-color:  selection-color;
+}
+
+.list-view:selected, .list-cell:selected, .button:pressed {
+    -fx-background-color: linear-gradient(#5A2569, dark-primary-color) !important;
+}
+
+.scroll-bar:horizontal.track,
+.scroll-bar:vertical.track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: accent-color;
+    -fx-background-radius: 5em;
+    -fx-scale-z: 3px;
+    -fx-opacity: 0.5;
+}
+
+#errorMsg {
+	-fx-text-fill:			error-color !important;
+}

@@ -4,18 +4,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="196.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="196.0" stylesheets="@../../../src/main/resources/basic.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label id="profilePopupName" fx:id="name" alignment="CENTER" prefHeight="82.0" prefWidth="196.0" text="Tom">
+      <Label id="profilePopupName" fx:id="name" alignment="CENTER" prefHeight="82.0" prefWidth="196.0" text="Tom" stylesheets="@../../../src/main/resources/basic.css">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label text="ABOUT ME">
+      <Label text="ABOUT ME" stylesheets="@../../../src/main/resources/basic.css">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label id="profilePopupAboutMe" fx:id="profile" prefHeight="194.0" prefWidth="196.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tempus urna et pharetra pharetra massa massa.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tempus urna et pharetra pharetra massa massa." wrapText="true" />
+      <Label id="profilePopupAboutMe" fx:id="profile" prefHeight="194.0" prefWidth="196.0" stylesheets="@../../../src/main/resources/basic.css" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tempus urna et pharetra pharetra massa massa.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tempus urna et pharetra pharetra massa massa." wrapText="true" />
    </children>
 </VBox>

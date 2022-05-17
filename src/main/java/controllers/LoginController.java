@@ -74,4 +74,11 @@ public class LoginController extends BaseController
     void signupButtonClicked(ActionEvent event) {
 		vtm.showRegisterUserPopup();
     }
+
+	@Override
+	public void clearSelections()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

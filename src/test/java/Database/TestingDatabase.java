@@ -75,7 +75,8 @@ class TestingDatabase
 		//Send messages from everyone into server.
 		testServer.addChat("What did the cat say to the dog?\nMeow", 
 				memes.getChatLogID(), 
-				ashley.getUserID());
+				ashley.getUserID(),
+				ashley.getUserName());
 		
 		testServer.addChat("What?", 
 				memes.getChatLogID(), 
@@ -90,17 +91,21 @@ class TestingDatabase
 		testServer.addChat("Yo yo guys, there's a huge skateboarding event "
 				+ "going on tomorrow. You guys should definitely drop by!", 
 				announcements.getChatLogID(), 
-				john.getUserID());
+				john.getUserID(),
+				john.getUserName());
 		
 		testServer.addChat("Ok, which one of you guys talked to me?", 
 				chat.getChatLogID(), 
-				ron.getUserID());
+				ron.getUserID(),
+				ron.getUserName());
+		
 		testServer.addChat("Hey guys... like, what's your favorite coffee "
 				+ "from Starbucks? I personally like the venti caramel "
 				+ "macchiatto with light ice and whipped cream on top "
 				+ "sprinkled with some honey glazed almonds.", 
 				chat.getChatLogID(), 
-				stacy.getUserID());
+				stacy.getUserID(),
+				stacy.getUserName());
 		//DMs between stacy and john
 	}
 	
@@ -291,11 +296,11 @@ class TestingDatabase
 		
 		//Ron decided to be annoying so he's spammed 5 messages really quickly.
 		//Lets delete all his messages at once
-		chat.addChat("Hi", ron.getUserID());
-		chat.addChat("Hi", ron.getUserID());
-		chat.addChat("Hi", ron.getUserID());
-		chat.addChat("Hi", ron.getUserID());
-		chat.addChat("Hi", ron.getUserID());
+		chat.addChat("Hi", ron.getUserID(), ron.getUserName());
+		chat.addChat("Hi", ron.getUserID(), ron.getUserName());
+		chat.addChat("Hi", ron.getUserID(), ron.getUserName());
+		chat.addChat("Hi", ron.getUserID(), ron.getUserName());
+		chat.addChat("Hi", ron.getUserID(), ron.getUserName());
 		assertTrue(chat.getChat(3).getMessage() == "Hi");
 		assertTrue(chat.getChat(4).getMessage() == "Hi");
 		assertTrue(chat.getChat(5).getMessage() == "Hi");
@@ -314,7 +319,8 @@ class TestingDatabase
 		//chat which is a different ChatLog than memes.
 		testServer.addChat("Hey guys, important update on the competition!", 
 				announcements.getChatLogID(), 
-				john.getUserID());
+				john.getUserID(),
+				john.getUserName());
 		Chat pinnedChat = announcements.getChat(2);
 		//The chat we added to announcements
 		pinnedChat.pin(); //pin the message

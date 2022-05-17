@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 
-<GridPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane xmlns="http://javafx.com/javafx/17" stylesheets="@../../../src/main/resources/basic.css" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -20,23 +20,23 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label alignment="CENTER" prefHeight="124.0" prefWidth="461.0" text="Create new channel" textAlignment="CENTER" GridPane.columnSpan="2" />
-      <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="131.0" text="Name" GridPane.rowIndex="1">
+      <Label alignment="CENTER" prefHeight="124.0" prefWidth="461.0" stylesheets="@../../../src/main/resources/basic.css" text="Create new channel" textAlignment="CENTER" GridPane.columnSpan="2" />
+      <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="131.0" stylesheets="@../../../src/main/resources/basic.css" text="Name" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets right="20.0" />
          </GridPane.margin>
       </Label>
-      <TextField id="channelNameTextField" fx:id="nameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <TextField id="channelNameTextField" fx:id="nameTextField" stylesheets="@../../../src/main/resources/basic.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets right="15.0" />
          </GridPane.margin>
       </TextField>
-      <Button id="cancelButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCancelButtonClicked" text="Cancel" GridPane.rowIndex="2">
+      <Button id="cancelButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCancelButtonClicked" stylesheets="@../../../src/main/resources/basic.css" text="Cancel" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets left="20.0" />
          </GridPane.margin>
       </Button>
-      <Button id="createButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCreateButtonClicked" text="Create" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <Button id="createButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCreateButtonClicked" stylesheets="@../../../src/main/resources/basic.css" text="Create" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets left="20.0" />
          </GridPane.margin>

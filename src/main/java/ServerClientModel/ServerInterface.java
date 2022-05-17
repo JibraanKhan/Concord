@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import Database.Bot;
 import Database.Chat;
 import Database.ChatLog;
 import Database.Role;
@@ -25,7 +26,9 @@ public interface ServerInterface extends Remote
 	public Room startDirectMessage(int user1ID, int user2ID) throws RemoteException;
 	public void setProfileData(int userID, String profileData) throws RemoteException;
 	public void setStatus(int userID, boolean status) throws RemoteException;
+	public boolean getStatus(int userID) throws RemoteException;
 	public void addClient(ClientInterface c) throws RemoteException;
+	public void registerBot(int roomID, Bot botToRegister) throws RemoteException;
 	public void removeClient(int userID) throws RemoteException;
 	public void updateUser(User user) throws RemoteException;
 	public boolean logOn(String username, String password) throws RemoteException;
@@ -38,7 +41,7 @@ public interface ServerInterface extends Remote
 	public void notifyUser(int userID, String notification) throws RemoteException;
 	public User getUser(String username, String password) throws RemoteException;
 	public User getUser(int userID) throws RemoteException;
-	public void addChat(int roomID, int chatLogID, int userID, String msg) throws RemoteException;
+	public Chat addChat(int roomID, int chatLogID, int userID, String msg) throws RemoteException;
 	public ChatLog addChatLog(int roomID, int userID, String chatLogName) throws RemoteException;
 	public void deleteChatLog(int roomID, int userID, int chatLogID) throws RemoteException;
 	public ChatLog getChatLog(int roomID, int chatLogID) throws RemoteException;

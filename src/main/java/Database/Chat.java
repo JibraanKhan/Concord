@@ -16,6 +16,7 @@ public class Chat implements Serializable
 	private String message;
 	private Time timeStamp;
 	private Boolean pinned = false;
+	private String senderName;
 	
 	public Chat() {
 		this(-1, "<Default Message>", -1, new Time(0));
@@ -43,10 +44,11 @@ public class Chat implements Serializable
 		this.receiverID = receiverID;
 	}
 	
-	public Chat(int chatID, String message, int senderID) {
+	public Chat(int chatID, String message, int senderID, String senderUsername) {
 		this.chatID = chatID;
 		this.message = message;
 		this.senderID = senderID;
+		this.senderName = senderUsername;
 	}
 	
 	public void setChatID(int id) {
@@ -63,6 +65,10 @@ public class Chat implements Serializable
 	
 	public void setReceiverID(int id) {
 		receiverID = id;
+	}
+	
+	public void setSenderName(String senderName) {
+		this.senderName = senderName;
 	}
 	
 	public void pin() {
@@ -87,6 +93,10 @@ public class Chat implements Serializable
 	
 	public int getReceiverID() {
 		return receiverID;
+	}
+	
+	public String getSenderName() {
+		return senderName;
 	}
 	
 	public Boolean isPinned() {
@@ -131,6 +141,6 @@ public class Chat implements Serializable
 	}
 	
 	public String toString() {
-		return message;
+		return senderName + ": " + message;
 	}
 }

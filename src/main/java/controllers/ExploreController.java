@@ -71,4 +71,10 @@ public class ExploreController extends BaseController implements Initializable
 			selectedRoom = new_value;
 		});
 	}
+
+	@Override
+	public void clearSelections()
+	{
+		roomList.getSelectionModel().clearSelection();
+	}
 }

@@ -14,46 +14,30 @@ import java.util.List;
 import java.util.Set;
 
 import Database.Admin;
+import Database.Bot;
 import Database.Chat;
 import Database.ChatLog;
 import Database.Noob;
+import Database.NotificationBot;
 import Database.Role;
 import Database.Room;
 import Database.RoomList;
+import Database.SpamBot;
 import Database.User;
 import Database.UserList;
 import ServerClientModel.Client;
 import ServerClientModel.ServerInterface;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 
 public class ConcordClientModel
 {
-	/*
-	public ObservableList<Room> getAllRooms()
-	{
-		return allRooms;
-	}
-
-	public void setAllRooms(ObservableList<Room> allRooms)
-	{
-		this.allRooms = allRooms;
-	}
-
-	public ObservableList<User> getAllUsers()
-	{
-		return allUsers;
-	}
-
-	public void setAllUsers(ObservableList<User> allUsers)
-	{
-		this.allUsers = allUsers;
-	}*/
-
 	String password;
 	String username;
 	Client client;
@@ -72,21 +56,14 @@ public class ConcordClientModel
 	ObservableList<Chat> chatLogsChats = FXCollections.observableArrayList();
 	ObservableList<Chat> DMsChats = FXCollections.observableArrayList();
 	ObservableList<User> roomsUsers = FXCollections.observableArrayList();
-	/*ObservableList<Room> allRooms = FXCollections.observableArrayList();
-	ObservableList<Room> rooms = FXCollections.observableArrayList();
-	ObservableList<ChatLog> channels = FXCollections.observableArrayList();
-	ObservableList<User> users = FXCollections.observableArrayList();
-	ObservableList<User> allUsers = FXCollections.observableArrayList();
-	ObservableList<Chat> chats = FXCollections.observableArrayList();
-	ObservableList<Room> DMs = FXCollections.observableArrayList();*/
-	
-	private void notifyOthers(String msg, Collection<User> users) {
+	ObservableList<Bot> roomsBots = FXCollections.observableArrayList();
+	ObservableList<String> allBots = FXCollections.observableArrayList();
+	private void notifyAll(String msg, Collection<User> users) {
+		//System.out.println("Notification message: " + msg);
 		for (User user: users) {
 			try
 			{
-				if (user.getUserID() != client.getUserID()) { //Don't want loop notifications so, we don't wanna notify ourselves.
-					client.notifyUser(user.getUserID(), msg);
-				}
+				client.notifyUser(user.getUserID(), msg);
 			} catch (RemoteException e)
 			{
 				// TODO Auto-generated catch block
@@ -95,9 +72,18 @@ public class ConcordClientModel
 			
 		}
 	}
+
+	public User getUser()
+	{
+		return user;
+	}
 	
 	public ObservableList<Room> getAllRooms(){
 		return allRooms;
+	}
+	
+	public ObservableList<String> getAllBots(){
+		return allBots;
 	}
 	
 	public ObservableList<Room> getMyRooms(){
@@ -120,12 +106,111 @@ public class ConcordClientModel
 		return roomsUsers;
 	}
 	
+	public ObservableList<Bot> getRoomsBots(){
+		return roomsBots;
+	}
+	
 	public ObservableList<Room> getMyDMs(){
 		return myDMs;
 	}
 	
 	public ObservableList<Chat> getDMsChats(){
 		return DMsChats;
+	}
+	
+	public void setUser(User user)
+	{
+		this.user = user;
+	}
+
+	public ServerInterface getServer()
+	{
+		return server;
+	}
+
+	public void setServer(ServerInterface server)
+	{
+		this.server = server;
+	}
+
+	public void setClient(Client client)
+	{
+		this.client = client;
+	}
+
+	public void setSelectedRoom(StringProperty selectedRoom)
+	{
+		this.selectedRoom = selectedRoom;
+	}
+
+	public void setSelectedRoomID(IntegerProperty selectedRoomID)
+	{
+		this.selectedRoomID = selectedRoomID;
+	}
+
+	public void setSelectedChatLogID(IntegerProperty selectedChatLogID)
+	{
+		this.selectedChatLogID = selectedChatLogID;
+	}
+
+	public void setUsernameTextProperty(StringProperty usernameTextProperty)
+	{
+		this.usernameTextProperty = usernameTextProperty;
+	}
+
+	public void setSelectedDMID(IntegerProperty selectedDMID)
+	{
+		this.selectedDMID = selectedDMID;
+	}
+
+	public void setAllRooms(ObservableList<Room> allRooms)
+	{
+		this.allRooms = allRooms;
+	}
+
+	public void setMyRooms(ObservableList<Room> myRooms)
+	{
+		this.myRooms = myRooms;
+	}
+
+	public void setMyDMs(ObservableList<Room> myDMs)
+	{
+		this.myDMs = myDMs;
+	}
+
+	public void setAllUsers(ObservableList<User> allUsers)
+	{
+		this.allUsers = allUsers;
+	}
+
+	public void setRoomsChatLogs(ObservableList<ChatLog> roomsChatLogs)
+	{
+		this.roomsChatLogs = roomsChatLogs;
+	}
+
+	public void setChatLogsChats(ObservableList<Chat> chatLogsChats)
+	{
+		this.chatLogsChats = chatLogsChats;
+	}
+
+	public void setDMsChats(ObservableList<Chat> dMsChats)
+	{
+		DMsChats = dMsChats;
+	}
+
+	public void setRoomsUsers(ObservableList<User> roomsUsers)
+	{
+		this.roomsUsers = roomsUsers;
+	}
+
+	public void setRoomsBots(ObservableList<Bot> roomsBots)
+	{
+		this.roomsBots = roomsBots;
+	}
+
+	public void setAllBots(ObservableList<String> allBots)
+	{
+		this.allBots = allBots;
 	}
 	
 	public void loadAllRooms() {
@@ -164,7 +249,7 @@ public class ConcordClientModel
 			Hashtable<Integer, Room> usersRooms = necessaryUser.getRooms();
 			
 			for (Room room: usersRooms.values()) {
-				System.out.println("Users room: " + room);
+				//System.out.println("Users room: " + room);
 			}
 			
 			myRooms.addAll(usersRooms.values());
@@ -185,9 +270,6 @@ public class ConcordClientModel
 		
 		try
 		{
-			for (User user: allUsers) {
-				client.notifyUser(user.getUserID(), "<load all users>");
-			}
 			allUsers.clear();
 			
 			Hashtable<Integer, User> allUsersHash = server.getUsers().getUsers();
@@ -232,7 +314,7 @@ public class ConcordClientModel
 	
 	public void loadRoomsChatLogs() {
 		if (selectedRoomID == null || server == null) {
-			System.out.println("Room's not selected");
+			//System.out.println("Room's not selected");
 			return;
 			//If a room isn't selected, we can't show its channels.
 		}
@@ -244,7 +326,7 @@ public class ConcordClientModel
 			if (chatLogsForRoom == null) {
 				return;
 			}
-			System.out.println(getSelectedRoomID());
+			//System.out.println(getSelectedRoomID());
 			roomsChatLogs.addAll(chatLogsForRoom);
 			//notifyOthers("<load all chatlogs>" + getSelectedRoomID(), roomsUsers);
 		} catch (RemoteException e)
@@ -252,6 +334,41 @@ public class ConcordClientModel
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void loadRoomsBots() {
+		if (selectedRoomID == null || server == null) {
+			//System.out.println("Room's not selected");
+			return;
+			//If a room isn't selected, we can't show its channels.
+		}
+		
+		try
+		{
+			roomsBots.clear();
+			Room room = server.getRoom(getSelectedRoomID());
+			if (room == null) {
+				return;
+			}
+			//System.out.println("Loading rooms bots");
+			ArrayList<Bot> bots = room.getBots();
+			if (bots == null) {
+				return;
+			}
+			
+			roomsBots.addAll(bots);
+		} catch (RemoteException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadAllBots() {
+		allBots.clear();
+		
+		allBots.add("[SPAM BOT]");
+		allBots.add("[NOTIFICATION BOT]");
 	}
 	
 	public void loadChatLogsChats() {
@@ -281,10 +398,8 @@ public class ConcordClientModel
 				chatLogsChats.add(chat);
 			}
 			
-			System.out.println("Loaded chats.");
+			//System.out.println("Loaded chats.");
 			//chatLogsChats.addAll(chats.values());
-			
-			//notifyOthers("<load all chats>|" + getSelectedChatLogID(), roomsUsers);
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
@@ -343,10 +458,6 @@ public class ConcordClientModel
 				return;
 			}
 			
-			for (ChatLog chatlog:selectedDM.getChatLogs().values()) {
-				System.out.println("ChatLog in DM:" + chatlog + "\nID:" + chatlog.getChatLogID());
-			}
-			
 			ChatLog DM = selectedDM.getChatLog(1);
 			
 			if (DM == null) {
@@ -379,7 +490,8 @@ public class ConcordClientModel
 		try
 		{
 			server.startDirectMessage(client.getUserID(), userID);
-			loadMyDMs();
+			notifyAll("<load all dms>", server.getUsers().getUsers().values());
+			//loadMyDMs();
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
@@ -387,16 +499,35 @@ public class ConcordClientModel
 		}
 	}
 	
-	public void createChat(int roomID, int chatLogID, String message) {
+	public Chat createChat(int roomID, int chatLogID, String message, ListView<Chat> chatList) {
 		try
 		{
-			client.addChat(roomID, chatLogID, message);
+			Chat chat = client.addChat(roomID, chatLogID, message);
+			Room room = server.getRoom(getSelectedRoomID());
+			if (room == null) { 
+				return null;
+			}
+			
+			Set<Integer> userIds = room.getUserTable().keySet();
+			ArrayList<User> localUsers = new ArrayList<User>();
+			for (int userID: userIds) {
+				User user = server.getUser(userID);
+				if (user != null) {
+					localUsers.add(user);
+				}
+			}
 			loadChatLogsChats();
+			notifyAll("<load all chats>|" + Integer.toString(getSelectedChatLogID()), localUsers);
+			List<Chat> chats = chatList.getItems();
+			int index = chats.size();
+			chatList.scrollTo(index);
+			return chat;
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public void sendDM(String msg) {
@@ -407,7 +538,26 @@ public class ConcordClientModel
 		try
 		{
 			client.addChat(getSelectedDMID(), 1, msg);
-			loadDMsChats();
+			Hashtable<Integer, Room> dms = client.getDirectMessages();
+			if (dms == null) {
+				return;
+			}
+			
+			Room selectedDM = dms.get(getSelectedDMID());
+			if (selectedDM == null) {
+				return;
+			}
+			
+			Set<Integer> userIDsInDM = selectedDM.getUserTable().keySet();
+			ArrayList<User> usersInDM = new ArrayList<User>();
+			for (int userID: userIDsInDM) {
+				User user = server.getUser(userID);
+				if (user != null) {
+					usersInDM.add(user);
+				}
+			}
+			notifyAll("<load dms chats>|" + Integer.toString(getSelectedDMID()), usersInDM);
+			//loadDMsChats();
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
@@ -422,8 +572,21 @@ public class ConcordClientModel
 		
 		try
 		{
-			client.addChatLog(roomID, chatLogName);
-			loadRoomsChatLogs();
+			ChatLog chatlog = client.addChatLog(roomID, chatLogName);
+			Room room = server.getRoom(roomID);
+			if (room == null) {
+				return;
+			}
+			Set<Integer> userIDsInRoom = room.getUserTable().keySet();
+			ArrayList<User> usersInRoom = new ArrayList<User>();
+			for (int userID: userIDsInRoom) {
+				User user = server.getUser(userID);
+				if (user != null) {
+					usersInRoom.add(user);
+				}
+			}
+			notifyAll("<load all chatlogs>|" + Integer.toString(getSelectedRoomID()), usersInRoom);
+			//loadRoomsChatLogs();
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
@@ -440,7 +603,19 @@ public class ConcordClientModel
 		{
 			//System.out.println("Deleting chat log");
 			client.deleteChatLog(roomID, chatLogID);
-			loadRoomsChatLogs();
+			Room room = server.getRoom(roomID);
+			if (room == null) {
+				return;
+			}
+			Set<Integer> userIDsInRoom = room.getUserTable().keySet();
+			ArrayList<User> usersInRoom = new ArrayList<User>();
+			for (int userID: userIDsInRoom) {
+				User user = server.getUser(userID);
+				if (user != null) {
+					usersInRoom.add(user);
+				}
+			}
+			notifyAll("<load all chatlogs>|" + Integer.toString(getSelectedRoomID()), usersInRoom);
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
@@ -464,8 +639,13 @@ public class ConcordClientModel
 			selectedRoomID.set(newRoom.getRoomID());
 			
 			client.addUserToRoom(newRoom.getRoomID(), new Admin()); //Also add user to room
-			
-			loadAllRooms();
+
+			Collection<User> users = server.getUsers().getUsers().values();
+			if (users == null) {
+				return;
+			}
+			notifyAll("<load all rooms>", users);
+			//loadAllRooms();
 			loadMyRooms();
 		} catch (RemoteException e)
 		{
@@ -481,23 +661,87 @@ public class ConcordClientModel
 		
 		try
 		{
-			loadAllUsers();
-			
+			//loadAllUsers();
+			Collection<User> users = server.getUsers().getUsers().values();
+			if (users == null) {
+				return;
+			}
+			notifyAll("<load all users>", users);
 			//Delete the room
 			client.deleteRoom(roomID); 
 			selectedRoom.set("");
 			selectedRoomID.set(-1);
-			loadAllRooms();
-			loadMyRooms();
+			notifyAll("<load all rooms>", users);
+			notifyAll("<load my rooms>", users);
+			//loadAllRooms();
+			//loadMyRooms();
 		} catch (RemoteException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 	}
 	
+	public void registerBot(String botType) {
+		try
+		{
+			Bot newBot = null;
+			Room relevantRoom = server.getRoom(getSelectedRoomID());
+			
+			if (relevantRoom == null) {
+				return;
+			}
+			
+			if (botType.equals("[SPAM BOT]")) {
+				//Lets make a new spam bot 
+				newBot = new SpamBot(relevantRoom.getRoomID());
+				//We also gotta add a user to the room with the same name is spam bot.
+				
+			} else if (botType.equals("[NOTIFICATION BOT]")) {
+				newBot = new NotificationBot(relevantRoom.getRoomID());
+			}
+			
+			if (newBot == null) {
+				return;
+			}
+			//Check if the bot already exists in the room
+			
+			ArrayList<Bot> relevantRoomsBots = relevantRoom.getBots();
+			//System.out.println("Performing checks on bots in room " + relevantRoomsBots);
+			for (Bot bot: relevantRoomsBots) {
+				//System.out.println(bot.getName() + ", " + newBot.getName());
+				if (bot.getName().equals(newBot.getName())) {
+					//System.out.println("Ok, returning");
+					return; //The new bot already exists.
+				}
+			}
+
+			
+			//Add a user to the room with the same name as bot and set the bots userID to that user.
+			User botUser = server.addUser(newBot.getName(), "botPass", "I AM " + newBot.getName());
+			server.addUserToRoom(relevantRoom.getRoomID(), botUser, new Admin());
+			newBot.setUserID(botUser.getUserID());
+			server.registerBot(getSelectedRoomID(), newBot);
+			System.out.println("New bots userID: " + newBot.getUserID());
+			for (Integer userID: relevantRoom.getUserTable().keySet()) {
+				System.out.println(userID + "\n" + server.getUser(userID));
+			}
+			Set<Integer> userIDsInRoom = relevantRoom.getUserTable().keySet();
+			ArrayList<User> usersInRoom = new ArrayList<User>();
+			for (int userID: userIDsInRoom) {
+				User user = server.getUser(userID);
+				if (user != null) {
+					usersInRoom.add(user);
+				}
+			}
+			notifyAll("<load all users>", usersInRoom);
+			notifyAll("<load rooms users>", usersInRoom);
+		} catch (RemoteException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	
 	public ConcordClientModel() throws RemoteException {
 		//System.out.println("Initializing demo");
@@ -530,16 +774,20 @@ public class ConcordClientModel
 	}
 	
 	public void getNotified(String msg) {
+		//System.out.println("Got notified: " + msg);
 		if (msg.indexOf("<load all users>") != -1) {
-			loadAllUsers();
+			Platform.runLater(() -> loadAllUsers());
+		} else if (msg.indexOf("<load my rooms>") != -1) {
+			Platform.runLater(() -> loadMyRooms());
 		} else if (msg.indexOf("<load all chats>|") != -1) {
 			//Need to check if the chat logs match
 			String strOccuring = "<load all chats>|";
 			int strIndex = msg.indexOf(strOccuring);
 			String chatlogID = msg.substring(strIndex + strOccuring.length(), msg.length());
 			int chatLogID = Integer.parseInt(chatlogID);
+			//System.out.println("Selected chatlog id:" + chatLogID);
 			if (getSelectedChatLogID() == chatLogID) {
-				loadChatLogsChats(); //Only load chats if we have selected the chat log.
+				Platform.runLater(() -> loadChatLogsChats());
 			}
 		} else if (msg.indexOf("<load all chatlogs>|") != -1) {
 			//Need to check if rooms match
@@ -547,22 +795,32 @@ public class ConcordClientModel
 			int strIndex = msg.indexOf(strOccuring);
 			String roomIDStr = msg.substring(strIndex + strOccuring.length(), msg.length());
 			int roomID = Integer.parseInt(roomIDStr);
+			//System.out.println("Msg is:" + msg);
+			//System.out.println("Room ID is:" + roomID);
 			if (getSelectedRoomID() == roomID) {
-				loadRoomsChatLogs();
+				Platform.runLater(() -> loadRoomsChatLogs());
 			}
 		} else if (msg.indexOf("<load all rooms>") != -1) {
-			loadAllRooms();
+			Platform.runLater(() -> loadAllRooms());
 		} else if (msg.indexOf("<load rooms users>") != -1) {
-			loadRoomsUsers();
+			Platform.runLater(() -> loadRoomsUsers());
 		} else if (msg.indexOf("<load all dms>") != -1) {
-			loadMyDMs();
+			Platform.runLater(() -> loadMyDMs());
+		} else if (msg.indexOf("<load dms chats>|") != -1) {
+			String strOccuring = "<load dms chats>|";
+			int strIndex = msg.indexOf(strOccuring);
+			String dmIDString = msg.substring(strIndex + strOccuring.length(), msg.length());
+			int dmID = Integer.parseInt(dmIDString);
+			if (getSelectedDMID() == dmID) {
+				Platform.runLater(() -> loadDMsChats());
+			}
 		}
 	}
 	
 	public boolean logOn() {
 		try
 		{
-			System.out.println("Trying to login:\n" + username + ":" + password);
+			//System.out.println("Trying to login:\n" + username + ":" + password);
 			server = (ServerInterface) Naming.lookup("rmi://127.0.0.1/CONCORD");
 			if (user == null) {
 				user = server.getUser(username, password);
@@ -582,7 +840,7 @@ public class ConcordClientModel
 					int key = e.nextElement();
 					Room room = roomsHash.get(key);
 					
-					System.out.println("Room:" + room);
+					//System.out.println("Room:" + room);
 				}
 				
 				server.addClient(client);
@@ -595,9 +853,11 @@ public class ConcordClientModel
 					return false;
 				}
 				client.addClientModel(this);
+				//System.out.println("Adding client model");
 				loadAllUsers();
 				loadAllRooms();
 				loadMyRooms();
+				loadAllBots();
 				selectedRoom.set("");
 				selectedRoomID.set(-1); //No room is selected to start with
 				usernameTextProperty.set(username);
@@ -615,6 +875,20 @@ public class ConcordClientModel
 		
 		return false;
 		
+	}
+	
+	public User getUserFromServer() {
+		int userID = user.getUserID();
+		
+		try
+		{
+			return server.getUser(userID);
+		} catch (RemoteException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public void updateInfo(String username, String password, String profileData, Boolean status) {
@@ -759,11 +1033,11 @@ public class ConcordClientModel
 			if (room == null) {
 				return;
 			}
-			System.out.println("Room's name: " + room.getName());
-			System.out.println("Room's ID:" + room.getRoomID());
+			//System.out.println("Room's name: " + room.getName());
+			//System.out.println("Room's ID:" + room.getRoomID());
 			Role clientsRole = room.getUser(client.getUserID());
 			if (clientsRole == null) {
-				System.out.println("No role for user");
+				//System.out.println("No role for user");
 				return;
 			}
 			if (!clientsRole.isDeleteRoomPermission()) {
@@ -790,7 +1064,7 @@ public class ConcordClientModel
 	}
 	
 	public void initializeDemo() throws RemoteException {
-		System.out.println("Initializing demo");
+		//System.out.println("Initializing demo");
 		
 		if (server == null) {
 			return;

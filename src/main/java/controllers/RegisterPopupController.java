@@ -72,4 +72,11 @@ public class RegisterPopupController extends BaseController
 			e.printStackTrace();
 		}
     }
+
+	@Override
+	public void clearSelections()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

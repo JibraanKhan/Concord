@@ -5,12 +5,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-   <left>
-      <VBox id="DMFrame" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../src/main/resources/basic.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <left> 
+      <VBox id="DMFrame" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" stylesheets="@../../../src/main/resources/basic.css">
          <children>
-            <Button id="usersButton" mnemonicParsing="false" onAction="#onUsersButtonClicked" prefHeight="26.0" prefWidth="102.0" text="Users" />
-            <ListView id="DMList" fx:id="dmLists" prefHeight="376.0" prefWidth="100.0" />
+            <Button id="usersButton" mnemonicParsing="false" onAction="#onUsersButtonClicked" prefHeight="26.0" prefWidth="102.0" stylesheets="@../../../src/main/resources/basic.css" text="Users" />
+            <ListView id="DMList" fx:id="dmLists" prefHeight="376.0" prefWidth="100.0" stylesheets="@../../../src/main/resources/basic.css"/>
          </children>
       </VBox>
    </left>

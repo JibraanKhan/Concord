@@ -42,4 +42,11 @@ public class CreateChannelPopupController extends BaseController
     	System.out.println("Adding channel " + chatLogName);
 		client.createChatLog(SelectedRoomID, chatLogName);
     }
+
+	@Override
+	public void clearSelections()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -58,23 +58,28 @@ public class ChatLog implements Serializable
 		return chatLogName;
 	}
 		
-	public void addChat(String message, int senderID) {
+	public Chat addChat(String message, int senderID, String senderName) {
 		if (!chatLogLocked) {
 			last_ChatID++;
-			System.out.println("Ok, adding chat:\t" + message);
-			chatLog.put(last_ChatID, new Chat(last_ChatID, message, senderID));
-			
+			//System.out.println("Ok, adding chat:\t" + message);
+			Chat newChat = new Chat(last_ChatID, message, senderID, senderName);
+			chatLog.put(last_ChatID, new Chat(last_ChatID, message, senderID, senderName));
+			return newChat;
 		}else {
 			System.out.println("ChatLog is locked");
+			return null;
 		}
 	}
 	
-	public void addChat(String message, int senderID, int receiverID) {
+	public Chat addChat(String message, int senderID, int receiverID) {
 		if (!chatLogLocked) {
 			last_ChatID++;
-			chatLog.put(last_ChatID, new Chat(last_ChatID, message, senderID, receiverID));
+			Chat newChat = new Chat(last_ChatID, message, senderID, receiverID);
+			chatLog.put(last_ChatID, newChat);
+			return newChat;
 		}else {
-			System.out.println("ChatLog is locked");
+			//System.out.println("ChatLog is locked");
+			return null;
 		}
 	}
 	

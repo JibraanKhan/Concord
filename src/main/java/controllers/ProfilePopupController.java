@@ -55,4 +55,11 @@ public class ProfilePopupController extends BaseController implements Initializa
 		Bindings.bindBidirectional(name.textProperty(), profileName);
 		Bindings.bindBidirectional(profile.textProperty(), profileData);
 	}
+
+	@Override
+	public void clearSelections()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

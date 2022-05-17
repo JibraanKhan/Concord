@@ -91,9 +91,16 @@ public class MainFrameController extends BaseController implements Initializable
 			client.setSelectedRoomID(newValue.getRoomID()); 
 			client.loadRoomsChatLogs();
 			client.loadRoomsUsers();
+			client.loadRoomsBots();
 			//client.load_allChannels(); //We need to load all the channels for the room that is clicked.
 			//client.load_usersInRoom();
 		});
+	}
+
+	@Override
+	public void clearSelections()
+	{
+		roomList.getSelectionModel().clearSelection();
 	}
 
 
