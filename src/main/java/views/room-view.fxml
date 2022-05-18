@@ -18,7 +18,6 @@
               <items>
                 <MenuItem id="createChannelButton" mnemonicParsing="false" onAction="#createChannelButtonClicked" text="Create channel" />
                 <MenuItem id="inviteUserButton" mnemonicParsing="false" onAction="#inviteUserButtonClicked" text="Invite user" />
-                  <MenuItem id="removeUserButton" mnemonicParsing="false" onAction="#removeUserButtonClicked" text="Remove user" />
                   <MenuItem id="deleteChatLogButton" mnemonicParsing="false" onAction="#deleteChatLogButtonClicked" text="Delete channel" />
                   <MenuItem id="deleteRoomButton" mnemonicParsing="false" onAction="#deleteRoomButtonClicked" text="Delete server" />
                   <MenuItem id="addBotButton" mnemonicParsing="false" onAction="#addBotButtonClicked" text="Add Bot" />

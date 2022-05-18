@@ -52,7 +52,7 @@ public class RoomViewController extends BaseController implements Initializable
 
     @FXML
     void inviteUserButtonClicked(ActionEvent event) {
-
+    	vtm.showInviteUserPopup();
     }
 
     @FXML
@@ -60,10 +60,6 @@ public class RoomViewController extends BaseController implements Initializable
     	vtm.showAddBotPopup();
     }
     
-    @FXML
-    void removeUserButtonClicked(ActionEvent event) {
-
-    }
 	
     @FXML
     void deleteChatLogButtonClicked(ActionEvent event) {

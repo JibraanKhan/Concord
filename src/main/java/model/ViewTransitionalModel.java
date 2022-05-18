@@ -17,6 +17,7 @@ import controllers.CreateChannelPopupController;
 import controllers.DMController;
 import controllers.EditProfilePopupController;
 import controllers.ExploreController;
+import controllers.InviteUserPopupController;
 import controllers.LoginController;
 import controllers.MainFrameController;
 import controllers.ProfilePopupController;
@@ -126,6 +127,12 @@ public class ViewTransitionalModel implements ViewTransitionalModelInterface
 		showStage(registerPopupController, false);
 	}
 	
+	public void showInviteUserPopup() {
+		BaseController inviteUserPopupController = new InviteUserPopupController("inviteUserPopup.fxml", this, client);
+		controllers.add(inviteUserPopupController);
+		showStage(inviteUserPopupController, false);
+	}
+	
 	public void showEditProfilePopup() {
 		BaseController editProfilePopupController = new EditProfilePopupController("editProfilePopup.fxml", this, client);
 		controllers.add(editProfilePopupController);
@@ -174,7 +181,6 @@ public class ViewTransitionalModel implements ViewTransitionalModelInterface
 	}
 	
 	private void closeApplication() {
-		
 		try
 		{
 			ServerInterface server = (ServerInterface) Naming.lookup("rmi://127.0.0.1/CONCORD");

@@ -743,6 +743,17 @@ public class ConcordClientModel
 		}
 	}
 	
+	public void inviteUser(User user) {
+		try
+		{
+			client.inviteUser(getSelectedRoomID(), user.getUserID());
+		} catch (RemoteException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public ConcordClientModel() throws RemoteException {
 		//System.out.println("Initializing demo");
 		
