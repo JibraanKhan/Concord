@@ -59,39 +59,39 @@ public class ApplicationTest
 	
 	@Test
 	public void testLogin(FxRobot robot) {
-		/*
-		robot.clickOn("#refreshDataButton");
-		robot.clickOn("#signupButton");
 		
-		Assertions.assertThat(robot.lookup("#usernameTextFieldSignup") != null);
-		Assertions.assertThat(robot.lookup("#passwordTextFieldSignup") != null);
-		
-		enterValue("#usernameTextFieldSignup", "Jake", robot);
-		enterValue("#passwordTextFieldSignup", "From State Farm", robot);
-		robot.clickOn("#signupFinishedButton");
-		
-		robot.clickOn("#loginButton");
-		// If the user clicks on the login button, the scene does not change and it does not allow the user to login.
-		Assertions.assertThat(robot.lookup("#errorMsg") != null);
-		
-		enterValue("#usernameTextField", "non_existing_user", robot);
-		enterValue("#passwordTextField", "random_password", robot);
-		robot.clickOn("#loginButton");
-		Assertions.assertThat(robot.lookup("#errorMsg") != null);
-		
-		enterValue("#usernameTextField", "bob", robot);
-        enterValue("#passwordTextField", "wrong_password", robot);
-        robot.clickOn("#loginButton");
-        Assertions.assertThat(robot.lookup("#errorMsg") != null);
-
-        enterValue("#usernameTextField", "Jake", robot);
-        enterValue("#passwordTextField", "From State Farm", robot);
-        robot.clickOn("#loginButton");
-        Assertions.assertThat(robot.lookup("#errorMsg") == null);
-        Assertions.assertThat(robot.lookup("#mainFrame") != null);
-        Assertions.assertThat(robot.lookup("#addButton") != null);
-        Assertions.assertThat(robot.lookup("#exploreButton") != null);
-        Assertions.assertThat(robot.lookup("#DMButton") != null); */
+//		robot.clickOn("#refreshDataButton");
+//		robot.clickOn("#signupButton");
+//		
+//		Assertions.assertThat(robot.lookup("#usernameTextFieldSignup") != null);
+//		Assertions.assertThat(robot.lookup("#passwordTextFieldSignup") != null);
+//		
+//		enterValue("#usernameTextFieldSignup", "Jake", robot);
+//		enterValue("#passwordTextFieldSignup", "From State Farm", robot);
+//		robot.clickOn("#signupFinishedButton");
+//		
+//		robot.clickOn("#loginButton");
+//		// If the user clicks on the login button, the scene does not change and it does not allow the user to login.
+//		Assertions.assertThat(robot.lookup("#errorMsg") != null);
+//		
+//		enterValue("#usernameTextField", "non_existing_user", robot);
+//		enterValue("#passwordTextField", "random_password", robot);
+//		robot.clickOn("#loginButton");
+//		Assertions.assertThat(robot.lookup("#errorMsg") != null);
+//		
+//		enterValue("#usernameTextField", "bob", robot);
+//        enterValue("#passwordTextField", "wrong_password", robot);
+//        robot.clickOn("#loginButton");
+//        Assertions.assertThat(robot.lookup("#errorMsg") != null);
+//
+//        enterValue("#usernameTextField", "Jake", robot);
+//        enterValue("#passwordTextField", "From State Farm", robot);
+//        robot.clickOn("#loginButton");
+//        Assertions.assertThat(robot.lookup("#errorMsg") == null);
+//        Assertions.assertThat(robot.lookup("#mainFrame") != null);
+//        Assertions.assertThat(robot.lookup("#addButton") != null);
+//        Assertions.assertThat(robot.lookup("#exploreButton") != null);
+//        Assertions.assertThat(robot.lookup("#DMButton") != null); 
 	}
 	
 	@Test
@@ -112,6 +112,7 @@ public class ApplicationTest
         Assertions.assertThat(robot.lookup("#addButton") != null);
         Assertions.assertThat(robot.lookup("#exploreButton") != null);
         Assertions.assertThat(robot.lookup("#DMButton") != null);  
+        Assertions.assertThat(robot.lookup("#myRoomsList") != null);  
         try
 		{
 			client.initializeDemo(); //Initialize our data in the server
@@ -129,7 +130,7 @@ public class ApplicationTest
 		Assertions.assertThat(robot.lookup("#cancelCreationButton") != null);
 		enterValue("#roomNameTextField", "Jibraans Server", robot);
 		robot.clickOn("#createRoomButton");
-		selectListItem("#roomsList", 0, robot);
+		selectListItem("#myRoomsList", 0, robot);
 		wait(0.5);
 		checkRoomName("Jibraans Server", robot);
 		wait(0.5);
@@ -147,19 +148,25 @@ public class ApplicationTest
 		wait(0.5);
 		assertTrue(chatsList.get(0).getMessage().equals("Please do not spam!"));
 		
-		selectListItem("#roomsList", 0, robot);
+		selectListItem("#myRoomsList", 0, robot);
 		checkRoomName("Jibraans Server", robot);
 		robot.clickOn("#exploreButton");
-		selectListItem("#exploreListView", 1, robot);
+		wait(0.5);
+		selectListItem("#exploreRoomsList", 1, robot);
+		wait(0.5);
 		robot.clickOn("#addRoomExploreButton");
-		selectListItem("#roomsList", 1, robot);
-		selectListItem("#roomsList", 0, robot);
+		wait(0.5);
+		//robot.clickOn("#DMButton");
+		wait(0.5);
+		selectListItem("#myRoomsList", 1, robot);
+		selectListItem("#myRoomsList", 0, robot);
 		wait(0.5);
 		checkRoomName("Jibraans Server", robot);
-		wait(1.1); //Works sometimes and sometimes it doesn't
-		selectListItem("#roomsList", 1, robot);
+		wait(0.5); //Works sometimes and sometimes it doesn't
+		selectListItem("#myRoomsList", 0, robot);
 		wait(0.5);
-		selectListItem("#roomsList", 1, robot);
+		selectListItem("#myRoomsList", 1, robot);
+		wait(0.5);
 		checkRoomName("Test Room", robot);
 		selectListItem("#chatLogList", 0, robot);
 		wait(0.5);
@@ -183,116 +190,116 @@ public class ApplicationTest
 		closeStageFromNode(label);
 		wait(0.5);
 		//Testing DMs
-//		robot.clickOn("#DMButton");
-//		wait(0.5);
-//		assertTrue(robot.lookup("#usersButton").query() != null);
-//		robot.clickOn("#usersButton");
-//		wait(0.5);
-//		ListView<User> users = getUsers(robot);
-//		ObservableList<User> usersList = users.getItems();
-//		assertTrue(usersList.get(0).getUserName().equals("Rob"));
-//		assertTrue(usersList.get(1).getUserName().equals("John"));
-//		assertTrue(usersList.get(2).getUserName().equals("Jibraan"));
-//		selectListItem("#usersListForDM", 0, robot);
-//		selectListItem("#usersListForDM", 1, robot);
-//		wait(0.5);
-//		ListView<Room> dms = getDMs(robot);
-//		ObservableList<Room> dmsList = dms.getItems();
-//		
-//		assertTrue(dmsList.get(0).getName().equals("Jibraan, John"));
-//		assertTrue(dmsList.get(1).getName().equals("Jibraan, Rob"));
-//		selectListItem("#DMList", 0, robot);
-//		wait(0.5);
-//		enterValue("#chatTextField", "Sup John?", robot);
-//		wait(0.5);
-//		robot.clickOn("#sendChatButton");
-//		wait(0.5);
-//		//ListView<Chat> chats = getChats(robot); 
-//		//ObservableList<Chat> chatsList = chats.getItems();
-//		chats = getChats(robot); 
-//		chatsList = chats.getItems();
-//		
-//		assertTrue(chatsList.get(0).getMessage().equals("Sup John?"));
-//		selectListItem("#DMList", 1, robot);
-//		wait(0.5);
-//		enterValue("#chatTextField", "Hey Rob, how've you been?", robot);
-//		wait(0.5);
-//		robot.clickOn("#sendChatButton");
-//		wait(0.5);
-//		chats = getChats(robot); 
-//		chatsList = chats.getItems();
-//		assertTrue(chatsList.get(0).getMessage().equals("Hey Rob, how've you been?"));
-//		robot.clickOn("#editProfileButton");
-//		enterValue("#usernameTextFieldEditProfile", "Jacob", robot);
-//		enterValue("#passwordTextFieldEditProfile", "password123", robot);
-//		enterValue("#profileDataTextFieldEditProfile", "My name's Jacob!", robot);
-//		robot.clickOn("#saveButton");
-//		wait(0.5);
-//		checkLabelText("#usernameLabel", "Jacob", robot);
-//		
-//		//Testing bots
-//		
-//		selectListItem("#roomsList", 1, robot);
-//		wait(0.5);
-//		robot.clickOn("#menuButton");
-//		robot.clickOn("#addBotButton");
-//		selectListItem("#botsListView", 0, robot);
-//		robot.clickOn("#registerBotButton");
-//		robot.clickOn("#menuButton");
-//		robot.clickOn("#addBotButton");
-//		selectListItem("#botsListView", 1, robot);
-//		robot.clickOn("#registerBotButton");
-//		wait(0.5);
-//		users = getUsersInRoom(robot);
-//		usersList = users.getItems();
-//		
-//		assertTrue(usersList.get(0).getUserName().equals("[NOTIFICATION BOT]"));
-//		assertTrue(usersList.get(1).getUserName().equals("[SPAM BOT]"));
-//		selectListItem("#chatLogList", 0, robot);
-//		enterValue("#chatTextField", "spam", robot);
-//		robot.clickOn("#sendChatButton");
-//		enterValue("#chatTextField", "spam", robot);
-//		robot.clickOn("#sendChatButton");
-//		enterValue("#chatTextField", "spam", robot);
-//		robot.clickOn("#sendChatButton");
-//		enterValue("#chatTextField", "spam", robot);
-//		robot.clickOn("#sendChatButton");
-//		enterValue("#chatTextField", "spam", robot);
-//		robot.clickOn("#sendChatButton");
-//		chats = getChats(robot); 
-//		chatsList = chats.getItems();
-//		int lastSpamIndex = chatsList.size() - 2;
-//		//Last five chats were spam messages.
-//		assertTrue(chatsList.get(lastSpamIndex).getMessage().equals("spam")); 
-//		assertTrue(chatsList.get(lastSpamIndex - 1).getMessage().equals("spam")); 
-//		assertTrue(chatsList.get(lastSpamIndex - 2).getMessage().equals("spam")); 
-//		assertTrue(chatsList.get(lastSpamIndex - 3).getMessage().equals("spam")); 
-//		assertTrue(chatsList.get(lastSpamIndex - 4).getMessage().equals("spam")); 
-//		wait(0.5);
-//		
-//		//Bot should tell us to stop spamming
-//		assertTrue(chatsList.get(lastSpamIndex + 1).getSenderName().equals("[SPAM BOT]"));
-//		assertTrue(chatsList.get(lastSpamIndex + 1).getMessage().equals("Please stop spamming!")); 
-//		
-//		//Lets have notification bot add like two notifications and then show those notifications
-//		enterValue("#chatTextField", "!addNotification Check me out on twitch @JibraanKhan91412", robot);
-//		robot.clickOn("#sendChatButton");
-//		enterValue("#chatTextField", "!addNotification Hey guys, don't forget about our soccer game this weekend!", robot);
-//		robot.clickOn("#sendChatButton");
-//		
-//		enterValue("#chatTextField", "!showNotifications", robot);
-//		robot.clickOn("#sendChatButton");
-//		
-//		chats = getChats(robot); 
-//		chatsList = chats.getItems();
-//		//Both notification messages being shown will be by the notification bot
-//		int notificationIndex = chatsList.size() - 1;
-//		assertTrue(chatsList.get(notificationIndex).getMessage().equals("Hey guys, don't forget about our soccer game this weekend!")); 
-//		assertTrue(chatsList.get(notificationIndex - 1).getMessage().equals("Check me out on twitch @JibraanKhan91412")); 
-//		assertTrue(chatsList.get(notificationIndex).getSenderName().equals("[NOTIFICATION BOT]"));
-//		assertTrue(chatsList.get(notificationIndex - 1).getSenderName().equals("[NOTIFICATION BOT]"));
+		robot.clickOn("#DMButton");
 		wait(0.5);
-		selectListItem("#roomsList", 0, robot);
+		assertTrue(robot.lookup("#usersButton").query() != null);
+		robot.clickOn("#usersButton");
+		wait(0.5);
+		ListView<User> users = getUsers(robot);
+		ObservableList<User> usersList = users.getItems();
+		assertTrue(usersList.get(0).getUserName().equals("Rob"));
+		assertTrue(usersList.get(1).getUserName().equals("John"));
+		assertTrue(usersList.get(2).getUserName().equals("Jibraan"));
+		selectListItem("#usersListForDM", 0, robot);
+		selectListItem("#usersListForDM", 1, robot);
+		wait(0.5);
+		ListView<Room> dms = getDMs(robot);
+		ObservableList<Room> dmsList = dms.getItems();
+		
+		assertTrue(dmsList.get(0).getName().equals("Jibraan, John"));
+		assertTrue(dmsList.get(1).getName().equals("Jibraan, Rob"));
+		selectListItem("#DMList", 0, robot);
+		wait(0.5);
+		enterValue("#chatTextField", "Sup John?", robot);
+		wait(0.5);
+		robot.clickOn("#sendChatButton");
+		wait(0.5);
+		//ListView<Chat> chats = getChats(robot); 
+		//ObservableList<Chat> chatsList = chats.getItems();
+		chats = getChats(robot); 
+		chatsList = chats.getItems();
+		
+		assertTrue(chatsList.get(0).getMessage().equals("Sup John?"));
+		selectListItem("#DMList", 1, robot);
+		wait(0.5);
+		enterValue("#chatTextField", "Hey Rob, how've you been?", robot);
+		wait(0.5);
+		robot.clickOn("#sendChatButton");
+		wait(0.5);
+		chats = getChats(robot); 
+		chatsList = chats.getItems();
+		assertTrue(chatsList.get(0).getMessage().equals("Hey Rob, how've you been?"));
+		robot.clickOn("#editProfileButton");
+		enterValue("#usernameTextFieldEditProfile", "Jacob", robot);
+		enterValue("#passwordTextFieldEditProfile", "password123", robot);
+		enterValue("#profileDataTextFieldEditProfile", "My name's Jacob!", robot);
+		robot.clickOn("#saveButton");
+		wait(0.5);
+		checkLabelText("#usernameLabel", "Jacob", robot);
+		
+		//Testing bots
+		
+		selectListItem("#myRoomsList", 1, robot);
+		wait(0.5);
+		robot.clickOn("#menuButton");
+		robot.clickOn("#addBotButton");
+		selectListItem("#botsListView", 0, robot);
+		robot.clickOn("#registerBotButton");
+		robot.clickOn("#menuButton");
+		robot.clickOn("#addBotButton");
+		selectListItem("#botsListView", 1, robot);
+		robot.clickOn("#registerBotButton");
+		wait(0.5);
+		users = getUsersInRoom(robot);
+		usersList = users.getItems();
+		
+		assertTrue(usersList.get(0).getUserName().equals("[NOTIFICATION BOT]"));
+		assertTrue(usersList.get(1).getUserName().equals("[SPAM BOT]"));
+		selectListItem("#chatLogList", 0, robot);
+		enterValue("#chatTextField", "spam", robot);
+		robot.clickOn("#sendChatButton");
+		enterValue("#chatTextField", "spam", robot);
+		robot.clickOn("#sendChatButton");
+		enterValue("#chatTextField", "spam", robot);
+		robot.clickOn("#sendChatButton");
+		enterValue("#chatTextField", "spam", robot);
+		robot.clickOn("#sendChatButton");
+		enterValue("#chatTextField", "spam", robot);
+		robot.clickOn("#sendChatButton");
+		chats = getChats(robot); 
+		chatsList = chats.getItems();
+		int lastSpamIndex = chatsList.size() - 2;
+		//Last five chats were spam messages.
+		assertTrue(chatsList.get(lastSpamIndex).getMessage().equals("spam")); 
+		assertTrue(chatsList.get(lastSpamIndex - 1).getMessage().equals("spam")); 
+		assertTrue(chatsList.get(lastSpamIndex - 2).getMessage().equals("spam")); 
+		assertTrue(chatsList.get(lastSpamIndex - 3).getMessage().equals("spam")); 
+		assertTrue(chatsList.get(lastSpamIndex - 4).getMessage().equals("spam")); 
+		wait(0.5);
+		
+		//Bot should tell us to stop spamming
+		assertTrue(chatsList.get(lastSpamIndex + 1).getSenderName().equals("[SPAM BOT]"));
+		assertTrue(chatsList.get(lastSpamIndex + 1).getMessage().equals("Please stop spamming!")); 
+		
+		//Lets have notification bot add like two notifications and then show those notifications
+		enterValue("#chatTextField", "!addNotification Check me out on twitch @JibraanKhan91412", robot);
+		robot.clickOn("#sendChatButton");
+		enterValue("#chatTextField", "!addNotification Hey guys, don't forget about our soccer game this weekend!", robot);
+		robot.clickOn("#sendChatButton");
+		
+		enterValue("#chatTextField", "!showNotifications", robot);
+		robot.clickOn("#sendChatButton");
+		
+		chats = getChats(robot); 
+		chatsList = chats.getItems();
+		//Both notification messages being shown will be by the notification bot
+		int notificationIndex = chatsList.size() - 1;
+		assertTrue(chatsList.get(notificationIndex).getMessage().equals("Hey guys, don't forget about our soccer game this weekend!")); 
+		assertTrue(chatsList.get(notificationIndex - 1).getMessage().equals("Check me out on twitch @JibraanKhan91412")); 
+		assertTrue(chatsList.get(notificationIndex).getSenderName().equals("[NOTIFICATION BOT]"));
+		assertTrue(chatsList.get(notificationIndex - 1).getSenderName().equals("[NOTIFICATION BOT]"));
+		wait(0.5);
+		selectListItem("#myRoomsList", 0, robot);
 		selectListItem("#chatLogList", 0, robot);
 		wait(0.5);
 		robot.clickOn("#menuButton");
@@ -306,7 +313,7 @@ public class ApplicationTest
 		ListView<ChatLog> chatLogs = getChatLogs(robot);
 		ObservableList<ChatLog> chatLogsList = chatLogs.getItems();
 		
-		System.out.println("About to check size\n" + chatLogsList);
+		//System.out.println("About to check size\n" + chatLogsList);
 		wait(0.5);
 		assertTrue(chatLogsList.size() == 1); //Should have only one chatLog
 		wait(0.5);
@@ -338,6 +345,7 @@ public class ApplicationTest
 			public void run() {
 				@SuppressWarnings("unchecked")
 				ListView<Room> listview = (ListView<Room>) robot.lookup(listID).query();
+				//System.out.println("List view is:" + listview.getItems());
 				listview.getSelectionModel().clearSelection();
 				listview.scrollTo(index);
 				listview.getSelectionModel().select(index);
@@ -385,7 +393,7 @@ public class ApplicationTest
 	@SuppressWarnings("unchecked")
 	ListView<Room> getRooms(FxRobot robot)
 	{
-	   return (ListView<Room>) robot.lookup("#roomsList")
+	   return (ListView<Room>) robot.lookup("#myRoomsList")
 	       .queryAll().iterator().next();
 	}
 	

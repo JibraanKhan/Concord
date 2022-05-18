@@ -7,13 +7,13 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../src/main/resources/basic.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <ListView id="exploreListView" fx:id="roomList" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" stylesheets="@../../../src/main/resources/basic.css"/>
+      <ListView id="exploreRoomsList" fx:id="exploreRoomsList" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../../src/main/resources/basic.css" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
-      <HBox prefHeight="42.0" prefWidth="600.0" BorderPane.alignment="CENTER" stylesheets="@../../../src/main/resources/basic.css">
+      <HBox prefHeight="42.0" prefWidth="600.0" stylesheets="@../../../src/main/resources/basic.css" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#onCancelButtonClicked" prefHeight="44.0" prefWidth="266.0" text="Cancel" stylesheets="@../../../src/main/resources/basic.css"/>
-            <Button id="addRoomExploreButton" mnemonicParsing="false" onAction="#onAddButtonClicked" prefHeight="45.0" prefWidth="333.0" text="Add" stylesheets="@../../../src/main/resources/basic.css"/>
+            <Button mnemonicParsing="false" onAction="#onCancelButtonClicked" prefHeight="44.0" prefWidth="266.0" stylesheets="@../../../src/main/resources/basic.css" text="Cancel" />
+            <Button id="addRoomExploreButton" mnemonicParsing="false" onAction="#onAddButtonClicked" prefHeight="45.0" prefWidth="333.0" stylesheets="@../../../src/main/resources/basic.css" text="Add" />
          </children>
       </HBox>
    </bottom>

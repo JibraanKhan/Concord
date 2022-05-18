@@ -98,12 +98,12 @@ public class User implements Serializable
 	public Room addRoom(RoomList roomList, int roomID) {
 		Room addingRoom = roomList.getRoom(roomID);
 		rooms.put(roomID, addingRoom);
-		System.out.println("Adding " + roomID + " to " + userName + ".");
+		//System.out.println("Adding " + roomID + " to " + userName + ".");
 		return addingRoom;
 	}
 	
 	public void removeRoom(int roomID) {
-		System.out.println("Removing " + roomID + " from " + userName + ".");
+		//System.out.println("Removing " + roomID + " from " + userName + ".");
 		if (rooms.get(roomID) != null) {
 			rooms.remove(roomID);
 		}

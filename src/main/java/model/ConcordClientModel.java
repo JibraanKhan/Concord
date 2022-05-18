@@ -722,9 +722,9 @@ public class ConcordClientModel
 			server.addUserToRoom(relevantRoom.getRoomID(), botUser, new Admin());
 			newBot.setUserID(botUser.getUserID());
 			server.registerBot(getSelectedRoomID(), newBot);
-			System.out.println("New bots userID: " + newBot.getUserID());
+			//System.out.println("New bots userID: " + newBot.getUserID());
 			for (Integer userID: relevantRoom.getUserTable().keySet()) {
-				System.out.println(userID + "\n" + server.getUser(userID));
+				//System.out.println(userID + "\n" + server.getUser(userID));
 			}
 			Set<Integer> userIDsInRoom = relevantRoom.getUserTable().keySet();
 			ArrayList<User> usersInRoom = new ArrayList<User>();

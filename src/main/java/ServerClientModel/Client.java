@@ -120,7 +120,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 	@Override
 	public void setStatus(boolean status) throws RemoteException
 	{
-		System.out.println("Setting status:" + status);
+		//System.out.println("Setting status:" + status);
 		connection.setStatus(getUserID(), status);
 	}
 

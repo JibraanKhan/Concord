@@ -39,7 +39,7 @@ public class CreateChannelPopupController extends BaseController
     		return;
     	}
     	
-    	System.out.println("Adding channel " + chatLogName);
+    	//System.out.println("Adding channel " + chatLogName);
 		client.createChatLog(SelectedRoomID, chatLogName);
     }
 

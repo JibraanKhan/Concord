@@ -280,12 +280,12 @@ public class Server extends UnicastRemoteObject implements ServerInterface, Seri
 	{
 		Room room = rooms.getRoom(roomID);
 		if (room == null) {
-			System.out.println("Room was null");
+			//System.out.println("Room was null");
 			return null;
 		}
 		User user = users.getUser(userID);
 		if (user == null) {
-			System.out.println("User was null");
+			//System.out.println("User was null");
 			return null;
 		}
 		Chat chat = room.addChat(msg, chatLogID, userID, user.getUserName());

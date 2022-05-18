@@ -28,7 +28,7 @@ public class MainFrameController extends BaseController implements Initializable
     private Label profileUsernameLabel;
 	
 	@FXML
-    private ListView<Room> roomList;
+    private ListView<Room> roomsList;
 
     @FXML
     private Label tempRoomName;
@@ -66,7 +66,7 @@ public class MainFrameController extends BaseController implements Initializable
 		System.out.println("Rooms:" + client.getRooms());
 		roomList.setItems(client.getRooms());*/
 		client.loadMyRooms();
-		roomList.setItems(client.getMyRooms());
+		roomsList.setItems(client.getMyRooms());
 		/*client.getMyRooms().addListener((ListChangeListener.Change<? extends Room> room) -> {
 			System.out.println("Room got added: " + room);
 			//client.loadMyRooms();
@@ -81,7 +81,7 @@ public class MainFrameController extends BaseController implements Initializable
 		Bindings.bindBidirectional(client.getUsernameTextProperty(), profileUsernameLabel.textProperty());
 		//Bindings.bindBidirectional(client.getAllRooms(), roomList.);
 		
-		roomList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+		roomsList.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
 			if (newValue == null) {
 				return;
 			}
@@ -100,7 +100,7 @@ public class MainFrameController extends BaseController implements Initializable
 	@Override
 	public void clearSelections()
 	{
-		roomList.getSelectionModel().clearSelection();
+		roomsList.getSelectionModel().clearSelection();
 	}
 
 

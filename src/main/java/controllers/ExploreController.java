@@ -17,7 +17,7 @@ public class ExploreController extends BaseController implements Initializable
 {
 
 	@FXML
-    private ListView<Room> roomList;
+    private ListView<Room> exploreRoomsList;
     Room selectedRoom = null;
 	public ExploreController(String fxmlName, ViewTransitionalModel vtm, ConcordClientModel client)
 	{
@@ -27,7 +27,7 @@ public class ExploreController extends BaseController implements Initializable
 
 	@FXML
     void onAddButtonClicked(ActionEvent event) {
-		System.out.println(selectedRoom);
+		//System.out.println(selectedRoom);
 		if (selectedRoom != null) {
 			try
 			{
@@ -39,20 +39,20 @@ public class ExploreController extends BaseController implements Initializable
 				//client.load_allRooms();
 				//client.load_usersRooms();
 				client.loadMyRooms();
-				System.out.println("Loaded everything");
+				//System.out.println("Loaded everything");
 			} catch (RemoteException e)
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		vtm.closeStageFromNode(roomList);
+		vtm.closeStageFromNode(exploreRoomsList);
 		vtm.showMainFrame();
     }
 
     @FXML
     void onCancelButtonClicked(ActionEvent event) {
-    	vtm.closeStageFromNode(roomList);
+    	vtm.closeStageFromNode(exploreRoomsList);
 		vtm.showMainFrame();
     }
 
@@ -63,8 +63,8 @@ public class ExploreController extends BaseController implements Initializable
 		//client.load_allRooms();
 		//roomList.setItems(client.getAllRooms());
 		client.loadAllRooms();
-		roomList.setItems(client.getAllRooms());
-		roomList.getSelectionModel().selectedItemProperty().addListener((observer, old_value, new_value) -> {
+		exploreRoomsList.setItems(client.getAllRooms());
+		exploreRoomsList.getSelectionModel().selectedItemProperty().addListener((observer, old_value, new_value) -> {
 			if (new_value == null) {
 				return;
 			}
@@ -75,6 +75,6 @@ public class ExploreController extends BaseController implements Initializable
 	@Override
 	public void clearSelections()
 	{
-		roomList.getSelectionModel().clearSelection();
+		exploreRoomsList.getSelectionModel().clearSelection();
 	}
 }

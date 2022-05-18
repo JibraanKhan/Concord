@@ -23,7 +23,7 @@
                <VBox.margin>
                   <Insets left="25.0" top="5.0" />
                </VBox.margin></Button>
-            <ListView id="roomsList" fx:id="roomList" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="322.0" prefWidth="200.0" stylesheets="@../../../src/main/resources/basic.css" />
+            <ListView id="myRoomsList" fx:id="roomsList" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="322.0" prefWidth="200.0" stylesheets="@../../../src/main/resources/basic.css" />
             <Button id="addButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onAddButtonClicked" prefHeight="26.0" prefWidth="130.0" stylesheets="@../../../src/main/resources/basic.css" text="Add">
                <VBox.margin>
                   <Insets left="25.0" />

@@ -47,10 +47,10 @@ public class LoginController extends BaseController
 		if (client.logOn()) {
 			vtm.closeStageFromNode(passwordField);
 			vtm.showMainFrame();
-			System.out.println("Client with password and username exists.");
+			//System.out.println("Client with password and username exists.");
 		} else{
 			errorMsg.setText("Error; either the password or the username is wrong.");
-			System.out.println("Client with password and username does not exist.");
+			//System.out.println("Client with password and username does not exist.");
 		};
 		
 	 }

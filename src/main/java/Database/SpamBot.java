@@ -151,7 +151,7 @@ public class SpamBot implements Bot, Serializable
 				
 				if (relChat.getSenderID() == userID) {
 					if (!relChat.getMessage().equals(concerningText)) {
-						System.out.println(relChat.getMessage() + " " + concerningText + counter);
+						//System.out.println(relChat.getMessage() + " " + concerningText + counter);
 						return;
 					}
 					counter++;
@@ -165,7 +165,7 @@ public class SpamBot implements Bot, Serializable
 			if (counter < 5) {
 				return;
 			}
-			System.out.println("Telling them to stop");
+			//System.out.println("Telling them to stop");
 			tellThemToStop(userID, chatLog.getChatLogID());
 		} catch (MalformedURLException | RemoteException | NotBoundException e)
 		{

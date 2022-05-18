@@ -170,7 +170,7 @@ public class Room implements Serializable
 	public void registerBot(Bot bot) {
 		bots.add(bot);
 		for (Bot nbot: bots) {
-			System.out.println("Bot: " + nbot.getName());
+			//System.out.println("Bot: " + nbot.getName());
 		}
 	}
 	
@@ -188,13 +188,13 @@ public class Room implements Serializable
 		if (isPublic()) {
 			userTable.put(userID, role);
 			user.addRoom(roomList, roomID);
-			System.out.println("Adding user to room");
+			//System.out.println("Adding user to room");
 		}else {
 			if (invitedUsers.get(userID) != null && invitedUsers.get(userID)) {
 				//If the user exists in invitedUsers and the user's invited
 				userTable.put(userID, role);
 				user.addRoom(roomList, roomID);
-				System.out.println("Adding user to room");
+				//System.out.println("Adding user to room");
 			}
 		}
 	}
@@ -206,12 +206,12 @@ public class Room implements Serializable
 		}
 		if (isPublic()) {
 			userTable.put(userID, role);
-			System.out.println("Adding user to room");
+			//System.out.println("Adding user to room");
 		}else {
 			if (invitedUsers.get(userID) != null && invitedUsers.get(userID)) {
 				//If the user exists in invitedUsers and the user's invited
 				userTable.put(userID, role);
-				System.out.println("Adding user to room");
+				//System.out.println("Adding user to room");
 			}
 		}
 	}
@@ -277,9 +277,9 @@ public class Room implements Serializable
 			return chat;
 
 		} else {
-			System.out.println(senderID + " was null");
+			//System.out.println(senderID + " was null");
 			if (chatLog == null) {
-				System.out.println(chatLogID + " was null");
+				//System.out.println(chatLogID + " was null");
 				return null;
 			}
 			return null;
@@ -341,7 +341,7 @@ public class Room implements Serializable
 	
 	public void deleteChatLog(int userID, int chatLogID) {
 		Role addersRole = userTable.get(userID);
-		System.out.println("Deleting chat log");
+		//System.out.println("Deleting chat log");
 		if (addersRole.isDeleteChatLogPermission()) {
 			chatLogs.remove(chatLogID);
 		}

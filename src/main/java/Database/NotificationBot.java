@@ -66,10 +66,10 @@ public class NotificationBot implements Bot, Serializable
 			{
 				server = (ServerInterface) Naming.lookup("rmi://127.0.0.1/CONCORD");
 				Chat chat = server.getChat(roomID, chatLog.getChatLogID(), chatID);
-				System.out.println("Room:" + roomID);
-				System.out.println("Chat log:" + chatLog);
+				//System.out.println("Room:" + roomID);
+				//System.out.println("Chat log:" + chatLog);
 				if (chat == null) {
-					System.out.println("Chat was null");
+					//System.out.println("Chat was null");
 					return;
 				}
 				
@@ -78,18 +78,18 @@ public class NotificationBot implements Bot, Serializable
 				if (roomInvolved == null) {
 					return;
 				}
-				System.out.println("Found room");
+				//System.out.println("Found room");
 				Role sendersRole = roomInvolved.getUser(userID);
 				if (sendersRole == null) {
 					return;
 				}
 				
-				System.out.println("Sender has role");
-				System.out.println("Senders role is:" + sendersRole.getRoleName());
+				//System.out.println("Sender has role");
+				//System.out.println("Senders role is:" + sendersRole.getRoleName());
 				if (!sendersRole.getRoleName().equals("Admin")) {
 					return; //Only want admins to be able to add and request notifications to show up.
 				}
-				System.out.println("Ok, sender is admin");
+				//System.out.println("Ok, sender is admin");
 				ArrayList<Bot> roomsBots = roomInvolved.getBots();
 				
 				for (Bot bot: roomsBots) {
@@ -98,8 +98,8 @@ public class NotificationBot implements Bot, Serializable
 					}
 				}
 				
-				System.out.println("Chat is: " + chat);
-				System.out.println("ChatLog is: " + chatLog);
+				//System.out.println("Chat is: " + chat);
+				//System.out.println("ChatLog is: " + chatLog);
 				checkMessage(userID, chatLog, chat);
 			} catch (MalformedURLException | RemoteException | NotBoundException e)
 			{
@@ -130,10 +130,10 @@ public class NotificationBot implements Bot, Serializable
 	}
 
 	public void checkMessage(int userID, ChatLog chatLog, Chat chat) {
-		System.out.println("Checking message");
-		System.out.println(userID);
-		System.out.println(chatLog);
-		System.out.println(chat);
+		//System.out.println("Checking message");
+		//System.out.println(userID);
+		//System.out.println(chatLog);
+		//System.out.println(chat);
 		String msg = chat.getMessage();
 		String[] msgSplit = msg.split(" ");
 		String command = msgSplit[0];
@@ -141,7 +141,7 @@ public class NotificationBot implements Bot, Serializable
 		if (command.equals("!addNotification")) {
 			msgSplit[0] = "";
 			String notificationToAdd = String.join(" ", msgSplit).strip();
-			System.out.println("Adding notification: " + notificationToAdd);
+			//System.out.println("Adding notification: " + notificationToAdd);
 			notifications.add(notificationToAdd);
 		} else if (command.equals("!showNotifications")) {
 			showNotifications(chatLog.getChatLogID());
@@ -151,7 +151,7 @@ public class NotificationBot implements Bot, Serializable
 	public void showNotifications(int chatLogID) {
 		try
 		{
-			System.out.println("Showing notifications");
+			//System.out.println("Showing notifications");
 			ServerInterface server = (ServerInterface) Naming.lookup("rmi://127.0.0.1/CONCORD");
 			for (String notification: notifications) {
 				server.addChat(roomID, chatLogID, userID, notification);
